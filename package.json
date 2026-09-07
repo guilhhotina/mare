@@ -7,6 +7,7 @@
     "build": "python tools/build.py",
     "build:native": "python tools/build_native.py",
     "start": "python tools/serve.py",
+    "deploy:pages": "python tools/deploy_pages.py",
     "start:native": "python tools/run_native.py",
     "test": "node tests/world.cjs && node tests/terraform.cjs && node tests/lighting.cjs && node tests/pixel-lighting.cjs && node tests/runtime.cjs",
     "art": "python tools/assets.py"
