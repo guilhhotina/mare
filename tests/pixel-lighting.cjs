@@ -1,0 +1,30 @@
+
+const fs=require('fs'),path=require('path'),vm=require('vm'),assert=require('assert');
+const {createCanvas}=require('@napi-rs/canvas');const root=path.resolve(__dirname,'..');
+const realm={window:{},document:{createElement:()=>createCanvas(65,65)},Uint8Array,Uint32Array,Math};
+vm.runInNewContext(fs.readFileSync(root+'/web/shadows.js','utf8'),realm);
+const data=fs.readFileSync(root+'/assets/shadow-shapes.bin');const rects=JSON.parse(fs.readFileSync(root+'/assets/atlas.json'));
+const perf={},backend=realm.window.MareShadows(data.buffer.slice(data.byteOffset,data.byteOffset+data.byteLength),rects,perf),flat=Array(625).fill(1).join(',');
+for(let id=5;id<=40;id++)for(let r=0;r<4;r++)assert(rects[`b${id}_${r}`].cast?.[1]>0,'Native depth exists: '+id+'/'+r);
+const count=()=>backend.inspect().field.reduce((n,x)=>n+x,0);
+const scene=(key,power=0)=>`${key},10,10,16,${power}`;
+backend.prepare(flat,'',.72,1);assert.equal(count(),0,'Empty ground has no object shadow');
+backend.prepare(flat,scene('b11_0'),.72,1);const house=count();assert(house>100,'House casts original surface pixels');
+const rebuilds=perf.shadowBuilds;backend.prepare(flat,scene('b11_0'),.7201,1);assert.equal(perf.shadowBuilds,rebuilds,'Same solar step reuses field');
+backend.prepare(flat,scene('b16_0'),.72,1);assert(count()>house*2,'Tower projects beyond a house of the same origin');
+backend.prepare(flat,scene('b26_0'),.72,1);const turbine=backend.inspect().field.slice();
+backend.prepare(flat,scene('b16_0'),.72,1);assert.notDeepEqual(backend.inspect().field,turbine,'Turbine keeps a different silhouette from a tower');
+backend.prepare(flat,scene('tree0'),.31,1);const morning=backend.inspect().field.slice();
+backend.prepare(flat,scene('tree0'),.72,1);assert.notDeepEqual(backend.inspect().field,morning,'Sun direction changes canopy projection');
+backend.prepare(flat,scene('tree0'),.72,2);assert.equal(backend.inspect().res,32);assert(count()>0,'Economy keeps authored silhouettes');
+backend.prepare(flat,scene('lamp',1),.91,1);assert.equal(count(),0,'No daylight shadow at night');assert.equal(backend.inspect().lamps.length,1);
+const canvas=createCanvas(65,65),ctx=canvas.getContext('2d');
+const litPixels=()=>{const a=ctx.getImageData(0,0,65,65).data;let n=0;for(let i=3;i<a.length;i+=4)if(a[i])n++;return n;};
+backend.paint(ctx,10,10,32,17,1,0,'',8,true);assert(litPixels()>300,'Lamp illuminates receiving ground');
+const alpha=ctx.getImageData(49,31,1,1).data[3];assert(alpha>=46,'Light center is beneath lantern, not pole base');
+ctx.clearRect(0,0,65,65);backend.paint(ctx,11,10,32,17,1,0,'',8,true);assert(litPixels()>0,'Pool survives across an adjacent tile');
+backend.prepare(flat,scene('lamp',0),.91,1);ctx.clearRect(0,0,65,65);backend.paint(ctx,10,10,32,17,1,0,'',8,true);assert.equal(litPixels(),0,'Unpowered lamps do not illuminate ground');
+
+const slope=Array(625).fill(1);slope[10*25+10]=2;backend.prepare(slope.join(','),scene('tree0'),.72,1);
+assert.equal(backend.ground(10,10),32);assert.equal(backend.ground(11,11),16);assert.equal(backend.ground(10.5,10.5),24);
+console.log('PASS pixel lighting: 144 authored orientations, exact-surface shadows, sun cache, night, economy, receiving slopes, powered lamps across tile borders.');

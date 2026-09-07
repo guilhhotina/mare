@@ -1,0 +1,10 @@
+[keymap.mare]
+up = [265]
+down = [264]
+left = [263]
+right = [262]
+a = [257, 335, 90]
+menu = [256, 259, 340]
+
+[args]
+input = "void://mare"

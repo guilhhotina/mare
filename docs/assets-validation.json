@@ -1,0 +1,37 @@
+{
+  "sprites": 475,
+  "atlas_pixels": [
+    1024,
+    2816
+  ],
+  "atlas_rgba_mib": 11.0,
+  "binary_alpha": true,
+  "distribution_bytes": 4905101,
+  "files": {
+    "main.lua": "5ac27653b407f1d85ccfaaf62cfff11eaa412c8d083b1de47f97226fa1abea29",
+    "shadows.js": "45e067b89a558400b2546fef020e31a08158b5554e070ce65a7e568082bd8a1a",
+    "atlas.png": "f30126f326a92d98270415561e6e480413bb53d8f3e8e9fd279601a127154603",
+    "game.lua": "fda381345fb54c2784a92c509fd2b182ace8546cad918459444b0b5d146e7280",
+    "typefaces.json": "2f1eaec3d20c8285b52a6131855eb24979855bd6d71ce5c46e8587aa29770747",
+    "logo.png": "e09fc8e42beefa8ad81a7054a9dee8719442fc22b14033a2f0be692681da4d0a",
+    "shadow-shapes.bin": "b9c95c265a8d7aafda9ba44c1bf585ad883dbf9e305b712ce546349201b2e4a1",
+    "host.js": "c03dba511bfbd9260d26863d0b2a90233780b7a262b0cae69ecf616f045fc373",
+    "typefaces.png": "38fa4a535073134ac2a23f2c0e1c8ed9b9bfda6935007fc2722cac7bb2513ae7",
+    "index.html": "f69536d1d68db52c2fd8185ec0891f807c774856be6bfdbb060c8e199ce24564",
+    "type.js": "d15a295e6c1fbbd5c8cab69a5af6839cce1d8576cf097f0350f38590c1b12b3a",
+    "pixels.js": "678d9a0f77addaae9f8e415380541f742317b2169dd36588d1bef0bb9d69a85d",
+    "atlas.json": "524eb98b7bef1f1c81082e4b3d20a63d5930cff5ee2101b82879b20b694889bb",
+    "vendor/glue.wasm": "95f3f19ddb740125883bc41d5ec670cd0828e7b58c8bdad385323cbff497b55c",
+    "vendor/gly-html5.js": "b15bd1e8738b48a74452e7e630ede944348c31de51cd1bd825e65b7d1e5f5f0b",
+    "vendor/mare.ttf": "ae7b7855e115a5966d8b1b3f80f254ccc117ec86f9965e202ee2940453837280",
+    "vendor/wasmoon.js": "dc2dcf019449008bb224370052473dc760db28b3ba14fc604e1ca3e8646af35d",
+    "vendor/PixelifySans.ttf": "b95de0424b3fb124cb8adfc83fd4752a22fdbd8401e5efda56f60c186f02c903",
+    "vendor/Silkscreen.ttf": "c845473330b94c2079ce9af01c51ac8ba2d99c24f4d14c039843bbb8e642ebd8",
+    "licenses/WASMOON-MIT.txt": "9ed9226c0138819a0859cf3c55a3414b4a186a17a4eaf4b5a51ceed7937615ac",
+    "licenses/GLY-APACHE-2.0.txt": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+    "licenses/PixelifySans-OFL.txt": "b66ba46f511a851ab09998b5a5a9fdbb102545a3864cb993095e1745996873a7",
+    "licenses/LUA-MIT.txt": "16b340bf5cc8fb629af0c59e43dee49b8145fa809678673add220e197dbee549",
+    "licenses/Silkscreen-OFL.txt": "86c5e9c9382cdcc5948704fdfe60f2aa164a719746931219a42736ecd9cefbd3",
+    "licenses/DEJAVU.txt": "63d3ba759d12804c5b31a9d5940d855c1820d1f5999e6b0872eb1c7ff045fbc9"
+  }
+}

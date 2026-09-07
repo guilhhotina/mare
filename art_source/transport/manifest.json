@@ -1,0 +1,8211 @@
+{
+  "version": 1,
+  "tile_px": [
+    64,
+    32
+  ],
+  "height_unit_px": 16,
+  "projection": "x=32*(u-v), y=16*(u+v)-z",
+  "direction_bits": {
+    "N": 1,
+    "E": 2,
+    "S": 4,
+    "W": 8
+  },
+  "origin_convention": "world NW corner at ground z=0; composite at projected tile origin minus origin_px",
+  "assets": [
+    {
+      "id": "01_terra__plano_00_isolado",
+      "family": "01_terra",
+      "variant": "plano_00_isolado",
+      "file": "sprites/01_terra/plano_00_isolado.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [],
+      "connection_edge_height_px": {},
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 0,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        618,
+        696,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__plano_01_N",
+      "family": "01_terra",
+      "variant": "plano_01_N",
+      "file": "sprites/01_terra/plano_01_N.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N"
+      ],
+      "connection_edge_height_px": {
+        "N": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 1,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        685,
+        696,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__plano_02_E",
+      "family": "01_terra",
+      "variant": "plano_02_E",
+      "file": "sprites/01_terra/plano_02_E.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E"
+      ],
+      "connection_edge_height_px": {
+        "E": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 2,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        752,
+        696,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__plano_03_NE",
+      "family": "01_terra",
+      "variant": "plano_03_NE",
+      "file": "sprites/01_terra/plano_03_NE.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "E": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 3,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        819,
+        696,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__plano_04_S",
+      "family": "01_terra",
+      "variant": "plano_04_S",
+      "file": "sprites/01_terra/plano_04_S.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 4,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        886,
+        696,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__plano_05_NS",
+      "family": "01_terra",
+      "variant": "plano_05_NS",
+      "file": "sprites/01_terra/plano_05_NS.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        953,
+        696,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__plano_06_ES",
+      "family": "01_terra",
+      "variant": "plano_06_ES",
+      "file": "sprites/01_terra/plano_06_ES.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 6,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        2,
+        746,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__plano_07_NES",
+      "family": "01_terra",
+      "variant": "plano_07_NES",
+      "file": "sprites/01_terra/plano_07_NES.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "E": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 7,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        69,
+        746,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__plano_08_W",
+      "family": "01_terra",
+      "variant": "plano_08_W",
+      "file": "sprites/01_terra/plano_08_W.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 8,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        136,
+        746,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__plano_09_NW",
+      "family": "01_terra",
+      "variant": "plano_09_NW",
+      "file": "sprites/01_terra/plano_09_NW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 9,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        203,
+        746,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__plano_10_EW",
+      "family": "01_terra",
+      "variant": "plano_10_EW",
+      "file": "sprites/01_terra/plano_10_EW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        270,
+        746,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__plano_11_NEW",
+      "family": "01_terra",
+      "variant": "plano_11_NEW",
+      "file": "sprites/01_terra/plano_11_NEW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "E": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 11,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        337,
+        746,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__plano_12_SW",
+      "family": "01_terra",
+      "variant": "plano_12_SW",
+      "file": "sprites/01_terra/plano_12_SW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "S": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 12,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        404,
+        746,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__plano_13_NSW",
+      "family": "01_terra",
+      "variant": "plano_13_NSW",
+      "file": "sprites/01_terra/plano_13_NSW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 13,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        471,
+        746,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__plano_14_ESW",
+      "family": "01_terra",
+      "variant": "plano_14_ESW",
+      "file": "sprites/01_terra/plano_14_ESW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "S": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 14,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        538,
+        746,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__plano_15_NESW",
+      "family": "01_terra",
+      "variant": "plano_15_NESW",
+      "file": "sprites/01_terra/plano_15_NESW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E",
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "E": 0,
+        "S": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 15,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        605,
+        746,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__rampa_N",
+      "family": "01_terra",
+      "variant": "rampa_N",
+      "file": "sprites/01_terra/rampa_N.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 16,
+      "ground": "grass",
+      "surface": "slope",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        691,
+        580,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "01_terra__rampa_E",
+      "family": "01_terra",
+      "variant": "rampa_E",
+      "file": "sprites/01_terra/rampa_E.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 16,
+      "ground": "grass",
+      "surface": "slope",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        672,
+        746,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__rampa_S",
+      "family": "01_terra",
+      "variant": "rampa_S",
+      "file": "sprites/01_terra/rampa_S.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 16,
+      "ground": "grass",
+      "surface": "slope",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        739,
+        746,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "01_terra__rampa_W",
+      "family": "01_terra",
+      "variant": "rampa_W",
+      "file": "sprites/01_terra/rampa_W.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 16,
+      "ground": "grass",
+      "surface": "slope",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        758,
+        580,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "01_terra__elevado_NS",
+      "family": "01_terra",
+      "variant": "elevado_NS",
+      "file": "sprites/01_terra/elevado_NS.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        825,
+        580,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "01_terra__elevado_EW",
+      "family": "01_terra",
+      "variant": "elevado_EW",
+      "file": "sprites/01_terra/elevado_EW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        892,
+        580,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "01_terra__elevado_NES",
+      "family": "01_terra",
+      "variant": "elevado_NES",
+      "file": "sprites/01_terra/elevado_NES.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "E": 16,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 7,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        2,
+        645,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "01_terra__elevado_NESW",
+      "family": "01_terra",
+      "variant": "elevado_NESW",
+      "file": "sprites/01_terra/elevado_NESW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E",
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "E": 16,
+        "S": 16,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 15,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        69,
+        645,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "02_pedestres__plano_00_isolado",
+      "family": "02_pedestres",
+      "variant": "plano_00_isolado",
+      "file": "sprites/02_pedestres/plano_00_isolado.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [],
+      "connection_edge_height_px": {},
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 0,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        806,
+        746,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__plano_01_N",
+      "family": "02_pedestres",
+      "variant": "plano_01_N",
+      "file": "sprites/02_pedestres/plano_01_N.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N"
+      ],
+      "connection_edge_height_px": {
+        "N": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 1,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        873,
+        746,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__plano_02_E",
+      "family": "02_pedestres",
+      "variant": "plano_02_E",
+      "file": "sprites/02_pedestres/plano_02_E.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E"
+      ],
+      "connection_edge_height_px": {
+        "E": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 2,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        940,
+        746,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__plano_03_NE",
+      "family": "02_pedestres",
+      "variant": "plano_03_NE",
+      "file": "sprites/02_pedestres/plano_03_NE.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "E": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 3,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        2,
+        781,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__plano_04_S",
+      "family": "02_pedestres",
+      "variant": "plano_04_S",
+      "file": "sprites/02_pedestres/plano_04_S.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 4,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        69,
+        781,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__plano_05_NS",
+      "family": "02_pedestres",
+      "variant": "plano_05_NS",
+      "file": "sprites/02_pedestres/plano_05_NS.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        136,
+        781,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__plano_06_ES",
+      "family": "02_pedestres",
+      "variant": "plano_06_ES",
+      "file": "sprites/02_pedestres/plano_06_ES.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 6,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        203,
+        781,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__plano_07_NES",
+      "family": "02_pedestres",
+      "variant": "plano_07_NES",
+      "file": "sprites/02_pedestres/plano_07_NES.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "E": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 7,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        270,
+        781,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__plano_08_W",
+      "family": "02_pedestres",
+      "variant": "plano_08_W",
+      "file": "sprites/02_pedestres/plano_08_W.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 8,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        337,
+        781,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__plano_09_NW",
+      "family": "02_pedestres",
+      "variant": "plano_09_NW",
+      "file": "sprites/02_pedestres/plano_09_NW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 9,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        404,
+        781,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__plano_10_EW",
+      "family": "02_pedestres",
+      "variant": "plano_10_EW",
+      "file": "sprites/02_pedestres/plano_10_EW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        471,
+        781,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__plano_11_NEW",
+      "family": "02_pedestres",
+      "variant": "plano_11_NEW",
+      "file": "sprites/02_pedestres/plano_11_NEW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "E": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 11,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        538,
+        781,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__plano_12_SW",
+      "family": "02_pedestres",
+      "variant": "plano_12_SW",
+      "file": "sprites/02_pedestres/plano_12_SW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "S": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 12,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        605,
+        781,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__plano_13_NSW",
+      "family": "02_pedestres",
+      "variant": "plano_13_NSW",
+      "file": "sprites/02_pedestres/plano_13_NSW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 13,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        672,
+        781,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__plano_14_ESW",
+      "family": "02_pedestres",
+      "variant": "plano_14_ESW",
+      "file": "sprites/02_pedestres/plano_14_ESW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "S": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 14,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        739,
+        781,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__plano_15_NESW",
+      "family": "02_pedestres",
+      "variant": "plano_15_NESW",
+      "file": "sprites/02_pedestres/plano_15_NESW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E",
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "E": 0,
+        "S": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 15,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        806,
+        781,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__rampa_N",
+      "family": "02_pedestres",
+      "variant": "rampa_N",
+      "file": "sprites/02_pedestres/rampa_N.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 16,
+      "ground": "grass",
+      "surface": "slope",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        136,
+        645,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "02_pedestres__rampa_E",
+      "family": "02_pedestres",
+      "variant": "rampa_E",
+      "file": "sprites/02_pedestres/rampa_E.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 16,
+      "ground": "grass",
+      "surface": "slope",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        873,
+        781,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__rampa_S",
+      "family": "02_pedestres",
+      "variant": "rampa_S",
+      "file": "sprites/02_pedestres/rampa_S.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 16,
+      "ground": "grass",
+      "surface": "slope",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        940,
+        781,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__rampa_W",
+      "family": "02_pedestres",
+      "variant": "rampa_W",
+      "file": "sprites/02_pedestres/rampa_W.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 16,
+      "ground": "grass",
+      "surface": "slope",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        203,
+        645,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "02_pedestres__elevado_NS",
+      "family": "02_pedestres",
+      "variant": "elevado_NS",
+      "file": "sprites/02_pedestres/elevado_NS.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        270,
+        645,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "02_pedestres__elevado_EW",
+      "family": "02_pedestres",
+      "variant": "elevado_EW",
+      "file": "sprites/02_pedestres/elevado_EW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        337,
+        645,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "02_pedestres__elevado_NES",
+      "family": "02_pedestres",
+      "variant": "elevado_NES",
+      "file": "sprites/02_pedestres/elevado_NES.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "E": 16,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 7,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        404,
+        645,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "02_pedestres__elevado_NESW",
+      "family": "02_pedestres",
+      "variant": "elevado_NESW",
+      "file": "sprites/02_pedestres/elevado_NESW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E",
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "E": 16,
+        "S": 16,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 15,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        471,
+        645,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "03_rua__plano_00_isolado",
+      "family": "03_rua",
+      "variant": "plano_00_isolado",
+      "file": "sprites/03_rua/plano_00_isolado.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [],
+      "connection_edge_height_px": {},
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 0,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        2,
+        816,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__plano_01_N",
+      "family": "03_rua",
+      "variant": "plano_01_N",
+      "file": "sprites/03_rua/plano_01_N.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N"
+      ],
+      "connection_edge_height_px": {
+        "N": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 1,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        69,
+        816,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__plano_02_E",
+      "family": "03_rua",
+      "variant": "plano_02_E",
+      "file": "sprites/03_rua/plano_02_E.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E"
+      ],
+      "connection_edge_height_px": {
+        "E": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 2,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        136,
+        816,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__plano_03_NE",
+      "family": "03_rua",
+      "variant": "plano_03_NE",
+      "file": "sprites/03_rua/plano_03_NE.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "E": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 3,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        203,
+        816,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__plano_04_S",
+      "family": "03_rua",
+      "variant": "plano_04_S",
+      "file": "sprites/03_rua/plano_04_S.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 4,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        270,
+        816,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__plano_05_NS",
+      "family": "03_rua",
+      "variant": "plano_05_NS",
+      "file": "sprites/03_rua/plano_05_NS.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        337,
+        816,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__plano_06_ES",
+      "family": "03_rua",
+      "variant": "plano_06_ES",
+      "file": "sprites/03_rua/plano_06_ES.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 6,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        404,
+        816,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__plano_07_NES",
+      "family": "03_rua",
+      "variant": "plano_07_NES",
+      "file": "sprites/03_rua/plano_07_NES.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "E": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 7,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        471,
+        816,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__plano_08_W",
+      "family": "03_rua",
+      "variant": "plano_08_W",
+      "file": "sprites/03_rua/plano_08_W.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 8,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        538,
+        816,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__plano_09_NW",
+      "family": "03_rua",
+      "variant": "plano_09_NW",
+      "file": "sprites/03_rua/plano_09_NW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 9,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        605,
+        816,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__plano_10_EW",
+      "family": "03_rua",
+      "variant": "plano_10_EW",
+      "file": "sprites/03_rua/plano_10_EW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        672,
+        816,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__plano_11_NEW",
+      "family": "03_rua",
+      "variant": "plano_11_NEW",
+      "file": "sprites/03_rua/plano_11_NEW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "E": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 11,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        739,
+        816,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__plano_12_SW",
+      "family": "03_rua",
+      "variant": "plano_12_SW",
+      "file": "sprites/03_rua/plano_12_SW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "S": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 12,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        806,
+        816,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__plano_13_NSW",
+      "family": "03_rua",
+      "variant": "plano_13_NSW",
+      "file": "sprites/03_rua/plano_13_NSW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 13,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        873,
+        816,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__plano_14_ESW",
+      "family": "03_rua",
+      "variant": "plano_14_ESW",
+      "file": "sprites/03_rua/plano_14_ESW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "S": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 14,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        940,
+        816,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__plano_15_NESW",
+      "family": "03_rua",
+      "variant": "plano_15_NESW",
+      "file": "sprites/03_rua/plano_15_NESW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E",
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "E": 0,
+        "S": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 15,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        2,
+        851,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__rampa_N",
+      "family": "03_rua",
+      "variant": "rampa_N",
+      "file": "sprites/03_rua/rampa_N.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 16,
+      "ground": "grass",
+      "surface": "slope",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        538,
+        645,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "03_rua__rampa_E",
+      "family": "03_rua",
+      "variant": "rampa_E",
+      "file": "sprites/03_rua/rampa_E.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 16,
+      "ground": "grass",
+      "surface": "slope",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        69,
+        851,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__rampa_S",
+      "family": "03_rua",
+      "variant": "rampa_S",
+      "file": "sprites/03_rua/rampa_S.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 16,
+      "ground": "grass",
+      "surface": "slope",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        136,
+        851,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__rampa_W",
+      "family": "03_rua",
+      "variant": "rampa_W",
+      "file": "sprites/03_rua/rampa_W.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 16,
+      "ground": "grass",
+      "surface": "slope",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        605,
+        645,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "03_rua__elevado_NS",
+      "family": "03_rua",
+      "variant": "elevado_NS",
+      "file": "sprites/03_rua/elevado_NS.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        672,
+        645,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "03_rua__elevado_EW",
+      "family": "03_rua",
+      "variant": "elevado_EW",
+      "file": "sprites/03_rua/elevado_EW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        739,
+        645,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "03_rua__elevado_NES",
+      "family": "03_rua",
+      "variant": "elevado_NES",
+      "file": "sprites/03_rua/elevado_NES.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "E": 16,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 7,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        806,
+        645,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "03_rua__elevado_NESW",
+      "family": "03_rua",
+      "variant": "elevado_NESW",
+      "file": "sprites/03_rua/elevado_NESW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "E",
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "E": 16,
+        "S": 16,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 15,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        873,
+        645,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        16
+      ]
+    },
+    {
+      "id": "04_avenida__plano_00_isolado",
+      "family": "04_avenida",
+      "variant": "plano_00_isolado",
+      "file": "sprites/04_avenida/plano_00_isolado.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [],
+      "connection_edge_height_px": {},
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 0,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        2,
+        379,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__plano_01_N",
+      "family": "04_avenida",
+      "variant": "plano_01_N",
+      "file": "sprites/04_avenida/plano_01_N.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "N"
+      ],
+      "connection_edge_height_px": {
+        "N": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 1,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        133,
+        379,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__plano_02_E",
+      "family": "04_avenida",
+      "variant": "plano_02_E",
+      "file": "sprites/04_avenida/plano_02_E.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "E"
+      ],
+      "connection_edge_height_px": {
+        "E": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 2,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        264,
+        379,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__plano_03_NE",
+      "family": "04_avenida",
+      "variant": "plano_03_NE",
+      "file": "sprites/04_avenida/plano_03_NE.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "N",
+        "E"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "E": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 3,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        395,
+        379,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__plano_04_S",
+      "family": "04_avenida",
+      "variant": "plano_04_S",
+      "file": "sprites/04_avenida/plano_04_S.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 4,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        526,
+        379,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__plano_05_NS",
+      "family": "04_avenida",
+      "variant": "plano_05_NS",
+      "file": "sprites/04_avenida/plano_05_NS.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        657,
+        379,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__plano_06_ES",
+      "family": "04_avenida",
+      "variant": "plano_06_ES",
+      "file": "sprites/04_avenida/plano_06_ES.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "E",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 6,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        788,
+        379,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__plano_07_NES",
+      "family": "04_avenida",
+      "variant": "plano_07_NES",
+      "file": "sprites/04_avenida/plano_07_NES.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "N",
+        "E",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "E": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 7,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        2,
+        446,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__plano_08_W",
+      "family": "04_avenida",
+      "variant": "plano_08_W",
+      "file": "sprites/04_avenida/plano_08_W.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 8,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        133,
+        446,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__plano_09_NW",
+      "family": "04_avenida",
+      "variant": "plano_09_NW",
+      "file": "sprites/04_avenida/plano_09_NW.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "N",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 9,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        264,
+        446,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__plano_10_EW",
+      "family": "04_avenida",
+      "variant": "plano_10_EW",
+      "file": "sprites/04_avenida/plano_10_EW.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        395,
+        446,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__plano_11_NEW",
+      "family": "04_avenida",
+      "variant": "plano_11_NEW",
+      "file": "sprites/04_avenida/plano_11_NEW.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "N",
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "E": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 11,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        526,
+        446,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__plano_12_SW",
+      "family": "04_avenida",
+      "variant": "plano_12_SW",
+      "file": "sprites/04_avenida/plano_12_SW.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "S": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 12,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        657,
+        446,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__plano_13_NSW",
+      "family": "04_avenida",
+      "variant": "plano_13_NSW",
+      "file": "sprites/04_avenida/plano_13_NSW.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "N",
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 13,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        788,
+        446,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__plano_14_ESW",
+      "family": "04_avenida",
+      "variant": "plano_14_ESW",
+      "file": "sprites/04_avenida/plano_14_ESW.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "E",
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "S": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 14,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        2,
+        513,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__plano_15_NESW",
+      "family": "04_avenida",
+      "variant": "plano_15_NESW",
+      "file": "sprites/04_avenida/plano_15_NESW.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "N",
+        "E",
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "E": 0,
+        "S": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 15,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        133,
+        513,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__rampa_N",
+      "family": "04_avenida",
+      "variant": "rampa_N",
+      "file": "sprites/04_avenida/rampa_N.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 16,
+      "ground": "grass",
+      "surface": "slope",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        287,
+        191,
+        129,
+        81
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        64,
+        16
+      ]
+    },
+    {
+      "id": "04_avenida__rampa_E",
+      "family": "04_avenida",
+      "variant": "rampa_E",
+      "file": "sprites/04_avenida/rampa_E.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 16,
+      "ground": "grass",
+      "surface": "slope",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        264,
+        513,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__rampa_S",
+      "family": "04_avenida",
+      "variant": "rampa_S",
+      "file": "sprites/04_avenida/rampa_S.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 16,
+      "ground": "grass",
+      "surface": "slope",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        395,
+        513,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__rampa_W",
+      "family": "04_avenida",
+      "variant": "rampa_W",
+      "file": "sprites/04_avenida/rampa_W.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 16,
+      "ground": "grass",
+      "surface": "slope",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        418,
+        191,
+        129,
+        81
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        64,
+        16
+      ]
+    },
+    {
+      "id": "04_avenida__elevado_NS",
+      "family": "04_avenida",
+      "variant": "elevado_NS",
+      "file": "sprites/04_avenida/elevado_NS.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        549,
+        191,
+        129,
+        81
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        64,
+        16
+      ]
+    },
+    {
+      "id": "04_avenida__elevado_EW",
+      "family": "04_avenida",
+      "variant": "elevado_EW",
+      "file": "sprites/04_avenida/elevado_EW.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        680,
+        191,
+        129,
+        81
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        64,
+        16
+      ]
+    },
+    {
+      "id": "04_avenida__elevado_NES",
+      "family": "04_avenida",
+      "variant": "elevado_NES",
+      "file": "sprites/04_avenida/elevado_NES.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "N",
+        "E",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "E": 16,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 7,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        811,
+        191,
+        129,
+        81
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        64,
+        16
+      ]
+    },
+    {
+      "id": "04_avenida__elevado_NESW",
+      "family": "04_avenida",
+      "variant": "elevado_NESW",
+      "file": "sprites/04_avenida/elevado_NESW.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "N",
+        "E",
+        "S",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "E": 16,
+        "S": 16,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 15,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 16,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        2,
+        296,
+        129,
+        81
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        64,
+        16
+      ]
+    },
+    {
+      "id": "02_pedestres__transicao_terra_N",
+      "family": "02_pedestres",
+      "variant": "transicao_terra_N",
+      "file": "sprites/02_pedestres/transicao_terra_N.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": "N",
+      "atlas_rect_px": [
+        203,
+        851,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__transicao_terra_E",
+      "family": "02_pedestres",
+      "variant": "transicao_terra_E",
+      "file": "sprites/02_pedestres/transicao_terra_E.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": "E",
+      "atlas_rect_px": [
+        270,
+        851,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__transicao_terra_S",
+      "family": "02_pedestres",
+      "variant": "transicao_terra_S",
+      "file": "sprites/02_pedestres/transicao_terra_S.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": "S",
+      "atlas_rect_px": [
+        337,
+        851,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "02_pedestres__transicao_terra_W",
+      "family": "02_pedestres",
+      "variant": "transicao_terra_W",
+      "file": "sprites/02_pedestres/transicao_terra_W.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": "W",
+      "atlas_rect_px": [
+        404,
+        851,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__transicao_terra_N",
+      "family": "03_rua",
+      "variant": "transicao_terra_N",
+      "file": "sprites/03_rua/transicao_terra_N.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": "N",
+      "atlas_rect_px": [
+        471,
+        851,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__transicao_terra_E",
+      "family": "03_rua",
+      "variant": "transicao_terra_E",
+      "file": "sprites/03_rua/transicao_terra_E.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": "E",
+      "atlas_rect_px": [
+        538,
+        851,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__transicao_terra_S",
+      "family": "03_rua",
+      "variant": "transicao_terra_S",
+      "file": "sprites/03_rua/transicao_terra_S.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": "S",
+      "atlas_rect_px": [
+        605,
+        851,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__transicao_terra_W",
+      "family": "03_rua",
+      "variant": "transicao_terra_W",
+      "file": "sprites/03_rua/transicao_terra_W.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": "W",
+      "atlas_rect_px": [
+        672,
+        851,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__travessia_NS",
+      "family": "03_rua",
+      "variant": "travessia_NS",
+      "file": "sprites/03_rua/travessia_NS.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        739,
+        851,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "03_rua__travessia_EW",
+      "family": "03_rua",
+      "variant": "travessia_EW",
+      "file": "sprites/03_rua/travessia_EW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        806,
+        851,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__travessia_NS",
+      "family": "04_avenida",
+      "variant": "travessia_NS",
+      "file": "sprites/04_avenida/travessia_NS.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 5,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        526,
+        513,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "04_avenida__travessia_EW",
+      "family": "04_avenida",
+      "variant": "travessia_EW",
+      "file": "sprites/04_avenida/travessia_EW.png",
+      "canvas_px": [
+        152,
+        128
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        52
+      ],
+      "sort_point_px": [
+        76,
+        116
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "mask": 10,
+      "rise_px": 0,
+      "ground": "grass",
+      "surface": "flat",
+      "max_height_px": 0,
+      "material_transition_to_edge": null,
+      "atlas_rect_px": [
+        657,
+        513,
+        129,
+        65
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        64,
+        0
+      ]
+    },
+    {
+      "id": "05_ponte_madeira__rampa_N",
+      "family": "05_ponte_madeira",
+      "variant": "rampa_N",
+      "file": "sprites/05_ponte_madeira/rampa_N.png",
+      "canvas_px": [
+        88,
+        104
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        60
+      ],
+      "sort_point_px": [
+        44,
+        92
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 16,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        397,
+        580,
+        54,
+        53
+      ],
+      "atlas_trim_offset_px": [
+        18,
+        40
+      ],
+      "atlas_origin_px": [
+        26,
+        20
+      ]
+    },
+    {
+      "id": "05_ponte_madeira__cabeceira_N",
+      "family": "05_ponte_madeira",
+      "variant": "cabeceira_N",
+      "file": "sprites/05_ponte_madeira/cabeceira_N.png",
+      "canvas_px": [
+        88,
+        104
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        60
+      ],
+      "sort_point_px": [
+        44,
+        92
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 0,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        453,
+        580,
+        56,
+        53
+      ],
+      "atlas_trim_offset_px": [
+        16,
+        40
+      ],
+      "atlas_origin_px": [
+        28,
+        20
+      ]
+    },
+    {
+      "id": "05_ponte_madeira__rampa_E",
+      "family": "05_ponte_madeira",
+      "variant": "rampa_E",
+      "file": "sprites/05_ponte_madeira/rampa_E.png",
+      "canvas_px": [
+        88,
+        104
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        60
+      ],
+      "sort_point_px": [
+        44,
+        92
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 16,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        108,
+        886,
+        54,
+        21
+      ],
+      "atlas_trim_offset_px": [
+        18,
+        56
+      ],
+      "atlas_origin_px": [
+        26,
+        4
+      ]
+    },
+    {
+      "id": "05_ponte_madeira__cabeceira_E",
+      "family": "05_ponte_madeira",
+      "variant": "cabeceira_E",
+      "file": "sprites/05_ponte_madeira/cabeceira_E.png",
+      "canvas_px": [
+        88,
+        104
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        60
+      ],
+      "sort_point_px": [
+        44,
+        92
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 0,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        391,
+        696,
+        56,
+        39
+      ],
+      "atlas_trim_offset_px": [
+        16,
+        40
+      ],
+      "atlas_origin_px": [
+        28,
+        20
+      ]
+    },
+    {
+      "id": "05_ponte_madeira__rampa_S",
+      "family": "05_ponte_madeira",
+      "variant": "rampa_S",
+      "file": "sprites/05_ponte_madeira/rampa_S.png",
+      "canvas_px": [
+        88,
+        104
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        60
+      ],
+      "sort_point_px": [
+        44,
+        92
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 16,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        164,
+        886,
+        54,
+        21
+      ],
+      "atlas_trim_offset_px": [
+        18,
+        56
+      ],
+      "atlas_origin_px": [
+        26,
+        4
+      ]
+    },
+    {
+      "id": "05_ponte_madeira__cabeceira_S",
+      "family": "05_ponte_madeira",
+      "variant": "cabeceira_S",
+      "file": "sprites/05_ponte_madeira/cabeceira_S.png",
+      "canvas_px": [
+        88,
+        104
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        60
+      ],
+      "sort_point_px": [
+        44,
+        92
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 0,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        449,
+        696,
+        55,
+        39
+      ],
+      "atlas_trim_offset_px": [
+        18,
+        40
+      ],
+      "atlas_origin_px": [
+        26,
+        20
+      ]
+    },
+    {
+      "id": "05_ponte_madeira__rampa_W",
+      "family": "05_ponte_madeira",
+      "variant": "rampa_W",
+      "file": "sprites/05_ponte_madeira/rampa_W.png",
+      "canvas_px": [
+        88,
+        104
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        60
+      ],
+      "sort_point_px": [
+        44,
+        92
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 16,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        511,
+        580,
+        54,
+        53
+      ],
+      "atlas_trim_offset_px": [
+        18,
+        40
+      ],
+      "atlas_origin_px": [
+        26,
+        20
+      ]
+    },
+    {
+      "id": "05_ponte_madeira__cabeceira_W",
+      "family": "05_ponte_madeira",
+      "variant": "cabeceira_W",
+      "file": "sprites/05_ponte_madeira/cabeceira_W.png",
+      "canvas_px": [
+        88,
+        104
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        60
+      ],
+      "sort_point_px": [
+        44,
+        92
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 0,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        567,
+        580,
+        55,
+        53
+      ],
+      "atlas_trim_offset_px": [
+        18,
+        40
+      ],
+      "atlas_origin_px": [
+        26,
+        20
+      ]
+    },
+    {
+      "id": "05_ponte_madeira__vao_com_pilar_E",
+      "family": "05_ponte_madeira",
+      "variant": "vao_com_pilar_E",
+      "file": "sprites/05_ponte_madeira/vao_com_pilar_E.png",
+      "canvas_px": [
+        88,
+        104
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        60
+      ],
+      "sort_point_px": [
+        44,
+        92
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 0,
+      "water_baked": false,
+      "supports_below_origin_px": 12,
+      "atlas_rect_px": [
+        218,
+        580,
+        54,
+        55
+      ],
+      "atlas_trim_offset_px": [
+        18,
+        40
+      ],
+      "atlas_origin_px": [
+        26,
+        20
+      ]
+    },
+    {
+      "id": "05_ponte_madeira__vao_livre_E",
+      "family": "05_ponte_madeira",
+      "variant": "vao_livre_E",
+      "file": "sprites/05_ponte_madeira/vao_livre_E.png",
+      "canvas_px": [
+        88,
+        104
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        60
+      ],
+      "sort_point_px": [
+        44,
+        92
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 0,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        506,
+        696,
+        54,
+        37
+      ],
+      "atlas_trim_offset_px": [
+        18,
+        40
+      ],
+      "atlas_origin_px": [
+        26,
+        20
+      ]
+    },
+    {
+      "id": "05_ponte_madeira__vao_com_pilar_S",
+      "family": "05_ponte_madeira",
+      "variant": "vao_com_pilar_S",
+      "file": "sprites/05_ponte_madeira/vao_com_pilar_S.png",
+      "canvas_px": [
+        88,
+        104
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        60
+      ],
+      "sort_point_px": [
+        44,
+        92
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 0,
+      "water_baked": false,
+      "supports_below_origin_px": 12,
+      "atlas_rect_px": [
+        274,
+        580,
+        54,
+        55
+      ],
+      "atlas_trim_offset_px": [
+        18,
+        40
+      ],
+      "atlas_origin_px": [
+        26,
+        20
+      ]
+    },
+    {
+      "id": "05_ponte_madeira__vao_livre_S",
+      "family": "05_ponte_madeira",
+      "variant": "vao_livre_S",
+      "file": "sprites/05_ponte_madeira/vao_livre_S.png",
+      "canvas_px": [
+        88,
+        104
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        60
+      ],
+      "sort_point_px": [
+        44,
+        92
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 0,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        562,
+        696,
+        54,
+        37
+      ],
+      "atlas_trim_offset_px": [
+        18,
+        40
+      ],
+      "atlas_origin_px": [
+        26,
+        20
+      ]
+    },
+    {
+      "id": "06_ponte_rodoviaria__rampa_N",
+      "family": "06_ponte_rodoviaria",
+      "variant": "rampa_N",
+      "file": "sprites/06_ponte_rodoviaria/rampa_N.png",
+      "canvas_px": [
+        152,
+        136
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        60
+      ],
+      "sort_point_px": [
+        76,
+        124
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 16,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        508,
+        296,
+        106,
+        79
+      ],
+      "atlas_trim_offset_px": [
+        24,
+        43
+      ],
+      "atlas_origin_px": [
+        52,
+        17
+      ]
+    },
+    {
+      "id": "06_ponte_rodoviaria__cabeceira_N",
+      "family": "06_ponte_rodoviaria",
+      "variant": "cabeceira_N",
+      "file": "sprites/06_ponte_rodoviaria/cabeceira_N.png",
+      "canvas_px": [
+        152,
+        136
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        60
+      ],
+      "sort_point_px": [
+        76,
+        124
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 0,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        285,
+        296,
+        110,
+        80
+      ],
+      "atlas_trim_offset_px": [
+        20,
+        43
+      ],
+      "atlas_origin_px": [
+        56,
+        17
+      ]
+    },
+    {
+      "id": "06_ponte_rodoviaria__rampa_E",
+      "family": "06_ponte_rodoviaria",
+      "variant": "rampa_E",
+      "file": "sprites/06_ponte_rodoviaria/rampa_E.png",
+      "canvas_px": [
+        152,
+        136
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        60
+      ],
+      "sort_point_px": [
+        76,
+        124
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 16,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        108,
+        696,
+        106,
+        47
+      ],
+      "atlas_trim_offset_px": [
+        24,
+        59
+      ],
+      "atlas_origin_px": [
+        52,
+        1
+      ]
+    },
+    {
+      "id": "06_ponte_rodoviaria__cabeceira_E",
+      "family": "06_ponte_rodoviaria",
+      "variant": "cabeceira_E",
+      "file": "sprites/06_ponte_rodoviaria/cabeceira_E.png",
+      "canvas_px": [
+        152,
+        136
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        60
+      ],
+      "sort_point_px": [
+        76,
+        124
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 0,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        788,
+        513,
+        110,
+        63
+      ],
+      "atlas_trim_offset_px": [
+        20,
+        43
+      ],
+      "atlas_origin_px": [
+        56,
+        17
+      ]
+    },
+    {
+      "id": "06_ponte_rodoviaria__rampa_S",
+      "family": "06_ponte_rodoviaria",
+      "variant": "rampa_S",
+      "file": "sprites/06_ponte_rodoviaria/rampa_S.png",
+      "canvas_px": [
+        152,
+        136
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        60
+      ],
+      "sort_point_px": [
+        76,
+        124
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 16,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        216,
+        696,
+        106,
+        47
+      ],
+      "atlas_trim_offset_px": [
+        24,
+        59
+      ],
+      "atlas_origin_px": [
+        52,
+        1
+      ]
+    },
+    {
+      "id": "06_ponte_rodoviaria__cabeceira_S",
+      "family": "06_ponte_rodoviaria",
+      "variant": "cabeceira_S",
+      "file": "sprites/06_ponte_rodoviaria/cabeceira_S.png",
+      "canvas_px": [
+        152,
+        136
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        60
+      ],
+      "sort_point_px": [
+        76,
+        124
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 0,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        900,
+        513,
+        109,
+        63
+      ],
+      "atlas_trim_offset_px": [
+        24,
+        43
+      ],
+      "atlas_origin_px": [
+        52,
+        17
+      ]
+    },
+    {
+      "id": "06_ponte_rodoviaria__rampa_W",
+      "family": "06_ponte_rodoviaria",
+      "variant": "rampa_W",
+      "file": "sprites/06_ponte_rodoviaria/rampa_W.png",
+      "canvas_px": [
+        152,
+        136
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        60
+      ],
+      "sort_point_px": [
+        76,
+        124
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 16,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        616,
+        296,
+        106,
+        79
+      ],
+      "atlas_trim_offset_px": [
+        24,
+        43
+      ],
+      "atlas_origin_px": [
+        52,
+        17
+      ]
+    },
+    {
+      "id": "06_ponte_rodoviaria__cabeceira_W",
+      "family": "06_ponte_rodoviaria",
+      "variant": "cabeceira_W",
+      "file": "sprites/06_ponte_rodoviaria/cabeceira_W.png",
+      "canvas_px": [
+        152,
+        136
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        60
+      ],
+      "sort_point_px": [
+        76,
+        124
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 0,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        397,
+        296,
+        109,
+        80
+      ],
+      "atlas_trim_offset_px": [
+        24,
+        43
+      ],
+      "atlas_origin_px": [
+        52,
+        17
+      ]
+    },
+    {
+      "id": "06_ponte_rodoviaria__vao_com_pilar_E",
+      "family": "06_ponte_rodoviaria",
+      "variant": "vao_com_pilar_E",
+      "file": "sprites/06_ponte_rodoviaria/vao_com_pilar_E.png",
+      "canvas_px": [
+        152,
+        136
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        60
+      ],
+      "sort_point_px": [
+        76,
+        124
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 0,
+      "water_baked": false,
+      "supports_below_origin_px": 12,
+      "atlas_rect_px": [
+        724,
+        296,
+        106,
+        74
+      ],
+      "atlas_trim_offset_px": [
+        24,
+        43
+      ],
+      "atlas_origin_px": [
+        52,
+        17
+      ]
+    },
+    {
+      "id": "06_ponte_rodoviaria__vao_livre_E",
+      "family": "06_ponte_rodoviaria",
+      "variant": "vao_livre_E",
+      "file": "sprites/06_ponte_rodoviaria/vao_livre_E.png",
+      "canvas_px": [
+        152,
+        136
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        60
+      ],
+      "sort_point_px": [
+        76,
+        124
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 0,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        2,
+        580,
+        106,
+        63
+      ],
+      "atlas_trim_offset_px": [
+        24,
+        43
+      ],
+      "atlas_origin_px": [
+        52,
+        17
+      ]
+    },
+    {
+      "id": "06_ponte_rodoviaria__vao_com_pilar_S",
+      "family": "06_ponte_rodoviaria",
+      "variant": "vao_com_pilar_S",
+      "file": "sprites/06_ponte_rodoviaria/vao_com_pilar_S.png",
+      "canvas_px": [
+        152,
+        136
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        60
+      ],
+      "sort_point_px": [
+        76,
+        124
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 0,
+      "water_baked": false,
+      "supports_below_origin_px": 12,
+      "atlas_rect_px": [
+        832,
+        296,
+        106,
+        74
+      ],
+      "atlas_trim_offset_px": [
+        24,
+        43
+      ],
+      "atlas_origin_px": [
+        52,
+        17
+      ]
+    },
+    {
+      "id": "06_ponte_rodoviaria__vao_livre_S",
+      "family": "06_ponte_rodoviaria",
+      "variant": "vao_livre_S",
+      "file": "sprites/06_ponte_rodoviaria/vao_livre_S.png",
+      "canvas_px": [
+        152,
+        136
+      ],
+      "footprint_tiles": [
+        2,
+        2
+      ],
+      "origin_px": [
+        76,
+        60
+      ],
+      "sort_point_px": [
+        76,
+        124
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 0,
+      "water_baked": false,
+      "supports_below_origin_px": 0,
+      "atlas_rect_px": [
+        110,
+        580,
+        106,
+        63
+      ],
+      "atlas_trim_offset_px": [
+        24,
+        43
+      ],
+      "atlas_origin_px": [
+        52,
+        17
+      ]
+    },
+    {
+      "id": "07_escadaria__subida_E",
+      "family": "07_escadaria",
+      "variant": "subida_E",
+      "file": "sprites/07_escadaria/subida_E.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 16,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 16,
+      "step_count": 4,
+      "step_height_px": 4,
+      "atlas_rect_px": [
+        2,
+        886,
+        51,
+        32
+      ],
+      "atlas_trim_offset_px": [
+        19,
+        49
+      ],
+      "atlas_origin_px": [
+        25,
+        3
+      ]
+    },
+    {
+      "id": "07_escadaria__subida_S",
+      "family": "07_escadaria",
+      "variant": "subida_S",
+      "file": "sprites/07_escadaria/subida_S.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 16,
+      "step_count": 4,
+      "step_height_px": 4,
+      "atlas_rect_px": [
+        55,
+        886,
+        51,
+        32
+      ],
+      "atlas_trim_offset_px": [
+        19,
+        49
+      ],
+      "atlas_origin_px": [
+        25,
+        3
+      ]
+    },
+    {
+      "id": "07_escadaria__subida_W",
+      "family": "07_escadaria",
+      "variant": "subida_W",
+      "file": "sprites/07_escadaria/subida_W.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 16
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 16,
+      "step_count": 4,
+      "step_height_px": 4,
+      "atlas_rect_px": [
+        2,
+        696,
+        51,
+        48
+      ],
+      "atlas_trim_offset_px": [
+        19,
+        33
+      ],
+      "atlas_origin_px": [
+        25,
+        19
+      ]
+    },
+    {
+      "id": "07_escadaria__subida_N",
+      "family": "07_escadaria",
+      "variant": "subida_N",
+      "file": "sprites/07_escadaria/subida_N.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 16,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rise_px": 16,
+      "step_count": 4,
+      "step_height_px": 4,
+      "atlas_rect_px": [
+        55,
+        696,
+        51,
+        48
+      ],
+      "atlas_trim_offset_px": [
+        19,
+        33
+      ],
+      "atlas_origin_px": [
+        25,
+        19
+      ]
+    },
+    {
+      "id": "07_escadaria__patamar_NS",
+      "family": "07_escadaria",
+      "variant": "patamar_NS",
+      "file": "sprites/07_escadaria/patamar_NS.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "N",
+        "S"
+      ],
+      "connection_edge_height_px": {
+        "N": 0,
+        "S": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "atlas_rect_px": [
+        873,
+        851,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "07_escadaria__patamar_EW",
+      "family": "07_escadaria",
+      "variant": "patamar_EW",
+      "file": "sprites/07_escadaria/patamar_EW.png",
+      "canvas_px": [
+        88,
+        96
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        52
+      ],
+      "sort_point_px": [
+        44,
+        84
+      ],
+      "connections": [
+        "E",
+        "W"
+      ],
+      "connection_edge_height_px": {
+        "E": 0,
+        "W": 0
+      },
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "atlas_rect_px": [
+        940,
+        851,
+        65,
+        33
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        52
+      ],
+      "atlas_origin_px": [
+        32,
+        0
+      ]
+    },
+    {
+      "id": "08_ponto_onibus__rot_0",
+      "family": "08_ponto_onibus",
+      "variant": "rot_0",
+      "file": "sprites/08_ponto_onibus/rot_0.png",
+      "canvas_px": [
+        88,
+        100
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        56
+      ],
+      "sort_point_px": [
+        44,
+        88
+      ],
+      "connections": [
+        "S"
+      ],
+      "connection_edge_height_px": {},
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rotation_deg": 0,
+      "place_on": "flat",
+      "road_on_edge": "S",
+      "atlas_rect_px": [
+        624,
+        580,
+        65,
+        50
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        41
+      ],
+      "atlas_origin_px": [
+        32,
+        15
+      ]
+    },
+    {
+      "id": "08_ponto_onibus__rot_90",
+      "family": "08_ponto_onibus",
+      "variant": "rot_90",
+      "file": "sprites/08_ponto_onibus/rot_90.png",
+      "canvas_px": [
+        88,
+        100
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        56
+      ],
+      "sort_point_px": [
+        44,
+        88
+      ],
+      "connections": [
+        "W"
+      ],
+      "connection_edge_height_px": {},
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rotation_deg": 90,
+      "place_on": "flat",
+      "road_on_edge": "W",
+      "atlas_rect_px": [
+        330,
+        580,
+        65,
+        55
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        36
+      ],
+      "atlas_origin_px": [
+        32,
+        20
+      ]
+    },
+    {
+      "id": "08_ponto_onibus__rot_180",
+      "family": "08_ponto_onibus",
+      "variant": "rot_180",
+      "file": "sprites/08_ponto_onibus/rot_180.png",
+      "canvas_px": [
+        88,
+        100
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        56
+      ],
+      "sort_point_px": [
+        44,
+        88
+      ],
+      "connections": [
+        "N"
+      ],
+      "connection_edge_height_px": {},
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rotation_deg": 180,
+      "place_on": "flat",
+      "road_on_edge": "N",
+      "atlas_rect_px": [
+        324,
+        696,
+        65,
+        43
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        48
+      ],
+      "atlas_origin_px": [
+        32,
+        8
+      ]
+    },
+    {
+      "id": "08_ponto_onibus__rot_270",
+      "family": "08_ponto_onibus",
+      "variant": "rot_270",
+      "file": "sprites/08_ponto_onibus/rot_270.png",
+      "canvas_px": [
+        88,
+        100
+      ],
+      "footprint_tiles": [
+        1,
+        1
+      ],
+      "origin_px": [
+        44,
+        56
+      ],
+      "sort_point_px": [
+        44,
+        88
+      ],
+      "connections": [
+        "E"
+      ],
+      "connection_edge_height_px": {},
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rotation_deg": 270,
+      "place_on": "flat",
+      "road_on_edge": "E",
+      "atlas_rect_px": [
+        940,
+        645,
+        65,
+        49
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        42
+      ],
+      "atlas_origin_px": [
+        32,
+        14
+      ]
+    },
+    {
+      "id": "09_terminal_balsas__rot_0",
+      "family": "09_terminal_balsas",
+      "variant": "rot_0",
+      "file": "sprites/09_terminal_balsas/rot_0.png",
+      "canvas_px": [
+        184,
+        164
+      ],
+      "footprint_tiles": [
+        3,
+        2
+      ],
+      "origin_px": [
+        76,
+        72
+      ],
+      "sort_point_px": [
+        108,
+        152
+      ],
+      "connections": [],
+      "connection_edge_height_px": {},
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rotation_deg": 0,
+      "place_on": "coast_flat",
+      "land_region_local": [
+        0,
+        0,
+        3,
+        1.05
+      ],
+      "water_region_local": [
+        0,
+        1.05,
+        3,
+        2
+      ],
+      "road_edge_local": "N",
+      "boat_edge_local": "S",
+      "supports_below_origin_px": 12,
+      "atlas_rect_px": [
+        858,
+        2,
+        131,
+        109
+      ],
+      "atlas_trim_offset_px": [
+        42,
+        48
+      ],
+      "atlas_origin_px": [
+        34,
+        24
+      ]
+    },
+    {
+      "id": "09_terminal_balsas__rot_90",
+      "family": "09_terminal_balsas",
+      "variant": "rot_90",
+      "file": "sprites/09_terminal_balsas/rot_90.png",
+      "canvas_px": [
+        184,
+        164
+      ],
+      "footprint_tiles": [
+        2,
+        3
+      ],
+      "origin_px": [
+        108,
+        72
+      ],
+      "sort_point_px": [
+        76,
+        152
+      ],
+      "connections": [],
+      "connection_edge_height_px": {},
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rotation_deg": 90,
+      "place_on": "coast_flat",
+      "land_region_local": [
+        0,
+        0,
+        3,
+        1.05
+      ],
+      "water_region_local": [
+        0,
+        1.05,
+        3,
+        2
+      ],
+      "road_edge_local": "N",
+      "boat_edge_local": "S",
+      "supports_below_origin_px": 12,
+      "atlas_rect_px": [
+        2,
+        191,
+        150,
+        103
+      ],
+      "atlas_trim_offset_px": [
+        23,
+        58
+      ],
+      "atlas_origin_px": [
+        85,
+        14
+      ]
+    },
+    {
+      "id": "09_terminal_balsas__rot_180",
+      "family": "09_terminal_balsas",
+      "variant": "rot_180",
+      "file": "sprites/09_terminal_balsas/rot_180.png",
+      "canvas_px": [
+        184,
+        164
+      ],
+      "footprint_tiles": [
+        3,
+        2
+      ],
+      "origin_px": [
+        76,
+        72
+      ],
+      "sort_point_px": [
+        108,
+        152
+      ],
+      "connections": [],
+      "connection_edge_height_px": {},
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rotation_deg": 180,
+      "place_on": "coast_flat",
+      "land_region_local": [
+        0,
+        0,
+        3,
+        1.05
+      ],
+      "water_region_local": [
+        0,
+        1.05,
+        3,
+        2
+      ],
+      "road_edge_local": "N",
+      "boat_edge_local": "S",
+      "supports_below_origin_px": 12,
+      "atlas_rect_px": [
+        154,
+        191,
+        131,
+        95
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        66
+      ],
+      "atlas_origin_px": [
+        64,
+        6
+      ]
+    },
+    {
+      "id": "09_terminal_balsas__rot_270",
+      "family": "09_terminal_balsas",
+      "variant": "rot_270",
+      "file": "sprites/09_terminal_balsas/rot_270.png",
+      "canvas_px": [
+        184,
+        164
+      ],
+      "footprint_tiles": [
+        2,
+        3
+      ],
+      "origin_px": [
+        108,
+        72
+      ],
+      "sort_point_px": [
+        76,
+        152
+      ],
+      "connections": [],
+      "connection_edge_height_px": {},
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rotation_deg": 270,
+      "place_on": "coast_flat",
+      "land_region_local": [
+        0,
+        0,
+        3,
+        1.05
+      ],
+      "water_region_local": [
+        0,
+        1.05,
+        3,
+        2
+      ],
+      "road_edge_local": "N",
+      "boat_edge_local": "S",
+      "supports_below_origin_px": 12,
+      "atlas_rect_px": [
+        133,
+        296,
+        150,
+        81
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        65
+      ],
+      "atlas_origin_px": [
+        96,
+        7
+      ]
+    },
+    {
+      "id": "10_porto_cargas__rot_0",
+      "family": "10_porto_cargas",
+      "variant": "rot_0",
+      "file": "sprites/10_porto_cargas/rot_0.png",
+      "canvas_px": [
+        248,
+        232
+      ],
+      "footprint_tiles": [
+        4,
+        3
+      ],
+      "origin_px": [
+        108,
+        108
+      ],
+      "sort_point_px": [
+        140,
+        220
+      ],
+      "connections": [],
+      "connection_edge_height_px": {},
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rotation_deg": 0,
+      "place_on": "coast_flat",
+      "land_region_local": [
+        0,
+        0,
+        4,
+        2.6
+      ],
+      "water_region_local": [
+        0,
+        2.6,
+        4,
+        3
+      ],
+      "road_edge_local": "N",
+      "boat_edge_local": "S",
+      "supports_below_origin_px": 10,
+      "atlas_rect_px": [
+        430,
+        2,
+        212,
+        147
+      ],
+      "atlas_trim_offset_px": [
+        25,
+        78
+      ],
+      "atlas_origin_px": [
+        83,
+        30
+      ]
+    },
+    {
+      "id": "10_porto_cargas__rot_90",
+      "family": "10_porto_cargas",
+      "variant": "rot_90",
+      "file": "sprites/10_porto_cargas/rot_90.png",
+      "canvas_px": [
+        248,
+        232
+      ],
+      "footprint_tiles": [
+        3,
+        4
+      ],
+      "origin_px": [
+        140,
+        108
+      ],
+      "sort_point_px": [
+        108,
+        220
+      ],
+      "connections": [],
+      "connection_edge_height_px": {},
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rotation_deg": 90,
+      "place_on": "coast_flat",
+      "land_region_local": [
+        0,
+        0,
+        4,
+        2.6
+      ],
+      "water_region_local": [
+        0,
+        2.6,
+        4,
+        3
+      ],
+      "road_edge_local": "N",
+      "boat_edge_local": "S",
+      "supports_below_origin_px": 10,
+      "atlas_rect_px": [
+        644,
+        2,
+        212,
+        136
+      ],
+      "atlas_trim_offset_px": [
+        25,
+        95
+      ],
+      "atlas_origin_px": [
+        115,
+        13
+      ]
+    },
+    {
+      "id": "10_porto_cargas__rot_180",
+      "family": "10_porto_cargas",
+      "variant": "rot_180",
+      "file": "sprites/10_porto_cargas/rot_180.png",
+      "canvas_px": [
+        248,
+        232
+      ],
+      "footprint_tiles": [
+        4,
+        3
+      ],
+      "origin_px": [
+        108,
+        108
+      ],
+      "sort_point_px": [
+        140,
+        220
+      ],
+      "connections": [],
+      "connection_edge_height_px": {},
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rotation_deg": 180,
+      "place_on": "coast_flat",
+      "land_region_local": [
+        0,
+        0,
+        4,
+        2.6
+      ],
+      "water_region_local": [
+        0,
+        2.6,
+        4,
+        3
+      ],
+      "road_edge_local": "N",
+      "boat_edge_local": "S",
+      "supports_below_origin_px": 10,
+      "atlas_rect_px": [
+        2,
+        2,
+        212,
+        187
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        44
+      ],
+      "atlas_origin_px": [
+        96,
+        64
+      ]
+    },
+    {
+      "id": "10_porto_cargas__rot_270",
+      "family": "10_porto_cargas",
+      "variant": "rot_270",
+      "file": "sprites/10_porto_cargas/rot_270.png",
+      "canvas_px": [
+        248,
+        232
+      ],
+      "footprint_tiles": [
+        3,
+        4
+      ],
+      "origin_px": [
+        140,
+        108
+      ],
+      "sort_point_px": [
+        108,
+        220
+      ],
+      "connections": [],
+      "connection_edge_height_px": {},
+      "alpha": "binary",
+      "tile_size_px": [
+        64,
+        32
+      ],
+      "rotation_deg": 270,
+      "place_on": "coast_flat",
+      "land_region_local": [
+        0,
+        0,
+        4,
+        2.6
+      ],
+      "water_region_local": [
+        0,
+        2.6,
+        4,
+        3
+      ],
+      "road_edge_local": "N",
+      "boat_edge_local": "S",
+      "supports_below_origin_px": 10,
+      "atlas_rect_px": [
+        216,
+        2,
+        212,
+        157
+      ],
+      "atlas_trim_offset_px": [
+        12,
+        68
+      ],
+      "atlas_origin_px": [
+        128,
+        40
+      ]
+    }
+  ],
+  "atlas": {
+    "file": "atlas.png",
+    "size_px": [
+      1024,
+      1024
+    ],
+    "padding_px": 2,
+    "filter": "nearest",
+    "uncompressed_rgba_bytes": 4194304,
+    "trimmed": true
+  }
+}

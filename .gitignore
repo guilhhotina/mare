@@ -1,0 +1,9 @@
+node_modules/
+__pycache__/
+*.pyc
+*.tar
+*.zip
+dist/
+.openai/
+*.db
+*.db-*
