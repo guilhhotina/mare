@@ -1,0 +1,1182 @@
+{
+  "Mare": {
+    "pt": "Maré",
+    "en": "Maré",
+    "de": "Maré"
+  },
+  "Um pedacinho de mundo, do seu jeito.": {
+    "pt": "Um pedacinho de mundo, do seu jeito.",
+    "en": "A little world, made your way.",
+    "de": "Ein Stück Welt, ganz nach deinem Geschmack."
+  },
+  "Vias": {
+    "pt": "Vias",
+    "en": "Roads",
+    "de": "Wege"
+  },
+  "Moradia": {
+    "pt": "Moradia",
+    "en": "Housing",
+    "de": "Wohnen"
+  },
+  "Comercio": {
+    "pt": "Comércio",
+    "en": "Shops",
+    "de": "Handel"
+  },
+  "Servicos": {
+    "pt": "Serviços",
+    "en": "Services",
+    "de": "Dienste"
+  },
+  "Natureza": {
+    "pt": "Natureza",
+    "en": "Nature",
+    "de": "Natur"
+  },
+  "Construir": {
+    "pt": "Construir",
+    "en": "Build",
+    "de": "Bauen"
+  },
+  "Terreno": {
+    "pt": "Terreno",
+    "en": "Terrain",
+    "de": "Gelände"
+  },
+  "Remover": {
+    "pt": "Remover",
+    "en": "Remove",
+    "de": "Entfernen"
+  },
+  "Desfazer": {
+    "pt": "Desfazer",
+    "en": "Undo",
+    "de": "Rückgängig"
+  },
+  "Zonas": {
+    "pt": "Zonas",
+    "en": "Zones",
+    "de": "Bauzonen"
+  },
+  "Elevar": {
+    "pt": "Elevar",
+    "en": "Raise",
+    "de": "Anheben"
+  },
+  "Baixar": {
+    "pt": "Baixar",
+    "en": "Lower",
+    "de": "Senken"
+  },
+  "Nivelar": {
+    "pt": "Nivelar",
+    "en": "Level",
+    "de": "Einebnen"
+  },
+  "Distorcer": {
+    "pt": "Distorcer",
+    "en": "Pull coast",
+    "de": "Verformen"
+  },
+  "Pinte um nivel acima. As construcoes sobem junto.": {
+    "pt": "Pinte um nível acima. As construções sobem junto.",
+    "en": "Paint one level higher. Buildings rise with the land.",
+    "de": "Male eine Stufe höher. Die Gebäude steigen mit."
+  },
+  "Pinte um nivel abaixo. As vias se acomodam.": {
+    "pt": "Pinte um nível abaixo. As vias se acomodam.",
+    "en": "Paint one level lower. Roads adjust to the land.",
+    "de": "Male eine Stufe tiefer. Die Wege passen sich an."
+  },
+  "Copie uma altura e pinte o terreno com as setas.": {
+    "pt": "Copie uma altura e pinte o terreno com as setas.",
+    "en": "Copy a height, then paint the land with the arrows.",
+    "de": "Kopiere eine Höhe und male das Gelände mit den Pfeilen."
+  },
+  "Segure a costa e puxe. As fundacoes acompanham.": {
+    "pt": "Segure a costa e puxe. As fundações acompanham.",
+    "en": "Grab and pull the coast. Foundations move with it.",
+    "de": "Greife und ziehe die Küste. Die Fundamente folgen."
+  },
+  "Escolha uma peca e coloque direto na ilha.": {
+    "pt": "Escolha uma peça e coloque direto na ilha.",
+    "en": "Choose a building and place it on the island.",
+    "de": "Wähle ein Bauwerk und setze es auf die Insel."
+  },
+  "Molde morros, praias e enseadas.": {
+    "pt": "Molde morros, praias e enseadas.",
+    "en": "Shape hills, beaches and bays.",
+    "de": "Forme Hügel, Strände und Buchten."
+  },
+  "Libere espaco e receba 75% do custo de volta.": {
+    "pt": "Libere espaço e receba 75% do custo de volta.",
+    "en": "Clear space and get 75% of the cost back.",
+    "de": "Schaffe Platz und erhalte 75% der Kosten zurück."
+  },
+  "Desfaca uma construcao, remocao ou gesto inteiro.": {
+    "pt": "Desfaça uma construção, remoção ou gesto inteiro.",
+    "en": "Undo a build, removal or entire gesture.",
+    "de": "Mache einen Bau, Abriss oder eine ganze Geste rückgängig."
+  },
+  "Autorize bairros; moradores chegam e constroem.": {
+    "pt": "Autorize bairros; moradores chegam e constroem.",
+    "en": "Zone neighborhoods; residents arrive and build.",
+    "de": "Weise Bauzonen aus. Menschen ziehen ein und bauen."
+  },
+  "Apagar zona": {
+    "pt": "Apagar zona",
+    "en": "Clear zone",
+    "de": "Zone löschen"
+  },
+  "Casas: acesso, energia e lojas sustentam novos moradores.": {
+    "pt": "Casas: acesso, energia e lojas sustentam novos moradores.",
+    "en": "Homes need road access, power and shops to attract residents.",
+    "de": "Häuser brauchen Wege, Strom und Läden für neue Bewohner."
+  },
+  "Lojas: atendem moradores e permitem mais casas.": {
+    "pt": "Lojas: atendem moradores e permitem mais casas.",
+    "en": "Shops serve residents and make room for more homes.",
+    "de": "Läden versorgen die Menschen und ermöglichen mehr Häuser."
+  },
+  "Clinicas: lotes 2x1 para moradores sem cobertura.": {
+    "pt": "Clínicas: lotes 2×1 para moradores sem cobertura.",
+    "en": "Clinics: 2×1 plots for residents without care.",
+    "de": "Kliniken: 2×1 Felder für Menschen ohne Versorgung."
+  },
+  "Retira autorizacao e cancela obras; nao demole edificios.": {
+    "pt": "Retira a zona e cancela obras; não demole edifícios.",
+    "en": "Clears zoning and cancels projects; keeps finished buildings.",
+    "de": "Löscht Zonen und stoppt Bauarbeiten; fertige Gebäude bleiben."
+  },
+  "pequeno": {
+    "pt": "pequeno",
+    "en": "small",
+    "de": "klein"
+  },
+  "medio": {
+    "pt": "médio",
+    "en": "medium",
+    "de": "mittel"
+  },
+  "grande": {
+    "pt": "grande",
+    "en": "large",
+    "de": "groß"
+  },
+  "Explore a ilha": {
+    "pt": "Explore a ilha",
+    "en": "Explore the island",
+    "de": "Insel erkunden"
+  },
+  "Elevar terreno": {
+    "pt": "Elevar terreno",
+    "en": "Raise terrain",
+    "de": "Gelände anheben"
+  },
+  "Baixar terreno": {
+    "pt": "Baixar terreno",
+    "en": "Lower terrain",
+    "de": "Gelände senken"
+  },
+  "Nivelar terreno": {
+    "pt": "Nivelar terreno",
+    "en": "Level terrain",
+    "de": "Gelände einebnen"
+  },
+  "Distorcer a costa": {
+    "pt": "Distorcer a costa",
+    "en": "Pull the coast",
+    "de": "Küste verformen"
+  },
+  "Remover construcao": {
+    "pt": "Remover construção",
+    "en": "Remove a building",
+    "de": "Bauwerk entfernen"
+  },
+  "Zonear bairro": {
+    "pt": "Zonear bairro",
+    "en": "Zone a neighborhood",
+    "de": "Bauzone ausweisen"
+  },
+  "Continuar": {
+    "pt": "Continuar",
+    "en": "Continue",
+    "de": "Fortsetzen"
+  },
+  "Nova ilha": {
+    "pt": "Nova ilha",
+    "en": "New island",
+    "de": "Neue Insel"
+  },
+  "Como jogar": {
+    "pt": "Como jogar",
+    "en": "How to play",
+    "de": "Spielanleitung"
+  },
+  "Ajustes": {
+    "pt": "Ajustes",
+    "en": "Settings",
+    "de": "Einstellungen"
+  },
+  "Continuar jogando": {
+    "pt": "Continuar jogando",
+    "en": "Keep playing",
+    "de": "Weiterspielen"
+  },
+  "Salvar a ilha": {
+    "pt": "Salvar a ilha",
+    "en": "Save island",
+    "de": "Insel speichern"
+  },
+  "Diario da ilha": {
+    "pt": "Diário da ilha",
+    "en": "Island journal",
+    "de": "Inseltagebuch"
+  },
+  "Contemplar a ilha": {
+    "pt": "Contemplar a ilha",
+    "en": "Enjoy the view",
+    "de": "Insel betrachten"
+  },
+  "Salvar e ir ao inicio": {
+    "pt": "Salvar e ir ao início",
+    "en": "Save and return to title",
+    "de": "Speichern und zum Titel"
+  },
+  "Trocar via": {
+    "pt": "Trocar via",
+    "en": "Change road",
+    "de": "Weg wechseln"
+  },
+  "Concluir": {
+    "pt": "Concluir",
+    "en": "Done",
+    "de": "Fertig"
+  },
+  "Girar peca": {
+    "pt": "Girar peça",
+    "en": "Rotate",
+    "de": "Drehen"
+  },
+  "Trocar peca": {
+    "pt": "Trocar peça",
+    "en": "Change building",
+    "de": "Bauwerk wechseln"
+  },
+  "Trocar uso": {
+    "pt": "Trocar uso",
+    "en": "Change zone",
+    "de": "Nutzung ändern"
+  },
+  "Pincel": {
+    "pt": "Pincel",
+    "en": "Brush",
+    "de": "Pinsel"
+  },
+  "Trocar ferramenta": {
+    "pt": "Trocar ferramenta",
+    "en": "Change tool",
+    "de": "Werkzeug wechseln"
+  },
+  "Sons curtos ao navegar e construir.": {
+    "pt": "Sons curtos ao navegar e construir.",
+    "en": "Soft sounds for menus and building.",
+    "de": "Kurze Töne beim Wählen und Bauen."
+  },
+  "Reduz ondas, passaros e animacoes.": {
+    "pt": "Reduz ondas, pássaros e animações.",
+    "en": "Reduces waves, birds and animations.",
+    "de": "Weniger Wellen, Vögel und Animationen."
+  },
+  "Ajusta vegetacao e custo das sombras.": {
+    "pt": "Ajusta vegetação e custo das sombras.",
+    "en": "Adjusts plants and shadow detail.",
+    "de": "Passt Pflanzen und Schattendetails an."
+  },
+  "Pixels inteiros nas duas distancias.": {
+    "pt": "Pixels inteiros nas duas distâncias.",
+    "en": "Crisp pixels at both distances.",
+    "de": "Klare Pixel in beiden Ansichten."
+  },
+  "Escolha um momento do dia.": {
+    "pt": "Escolha um momento do dia.",
+    "en": "Choose a time of day.",
+    "de": "Wähle eine Tageszeit."
+  },
+  "Escolha Portugues, English ou Deutsch. A troca e imediata.": {
+    "pt": "Português, English ou Deutsch. A troca é imediata.",
+    "en": "Português, English or Deutsch. Changes apply now.",
+    "de": "Português, English oder Deutsch. Sofort wirksam."
+  },
+  "Salva as preferencias neste dispositivo.": {
+    "pt": "Salva as preferências neste dispositivo.",
+    "en": "Saves preferences on this device.",
+    "de": "Speichert Optionen auf diesem Gerät."
+  },
+  "Português": {
+    "pt": "Português",
+    "en": "Português",
+    "de": "Português"
+  },
+  "English": {
+    "pt": "English",
+    "en": "English",
+    "de": "English"
+  },
+  "Deutsch": {
+    "pt": "Deutsch",
+    "en": "Deutsch",
+    "de": "Deutsch"
+  },
+  "Ilha salva. Pode voltar quando quiser.": {
+    "pt": "Ilha salva. Pode voltar quando quiser.",
+    "en": "Island saved. Come back whenever you like.",
+    "de": "Insel gespeichert. Komm jederzeit wieder."
+  },
+  "Nao foi possivel salvar neste dispositivo.": {
+    "pt": "Não foi possível salvar neste dispositivo.",
+    "en": "Could not save on this device.",
+    "de": "Speichern auf diesem Gerät nicht möglich."
+  },
+  "MARE": {
+    "pt": "MARÉ",
+    "en": "MARÉ",
+    "de": "MARÉ"
+  },
+  "Seu mundo, no seu ritmo.": {
+    "pt": "Seu mundo, no seu ritmo.",
+    "en": "Your world, your pace.",
+    "de": "Deine Welt, dein Tempo."
+  },
+  "SETAS escolher   OK entrar": {
+    "pt": "SETAS escolher   OK entrar",
+    "en": "ARROWS choose   OK open",
+    "de": "PFEILE wählen   OK öffnen"
+  },
+  "MAR ABERTO": {
+    "pt": "MAR ABERTO",
+    "en": "OPEN SEA",
+    "de": "OFFENES MEER"
+  },
+  "DIA %d": {
+    "pt": "DIA %d",
+    "en": "DAY %d",
+    "de": "TAG %d"
+  },
+  "Modo livre": {
+    "pt": "Modo livre",
+    "en": "Free play",
+    "de": "Freispiel"
+  },
+  "Jornada": {
+    "pt": "Jornada",
+    "en": "Journey",
+    "de": "Reise"
+  },
+  "Livre": {
+    "pt": "Livre",
+    "en": "Free",
+    "de": "Frei"
+  },
+  "moedas": {
+    "pt": "moedas",
+    "en": "coins",
+    "de": "Münzen"
+  },
+  "moradores": {
+    "pt": "moradores",
+    "en": "residents",
+    "de": "Einwohner"
+  },
+  "%d / %d": {
+    "pt": "%d / %d",
+    "en": "%d / %d",
+    "de": "%d / %d"
+  },
+  "energia": {
+    "pt": "energia",
+    "en": "power",
+    "de": "Strom"
+  },
+  "%d%%": {
+    "pt": "%d%%",
+    "en": "%d%%",
+    "de": "%d %%"
+  },
+  "felicidade": {
+    "pt": "felicidade",
+    "en": "happiness",
+    "de": "Zufriedenheit"
+  },
+  "Nivelar: altura do mar": {
+    "pt": "Nivelar: altura do mar",
+    "en": "Level: sea level",
+    "de": "Einebnen: Meereshöhe"
+  },
+  "Nivelar: altura %d": {
+    "pt": "Nivelar: altura %d",
+    "en": "Level: height %d",
+    "de": "Einebnen: Höhe %d"
+  },
+  "SETAS explorar    OK criar    VOLTAR pausa": {
+    "pt": "SETAS explorar    OK criar    VOLTAR pausa",
+    "en": "ARROWS explore    OK create    BACK pause",
+    "de": "PFEILE erkunden    OK bauen    ZURÜCK Pause"
+  },
+  "OK construir  /  Custo: %d  /  VOLTAR opcoes": {
+    "pt": "OK construir  /  Custo: %d  /  VOLTAR opções",
+    "en": "OK build  /  Cost: %d  /  BACK options",
+    "de": "OK bauen  /  Kosten: %d  /  ZURÜCK Optionen"
+  },
+  "%s  /  VOLTAR opcoes": {
+    "pt": "%s  /  VOLTAR opções",
+    "en": "%s  /  BACK options",
+    "de": "%s  /  ZURÜCK Optionen"
+  },
+  "SETAS tracar    OK terminar    VOLTAR cancelar": {
+    "pt": "SETAS traçar    OK terminar    VOLTAR cancelar",
+    "en": "ARROWS draw    OK finish    BACK cancel",
+    "de": "PFEILE zeichnen    OK fertig    ZURÜCK abbrechen"
+  },
+  "OK comecar via    VOLTAR opcoes": {
+    "pt": "OK começar via    VOLTAR opções",
+    "en": "OK start road    BACK options",
+    "de": "OK Weg beginnen    ZURÜCK Optionen"
+  },
+  "SETAS pintar    OK confirmar zona    VOLTAR cancelar": {
+    "pt": "SETAS pintar    OK confirmar zona    VOLTAR cancelar",
+    "en": "ARROWS paint    OK confirm zone    BACK cancel",
+    "de": "PFEILE malen    OK Zone bestätigen    ZURÜCK abbrechen"
+  },
+  "OK comecar zona    VOLTAR escolher uso": {
+    "pt": "OK começar zona    VOLTAR escolher uso",
+    "en": "OK start zone    BACK choose use",
+    "de": "OK Zone beginnen    ZURÜCK Nutzung wählen"
+  },
+  "Sem acesso: construcao inativa    OK criar    VOLTAR pausa": {
+    "pt": "Sem acesso: construção inativa    OK criar    VOLTAR pausa",
+    "en": "No road: building inactive    OK create    BACK pause",
+    "de": "Ohne Weg: Bau inaktiv    OK bauen    ZURÜCK Pause"
+  },
+  "Com acesso    OK criar    VOLTAR pausa": {
+    "pt": "Com acesso    OK criar    VOLTAR pausa",
+    "en": "Road connected    OK create    BACK pause",
+    "de": "Weganschluss vorhanden    OK bauen    ZURÜCK Pause"
+  },
+  "%s  /  %d%%": {
+    "pt": "%s  /  %d%%",
+    "en": "%s  /  %d%%",
+    "de": "%s  /  %d %%"
+  },
+  "Autorize o lote inteiro: clinicas precisam de 2x1": {
+    "pt": "Autorize o lote inteiro: clínicas precisam de 2×1",
+    "en": "Zone the whole plot: clinics need 2×1",
+    "de": "Weise das ganze Grundstück aus: Kliniken brauchen 2×1"
+  },
+  "Aguardando uma das quatro equipes de obra": {
+    "pt": "Aguardando uma das quatro equipes de obra",
+    "en": "Waiting for one of the four building crews",
+    "de": "Wartet auf eines der vier Bauteams"
+  },
+  "Zona autorizada: aguardando ocupacao": {
+    "pt": "Zona autorizada: aguardando ocupação",
+    "en": "Zone ready: waiting for residents",
+    "de": "Zone bereit: wartet auf Einzug"
+  },
+  "SETAS puxar    OK soltar    VOLTAR cancelar": {
+    "pt": "SETAS puxar    OK soltar    VOLTAR cancelar",
+    "en": "ARROWS pull    OK release    BACK cancel",
+    "de": "PFEILE ziehen    OK loslassen    ZURÜCK abbrechen"
+  },
+  "SETAS pintar    OK concluir    VOLTAR cancelar": {
+    "pt": "SETAS pintar    OK concluir    VOLTAR cancelar",
+    "en": "ARROWS paint    OK finish    BACK cancel",
+    "de": "PFEILE malen    OK fertig    ZURÜCK abbrechen"
+  },
+  "OK remover e recuperar 75%    VOLTAR explorar": {
+    "pt": "OK remover e recuperar 75%    VOLTAR explorar",
+    "en": "OK remove and refund 75%    BACK explore",
+    "de": "OK entfernen, 75% zurück    ZURÜCK erkunden"
+  },
+  "OK segurar    Pincel %s    VOLTAR opcoes": {
+    "pt": "OK segurar    Pincel: %s    VOLTAR opções",
+    "en": "OK grab    Brush: %s    BACK options",
+    "de": "OK greifen    Pinsel: %s    ZURÜCK Optionen"
+  },
+  "OK copiar altura    Pincel %s    VOLTAR opcoes": {
+    "pt": "OK copiar altura    Pincel: %s    VOLTAR opções",
+    "en": "OK copy height    Brush: %s    BACK options",
+    "de": "OK Höhe kopieren    Pinsel: %s    ZURÜCK Optionen"
+  },
+  "OK comecar    Pincel %s    VOLTAR opcoes": {
+    "pt": "OK começar    Pincel: %s    VOLTAR opções",
+    "en": "OK start    Brush: %s    BACK options",
+    "de": "OK beginnen    Pinsel: %s    ZURÜCK Optionen"
+  },
+  "%+d / dia": {
+    "pt": "%+d / dia",
+    "en": "%+d / day",
+    "de": "%+d / Tag"
+  },
+  "Sem acesso: ligue uma via ao lado para ativar.": {
+    "pt": "Sem acesso: ligue uma via ao lado para ativar.",
+    "en": "No road access: add a road alongside to activate.",
+    "de": "Ohne Anschluss: Lege zum Aktivieren einen Weg daneben."
+  },
+  "Conquista pronta!": {
+    "pt": "Conquista pronta!",
+    "en": "Milestone ready!",
+    "de": "Meilenstein erreicht!"
+  },
+  "VOLTAR > Diario para receber": {
+    "pt": "VOLTAR > Diário para receber",
+    "en": "BACK > Journal to claim",
+    "de": "ZURÜCK > Tagebuch: abholen"
+  },
+  "%d%%  /  Diario na pausa": {
+    "pt": "%d%%  /  Diário na pausa",
+    "en": "%d%%  /  Journal in pause",
+    "de": "%d %%  /  Tagebuch in Pause"
+  },
+  "Desfazer disponivel: %d acoes. O gesto inteiro volta.": {
+    "pt": "Ações para desfazer: %d. O gesto inteiro volta.",
+    "en": "Undo steps: %d. Each restores the whole gesture.",
+    "de": "Rückgängig: %d. Gilt immer für die ganze Geste."
+  },
+  "Nada para desfazer ainda.": {
+    "pt": "Nada para desfazer ainda.",
+    "en": "Nothing to undo yet.",
+    "de": "Noch nichts rückgängig zu machen."
+  },
+  "O que vamos criar?": {
+    "pt": "O que vamos criar?",
+    "en": "What shall we create?",
+    "de": "Was wollen wir bauen?"
+  },
+  "SETAS escolher    OK usar    VOLTAR explorar": {
+    "pt": "SETAS escolher    OK usar    VOLTAR explorar",
+    "en": "ARROWS choose    OK use    BACK explore",
+    "de": "PFEILE wählen    OK benutzen    ZURÜCK erkunden"
+  },
+  "Moldar a ilha": {
+    "pt": "Moldar a ilha",
+    "en": "Shape the island",
+    "de": "Insel formen"
+  },
+  "SETAS escolher    OK usar    VOLTAR ferramentas": {
+    "pt": "SETAS escolher    OK usar    VOLTAR ferramentas",
+    "en": "ARROWS choose    OK use    BACK tools",
+    "de": "PFEILE wählen    OK benutzen    ZURÜCK Werkzeuge"
+  },
+  "Crescer em bairros": {
+    "pt": "Crescer em bairros",
+    "en": "Grow neighborhoods",
+    "de": "Viertel wachsen lassen"
+  },
+  "Cada tracado pode ser desfeito de uma vez.": {
+    "pt": "Cada traçado pode ser desfeito de uma vez.",
+    "en": "Each road stroke can be undone in one step.",
+    "de": "Jeder gezeichnete Weg lässt sich als Ganzes zurücknehmen."
+  },
+  "OK gira 90 graus e volta para a ilha.": {
+    "pt": "OK gira 90 graus e volta para a ilha.",
+    "en": "OK rotates 90 degrees and returns to the island.",
+    "de": "OK dreht um 90 Grad und kehrt zur Insel zurück."
+  },
+  "Escolha outra peca. A ilha fica como esta.": {
+    "pt": "Escolha outra peça. A ilha fica como está.",
+    "en": "Choose another building. Your island stays as it is.",
+    "de": "Wähle ein anderes Bauwerk. Die Insel bleibt unverändert."
+  },
+  "Volte a explorar a ilha.": {
+    "pt": "Volte a explorar a ilha.",
+    "en": "Go back to exploring the island.",
+    "de": "Erkunde die Insel weiter."
+  },
+  "Pincel: %s": {
+    "pt": "Pincel: %s",
+    "en": "Brush: %s",
+    "de": "Pinsel: %s"
+  },
+  "OK muda o tamanho. A terra leva as construcoes junto.": {
+    "pt": "OK muda o tamanho. A terra leva as construções junto.",
+    "en": "OK changes brush size. Buildings move with the land.",
+    "de": "OK ändert die Pinselgröße. Gebäude folgen dem Gelände."
+  },
+  "Troque entre elevar, baixar, nivelar e distorcer.": {
+    "pt": "Troque entre elevar, baixar, nivelar e distorcer.",
+    "en": "Switch between raising, lowering, leveling and pulling.",
+    "de": "Wechsle zwischen Anheben, Senken, Einebnen und Verformen."
+  },
+  "Escolha o que vai fazer parte da sua ilha.": {
+    "pt": "Escolha o que vai fazer parte da sua ilha.",
+    "en": "Choose what belongs on your island.",
+    "de": "Wähle, was zu deiner Insel gehört."
+  },
+  "%d  /  %dx%d": {
+    "pt": "%d  /  %d×%d",
+    "en": "%d  /  %d×%d",
+    "de": "%d  /  %d×%d"
+  },
+  "SELECIONADO": {
+    "pt": "SELECIONADO",
+    "en": "SELECTED",
+    "de": "AUSWAHL"
+  },
+  "%d x %d terrenos": {
+    "pt": "Área: %d × %d",
+    "en": "Footprint: %d × %d",
+    "de": "Grundfläche: %d × %d"
+  },
+  "Custo: %d moedas": {
+    "pt": "Custo em moedas: %d",
+    "en": "Coin cost: %d",
+    "de": "Münzkosten: %d"
+  },
+  "%d moedas / dia": {
+    "pt": "Moedas por dia: %d",
+    "en": "Coins per day: %d",
+    "de": "Münzen pro Tag: %d"
+  },
+  "ESQUERDA / DIREITA categorias    OK ver construcoes    VOLTAR": {
+    "pt": "ESQ. / DIR. categorias    OK ver construções    VOLTAR",
+    "en": "LEFT / RIGHT categories    OK see buildings    BACK",
+    "de": "LINKS / RECHTS Kategorien    OK Bauwerke    ZURÜCK"
+  },
+  "SETAS escolher    CIMA categorias    OK colocar    VOLTAR": {
+    "pt": "SETAS escolher    CIMA categorias    OK colocar    VOLTAR",
+    "en": "ARROWS choose    UP categories    OK place    BACK",
+    "de": "PFEILE wählen    OBEN Kategorien    OK platzieren    ZURÜCK"
+  },
+  "Um respiro": {
+    "pt": "Um respiro",
+    "en": "Take a breath",
+    "de": "Kurz durchatmen"
+  },
+  "Sua ilha fica guardada enquanto voce faz uma pausa.": {
+    "pt": "Sua ilha fica guardada enquanto você faz uma pausa.",
+    "en": "Your island waits safely while you take a break.",
+    "de": "Deine Insel wartet, während du eine Pause machst."
+  },
+  "ILHA %d": {
+    "pt": "ILHA %d",
+    "en": "ISLAND %d",
+    "de": "INSEL %d"
+  },
+  "Dia %d  /  Moradores: %d": {
+    "pt": "Dia %d  /  Moradores: %d",
+    "en": "Day %d  /  Residents: %d",
+    "de": "Tag %d  /  Einwohner: %d"
+  },
+  "SETAS escolher    OK confirmar    VOLTAR continuar": {
+    "pt": "SETAS escolher    OK confirmar    VOLTAR continuar",
+    "en": "ARROWS choose    OK confirm    BACK resume",
+    "de": "PFEILE wählen    OK bestätigen    ZURÜCK weiter"
+  },
+  "Deixe a ilha confortavel para voce.": {
+    "pt": "Deixe a ilha confortável para você.",
+    "en": "Make the island feel right for you.",
+    "de": "Richte die Insel so ein, wie es dir gefällt."
+  },
+  "Som: ligado": {
+    "pt": "Som: ligado",
+    "en": "Sound: on",
+    "de": "Ton: an"
+  },
+  "Som: desligado": {
+    "pt": "Som: desligado",
+    "en": "Sound: off",
+    "de": "Ton: aus"
+  },
+  "Movimento: ligado": {
+    "pt": "Movimento: ligado",
+    "en": "Motion: on",
+    "de": "Bewegung: an"
+  },
+  "Movimento: reduzido": {
+    "pt": "Movimento: reduzido",
+    "en": "Motion: reduced",
+    "de": "Bewegung: reduziert"
+  },
+  "Detalhes: completos": {
+    "pt": "Detalhes: completos",
+    "en": "Details: full",
+    "de": "Details: voll"
+  },
+  "Detalhes: economicos": {
+    "pt": "Detalhes: econômicos",
+    "en": "Details: low",
+    "de": "Details: sparsam"
+  },
+  "Zoom: %dx": {
+    "pt": "Zoom: %d×",
+    "en": "Zoom: %d×",
+    "de": "Zoom: %d×"
+  },
+  "Luz: %s": {
+    "pt": "Luz: %s",
+    "en": "Light: %s",
+    "de": "Licht: %s"
+  },
+  "Idioma: %s": {
+    "pt": "Idioma: %s",
+    "en": "Language: %s",
+    "de": "Sprache: %s"
+  },
+  "Ciclo natural": {
+    "pt": "Ciclo natural",
+    "en": "Day cycle",
+    "de": "Tageszyklus"
+  },
+  "Manha": {
+    "pt": "Manhã",
+    "en": "Morning",
+    "de": "Morgen"
+  },
+  "Golden hour": {
+    "pt": "Pôr do sol",
+    "en": "Golden hour",
+    "de": "Abendgold"
+  },
+  "Noite": {
+    "pt": "Noite",
+    "en": "Night",
+    "de": "Nacht"
+  },
+  "Manha, por do sol e luzes da noite.": {
+    "pt": "Manhã, pôr do sol e luzes da noite.",
+    "en": "Morning, sunset and glowing nights.",
+    "de": "Morgen, Abendrot und Nachtlichter."
+  },
+  "SETAS escolher    OK alterar    VOLTAR concluir": {
+    "pt": "SETAS escolher    OK alterar    VOLTAR concluir",
+    "en": "ARROWS choose    OK change    BACK done",
+    "de": "PFEILE wählen    OK ändern    ZURÜCK fertig"
+  },
+  "Sua ilha, seu ritmo": {
+    "pt": "Sua ilha, seu ritmo",
+    "en": "Your island, your pace",
+    "de": "Deine Insel, dein Tempo"
+  },
+  "Setas movem o cursor pelas diagonais da ilha.": {
+    "pt": "Setas movem o cursor pelas diagonais da ilha.",
+    "en": "Arrows move the cursor along the island diagonals.",
+    "de": "Pfeile bewegen den Cursor entlang der Inseldiagonalen."
+  },
+  "OK abre as ferramentas durante a exploracao.": {
+    "pt": "OK abre as ferramentas durante a exploração.",
+    "en": "OK opens tools while you explore.",
+    "de": "Beim Erkunden öffnet OK die Werkzeuge."
+  },
+  "Voltar cancela gestos ou abre opcoes da peca.": {
+    "pt": "Voltar cancela gestos ou abre opções da peça.",
+    "en": "Back cancels a gesture or opens building options.",
+    "de": "Zurück bricht Gesten ab oder öffnet Bauoptionen."
+  },
+  "Ao explorar, Voltar abre a pausa e o diario.": {
+    "pt": "Ao explorar, Voltar abre a pausa e o diário.",
+    "en": "While exploring, Back opens pause and the journal.",
+    "de": "Beim Erkunden öffnet Zurück Pause und Tagebuch."
+  },
+  "Moldar a terra": {
+    "pt": "Moldar a terra",
+    "en": "Shape the land",
+    "de": "Gelände formen"
+  },
+  "Elevar e Baixar: OK, setas para pintar, OK.": {
+    "pt": "Elevar e Baixar: OK, setas para pintar, OK.",
+    "en": "Raise and Lower: OK, arrows to paint, then OK.",
+    "de": "Anheben und Senken: OK, mit Pfeilen malen, dann OK."
+  },
+  "Nivelar: OK copia a altura; setas pintam nela.": {
+    "pt": "Nivelar: OK copia a altura; setas pintam nela.",
+    "en": "Level: OK copies a height; arrows paint at that height.",
+    "de": "Einebnen: OK kopiert die Höhe; Pfeile malen auf dieser Höhe."
+  },
+  "Distorcer: OK segura; setas puxam; OK solta.": {
+    "pt": "Distorcer: OK segura; setas puxam; OK solta.",
+    "en": "Pull coast: OK grabs; arrows pull; OK releases.",
+    "de": "Verformen: OK greift; Pfeile ziehen; OK lässt los."
+  },
+  "Casas sobem e descem; vias ganham rampas.": {
+    "pt": "Casas sobem e descem; vias ganham rampas.",
+    "en": "Homes rise and fall; roads gain ramps.",
+    "de": "Häuser steigen und sinken; Wege erhalten Rampen."
+  },
+  "Fazer a ilha crescer": {
+    "pt": "Fazer a ilha crescer",
+    "en": "Help the island grow",
+    "de": "Die Insel wachsen lassen"
+  },
+  "Casas, lojas e servicos precisam de via ao lado.": {
+    "pt": "Casas, lojas e serviços precisam de via ao lado.",
+    "en": "Homes, shops and services need a road alongside.",
+    "de": "Häuser, Läden und Dienste brauchen einen Weg daneben."
+  },
+  "Geradores e usinas tambem precisam de acesso.": {
+    "pt": "Geradores e usinas também precisam de acesso.",
+    "en": "Generators and power plants need road access too.",
+    "de": "Auch Generatoren und Kraftwerke brauchen einen Weg."
+  },
+  "Sem via, a construcao fica inativa.": {
+    "pt": "Sem via, a construção fica inativa.",
+    "en": "Without a road, a building stays inactive.",
+    "de": "Ohne Weg bleibt ein Gebäude inaktiv."
+  },
+  "Com acesso, energia e servicos atendem a ilha.": {
+    "pt": "Com acesso, energia e serviços atendem a ilha.",
+    "en": "With road access, power and services reach the island.",
+    "de": "Mit Weganschluss versorgen Strom und Dienste die Insel."
+  },
+  "Experimentar": {
+    "pt": "Experimentar",
+    "en": "Try things out",
+    "de": "Ausprobieren"
+  },
+  "Um dia passa a cada 12 segundos de partida.": {
+    "pt": "Um dia passa a cada 12 segundos de partida.",
+    "en": "One day passes every 12 seconds of play.",
+    "de": "Ein Tag dauert 12 Sekunden Spielzeit."
+  },
+  "Troque o piso de vias pagando a diferenca.": {
+    "pt": "Troque o piso de vias pagando a diferença.",
+    "en": "Change road surfaces by paying the difference.",
+    "de": "Wechsle den Wegbelag und zahle nur den Aufpreis."
+  },
+  "Remover devolve 75%; Desfazer recupera tudo.": {
+    "pt": "Remover devolve 75%; Desfazer recupera tudo.",
+    "en": "Remove refunds 75%; Undo restores everything.",
+    "de": "Entfernen gibt 75% zurück; Rückgängig stellt alles wieder her."
+  },
+  "No modo livre, construa sem limite de moedas.": {
+    "pt": "No modo livre, construa sem limite de moedas.",
+    "en": "In free play, build without a coin limit.",
+    "de": "Im freien Spiel baust du ohne Münzlimit."
+  },
+  "Pontes e praias": {
+    "pt": "Pontes e praias",
+    "en": "Bridges and beaches",
+    "de": "Brücken und Strände"
+  },
+  "Pontes ocupam agua ou margens na altura 1.": {
+    "pt": "Pontes ocupam água ou margens na altura 1.",
+    "en": "Bridges span water or shores at height 1.",
+    "de": "Brücken überspannen Wasser oder Ufer auf Höhe 1."
+  },
+  "Portos e quiosques precisam ficar junto da agua.": {
+    "pt": "Portos e quiosques precisam ficar junto da água.",
+    "en": "Harbors and kiosks need to be beside the water.",
+    "de": "Häfen und Kioske müssen direkt am Wasser stehen."
+  },
+  "Rampas retas aceitam trilhas, passeios e ruas.": {
+    "pt": "Rampas retas aceitam trilhas, passeios e ruas.",
+    "en": "Straight ramps support trails, walkways and streets.",
+    "de": "Gerade Rampen tragen Pfade, Gehwege und Straßen."
+  },
+  "Com via: abrigo tem 2 animais; centro vet., 4.": {
+    "pt": "Com via: abrigo tem 2 animais; centro vet., 4.",
+    "en": "With a road: shelters house 2 animals; vet centers, 4.",
+    "de": "Mit Weg: Tierheim für 2 Tiere; Tierarztzentrum für 4."
+  },
+  "GUIA DE BOLSO  /  %d DE %d": {
+    "pt": "GUIA DE BOLSO  /  %d DE %d",
+    "en": "POCKET GUIDE  /  %d OF %d",
+    "de": "KURZANLEITUNG  /  %d VON %d"
+  },
+  "ESQUERDA / DIREITA  paginas     OK ou VOLTAR  fechar": {
+    "pt": "ESQUERDA / DIREITA páginas    OK ou VOLTAR fechar",
+    "en": "LEFT / RIGHT pages    OK or BACK close",
+    "de": "LINKS / RECHTS Seiten    OK oder ZURÜCK schließen"
+  },
+  "MODO LIVRE  /  Sem limites para experimentar": {
+    "pt": "MODO LIVRE  /  Sem limites para experimentar",
+    "en": "FREE PLAY  /  Endless room to experiment",
+    "de": "FREIES SPIEL  /  Grenzenlos ausprobieren"
+  },
+  "JORNADA  /  Cada conquista abre novas possibilidades": {
+    "pt": "JORNADA  /  Cada conquista abre novas possibilidades",
+    "en": "JOURNEY  /  Each milestone opens new possibilities",
+    "de": "REISE  /  Jeder Meilenstein eröffnet neue Möglichkeiten"
+  },
+  "A ilha e toda sua.": {
+    "pt": "A ilha é toda sua.",
+    "en": "The island is all yours.",
+    "de": "Die Insel gehört dir."
+  },
+  "Todas as conquistas foram completadas.": {
+    "pt": "Todas as conquistas foram completadas.",
+    "en": "You have reached every milestone.",
+    "de": "Alle Meilensteine sind erreicht."
+  },
+  "Continue criando, sem um fim obrigatorio.": {
+    "pt": "Continue criando, sem um fim obrigatório.",
+    "en": "Keep creating; there is no finish line.",
+    "de": "Baue weiter. Ein Ende ist nicht nötig."
+  },
+  "Recompensa: %d moedas": {
+    "pt": "Recompensa em moedas: %d",
+    "en": "Coin reward: %d",
+    "de": "Münzbonus: %d"
+  },
+  "Receber conquista": {
+    "pt": "Receber conquista",
+    "en": "Claim milestone",
+    "de": "Belohnung abholen"
+  },
+  "Continuar explorando": {
+    "pt": "Continuar explorando",
+    "en": "Keep exploring",
+    "de": "Weiter erkunden"
+  },
+  "Conquistas: %d / 5": {
+    "pt": "Conquistas: %d / 5",
+    "en": "Milestones: %d / 5",
+    "de": "Meilensteine: %d / 5"
+  },
+  "Animais: %d    Pracas: %d    Lojas: %d": {
+    "pt": "Animais: %d    Praças: %d    Lojas: %d",
+    "en": "Animals: %d    Plazas: %d    Shops: %d",
+    "de": "Tiere: %d    Plätze: %d    Läden: %d"
+  },
+  "A CIDADE EM NUMEROS": {
+    "pt": "A CIDADE EM NÚMEROS",
+    "en": "THE ISLAND IN NUMBERS",
+    "de": "DIE INSEL IN ZAHLEN"
+  },
+  "Receita por dia": {
+    "pt": "Receita por dia",
+    "en": "Daily income",
+    "de": "Tageseinnahmen"
+  },
+  "Manutencao": {
+    "pt": "Manutenção",
+    "en": "Upkeep",
+    "de": "Unterhalt"
+  },
+  "Saldo por dia": {
+    "pt": "Saldo por dia",
+    "en": "Daily balance",
+    "de": "Tagesbilanz"
+  },
+  "Agua / pessoas": {
+    "pt": "Água / pessoas",
+    "en": "Water / residents",
+    "de": "Wasser / Einwohner"
+  },
+  "Saude / pessoas": {
+    "pt": "Saúde / pessoas",
+    "en": "Health / residents",
+    "de": "Medizin / Einwohner"
+  },
+  "Educacao / pessoas": {
+    "pt": "Educação / pessoas",
+    "en": "School / residents",
+    "de": "Bildung / Einwohner"
+  },
+  "OK receber ou explorar    VOLTAR pausa": {
+    "pt": "OK receber ou explorar    VOLTAR pausa",
+    "en": "OK claim or explore    BACK pause",
+    "de": "OK abholen oder erkunden    ZURÜCK Pause"
+  },
+  "Escolha a paisagem e o ritmo da partida.": {
+    "pt": "Escolha a paisagem e o ritmo da partida.",
+    "en": "Choose the landscape and pace of your game.",
+    "de": "Wähle Landschaft und Spieltempo."
+  },
+  "Jornada: construir e prosperar": {
+    "pt": "Jornada: construir e prosperar",
+    "en": "Journey: build and thrive",
+    "de": "Reise: bauen und wachsen"
+  },
+  "Modo livre: criar sem custos": {
+    "pt": "Modo livre: criar sem custos",
+    "en": "Free play: build without costs",
+    "de": "Freies Spiel: ohne Kosten bauen"
+  },
+  "Paisagem: semente %d": {
+    "pt": "Paisagem: semente %d",
+    "en": "Landscape: seed %d",
+    "de": "Landschaft: Startwert %d"
+  },
+  "Arquivo: ilha %d": {
+    "pt": "Arquivo: ilha %d",
+    "en": "Save slot: island %d",
+    "de": "Speicherplatz: Insel %d"
+  },
+  "Criar esta ilha": {
+    "pt": "Criar esta ilha",
+    "en": "Create this island",
+    "de": "Diese Insel erschaffen"
+  },
+  "Sua paisagem": {
+    "pt": "Sua paisagem",
+    "en": "Your landscape",
+    "de": "Deine Landschaft"
+  },
+  "40 construcoes": {
+    "pt": "40 construções",
+    "en": "40 buildings",
+    "de": "40 Bauwerke"
+  },
+  "5 conquistas": {
+    "pt": "5 conquistas",
+    "en": "5 milestones",
+    "de": "5 Meilensteine"
+  },
+  "Espaco para 3 ilhas": {
+    "pt": "Espaço para 3 ilhas",
+    "en": "Room for 3 islands",
+    "de": "Platz für 3 Inseln"
+  },
+  "OK escolher    VOLTAR inicio    Confirme a criacao no final": {
+    "pt": "OK escolher    VOLTAR início    Confirme a criação no final",
+    "en": "OK choose    BACK title    Confirm creation at the end",
+    "de": "OK wählen    ZURÜCK Titel    Zum Schluss Erstellung bestätigen"
+  },
+  "Substituir esta ilha?": {
+    "pt": "Substituir esta ilha?",
+    "en": "Replace this island?",
+    "de": "Diese Insel ersetzen?"
+  },
+  "O arquivo %d ja tem uma ilha salva.": {
+    "pt": "O arquivo %d já tem uma ilha salva.",
+    "en": "Slot %d already holds a saved island.",
+    "de": "Auf Speicherplatz %d liegt bereits eine Insel."
+  },
+  "Seu novo mundo vai ocupar este arquivo.": {
+    "pt": "Seu novo mundo vai ocupar este arquivo.",
+    "en": "Your new world will take this save slot.",
+    "de": "Deine neue Welt wird diesen Speicherplatz belegen."
+  },
+  "Os outros dois arquivos ficam guardados.": {
+    "pt": "Os outros dois arquivos ficam guardados.",
+    "en": "The other two save slots stay untouched.",
+    "de": "Die beiden anderen Speicherplätze bleiben erhalten."
+  },
+  "Escolher outro arquivo": {
+    "pt": "Escolher outro arquivo",
+    "en": "Choose another slot",
+    "de": "Anderen Platz wählen"
+  },
+  "Substituir e criar a nova ilha": {
+    "pt": "Substituir e criar nova ilha",
+    "en": "Replace and create new island",
+    "de": "Ersetzen und neue Insel bauen"
+  },
+  "SETAS  escolher     OK  confirmar     VOLTAR  cancelar": {
+    "pt": "SETAS escolher    OK confirmar    VOLTAR cancelar",
+    "en": "ARROWS choose    OK confirm    BACK cancel",
+    "de": "PFEILE wählen    OK bestätigen    ZURÜCK abbrechen"
+  },
+  "Suas ilhas": {
+    "pt": "Suas ilhas",
+    "en": "Your islands",
+    "de": "Deine Inseln"
+  },
+  "Tres pequenos mundos, guardados neste dispositivo.": {
+    "pt": "Três pequenos mundos, guardados neste dispositivo.",
+    "en": "Three little worlds, saved on this device.",
+    "de": "Drei kleine Welten, auf diesem Gerät gespeichert."
+  },
+  "Ilha %d": {
+    "pt": "Ilha %d",
+    "en": "Island %d",
+    "de": "Insel %d"
+  },
+  "Dia %d  /  Moradores: %d  /  %s": {
+    "pt": "Dia %d  /  Moradores: %d  /  %s",
+    "en": "Day %d  /  Residents: %d  /  %s",
+    "de": "Tag %d  /  Einwohner: %d  /  %s"
+  },
+  "Arquivo invalido. Escolha outra ilha.": {
+    "pt": "Arquivo inválido. Escolha outra ilha.",
+    "en": "Invalid save. Choose another island.",
+    "de": "Ungültiger Spielstand. Wähle eine andere Insel."
+  },
+  "Este arquivo esta vazio": {
+    "pt": "Este arquivo está vazio",
+    "en": "This slot is empty",
+    "de": "Dieser Speicherplatz ist leer"
+  },
+  "SETAS  escolher     OK  continuar     VOLTAR  inicio": {
+    "pt": "SETAS escolher    OK continuar    VOLTAR início",
+    "en": "ARROWS choose    OK continue    BACK title",
+    "de": "PFEILE wählen    OK fortsetzen    ZURÜCK Titel"
+  },
+  "Bem-vindo a sua ilha! OK abre as ferramentas.": {
+    "pt": "Bem-vindo à sua ilha! OK abre as ferramentas.",
+    "en": "Welcome to your island! OK opens the tools.",
+    "de": "Willkommen auf deiner Insel! OK öffnet die Werkzeuge."
+  },
+  "Nenhuma alteracao neste gesto.": {
+    "pt": "Nenhuma alteração neste gesto.",
+    "en": "This gesture made no changes.",
+    "de": "Diese Geste hat nichts verändert."
+  },
+  "Gesto parcial: %s": {
+    "pt": "Gesto parcial: %s",
+    "en": "Gesture partly applied: %s",
+    "de": "Geste teilweise ausgeführt: %s"
+  },
+  "Gesto cancelado.": {
+    "pt": "Gesto cancelado.",
+    "en": "Gesture canceled.",
+    "de": "Geste abgebrochen."
+  },
+  "Via pronta.": {
+    "pt": "Via pronta.",
+    "en": "Road ready.",
+    "de": "Weg fertig."
+  },
+  "%s: pronta. Ligue uma via ao lado para ativar.": {
+    "pt": "Construção pronta: %s. Ligue uma via ao lado para ativar.",
+    "en": "%s is ready. Add a road alongside to activate it.",
+    "de": "%s ist fertig. Lege zum Aktivieren einen Weg daneben."
+  },
+  "Zona confirmada. Acompanhe as obras.": {
+    "pt": "Zona confirmada. Acompanhe as obras.",
+    "en": "Zone confirmed. Watch construction begin.",
+    "de": "Zone bestätigt. Verfolge die Bauarbeiten."
+  },
+  "Zona removida. Construcoes prontas foram mantidas.": {
+    "pt": "Zona removida. Construções prontas foram mantidas.",
+    "en": "Zone removed. Completed buildings were kept.",
+    "de": "Zone entfernt. Fertige Gebäude bleiben erhalten."
+  },
+  "Costa redesenhada.": {
+    "pt": "Costa redesenhada.",
+    "en": "Coast reshaped.",
+    "de": "Küste neu geformt."
+  },
+  "Relevo e construcoes ajustados.": {
+    "pt": "Relevo e construções ajustados.",
+    "en": "Terrain and buildings adjusted.",
+    "de": "Gelände und Gebäude angepasst."
+  },
+  "Conquista recebida! Sua ilha esta crescendo.": {
+    "pt": "Conquista recebida! Sua ilha está crescendo.",
+    "en": "Milestone claimed! Your island is growing.",
+    "de": "Belohnung abgeholt! Deine Insel wächst."
+  },
+  "Este arquivo nao tem uma ilha valida.": {
+    "pt": "Este arquivo não tem uma ilha válida.",
+    "en": "There is no valid island in this slot.",
+    "de": "Dieser Speicherplatz enthält keine gültige Insel."
+  },
+  "%s: obra concluida!": {
+    "pt": "%s: obra concluída!",
+    "en": "%s: construction complete!",
+    "de": "%s: Bau abgeschlossen!"
+  },
+  "Obra cancelada. Saldo nao gasto devolvido.": {
+    "pt": "Obra cancelada. Saldo não gasto devolvido.",
+    "en": "Construction canceled. Unspent funds returned.",
+    "de": "Bau abgebrochen. Restbudget zurückgezahlt."
+  },
+  "OK mudar a luz   VOLTAR continuar": {
+    "pt": "OK mudar a luz   VOLTAR continuar",
+    "en": "OK change light   BACK resume",
+    "de": "OK Licht ändern   ZURÜCK weiter"
+  }
+}

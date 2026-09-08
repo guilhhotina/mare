@@ -43,29 +43,33 @@ def build(destination):
     fonts = json.loads((ROOT / 'web/typefaces.json').read_text())
     glyph_atlas = Image.open(ROOT / 'web/typefaces.png').convert('RGBA')
     with (destination / 'pixels.bin').open('wb') as binary:
-        def store(image):
-            offset = binary.tell()
-            encoded = encode_runs(image)
-            binary.write(encoded)
-            return {'w': image.width, 'h': image.height, 'offset': offset, 'length': len(encoded)}
+        stored = {}
+        def store(source, rectangle):
+            key = (id(source), rectangle)
+            if key not in stored:
+                image = source.crop(rectangle)
+                offset = binary.tell()
+                encoded = encode_runs(image)
+                binary.write(encoded)
+                stored[key] = {'w': image.width, 'h': image.height, 'offset': offset, 'length': len(encoded)}
+            return stored[key].copy()
 
         for key, meta in entries.items():
             x, y, w, h = (meta[k] for k in ('x', 'y', 'w', 'h'))
-            image = atlas.crop((x, y, x + w, y + h))
-            meta.update(store(image))
+            meta.update(store(atlas, (x, y, x + w, y + h)))
             if key.startswith('ui_') and w <= 32 and h <= 32:
-                meta['skin'] = store(atlas.crop((x, y, x + 32, y + 32)))
+                meta['skin'] = store(atlas, (x, y, x + 32, y + 32))
             del meta['x'], meta['y']
         for font in fonts.values():
             for char, metrics in font.items():
                 x, y, w, h, advance, ox, oy = metrics
-                image = glyph_atlas.crop((x, y, x + w, y + h))
-                glyph = store(image)
+                glyph = store(glyph_atlas, (x, y, x + w, y + h))
                 glyph.update(advance=advance, ox=ox, oy=oy)
                 font[char] = glyph
     (destination / 'sprites.lua').write_text('return ' + lua(entries) + '\n')
     (destination / 'fonts.lua').write_text('return ' + lua(fonts) + '\n')
     (destination / 'shadow-shapes.bin').write_bytes((ROOT / 'assets/shadow-shapes.bin').read_bytes())
+    (destination / 'depths.bin').write_bytes((ROOT / 'assets/depths.bin').read_bytes())
     for kind, (frequency, end_frequency, duration, gain) in enumerate(((520, 390, .045, .013), (620, 820, .12, .03), (180, 120, .12, .03))):
         rate = 22050
         phase = 0.0

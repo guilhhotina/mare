@@ -50,7 +50,7 @@ for k=1,576 do sandbox.bid[k]=0 end
 World.rebuild(sandbox)
 check(World.build(sandbox,16,5,5,0),'sandbox unlimited')
 local saved=World.encode(sandbox)
-local corrupt=saved:gsub('MARE2','MARE3',1)
+local corrupt=saved:gsub('^MARE%d+','MARE999',1)
 check(World.decode(corrupt)==nil,'save version rejected')
 print('PASS '..tests..' assertions; '..count..' building/rotation combinations; save, terrain, undo, economy.')
 
@@ -86,7 +86,10 @@ end
 check(not World.claim(p),'completed journey gives no repeated rewards')
 local legacy=World.decode(legacy_save)
 check(legacy~=nil and legacy.population==8,'Original v0.1 world loads with original residents')
-check(World.encode(legacy)==legacy_save,'Original saved terrain and buildings remain byte-exact')
+local migrated=World.decode(World.encode(legacy))
+check(migrated~=nil and migrated.cash==legacy.cash and migrated.day==legacy.day,'Migration preserves economy')
+for k=1,625 do check(migrated.h[k]==legacy.h[k],'Migration preserves terrain') end
+for k=1,576 do check(migrated.bid[k]==legacy.bid[k] and migrated.rot[k]==legacy.rot[k] and migrated.zones[k]==0,'Migration preserves buildings without inventing authorization') end
 local road=World.new(87,false)
 for i=1,625 do road.h[i]=1 end
 for i=1,576 do road.bid[i]=0;road.deco[i]=0 end

@@ -1,3 +1,4 @@
+local camera={}
 return {
     text = mare_text,
     text_width = mare_text_width,
@@ -7,11 +8,18 @@ return {
     load = mare_load,
     backup = mare_backup,
     save = mare_save,
-    cache_begin = mare_cache_begin,
+    cache_begin = function(csv,cx,cy,zoom,ox,oy,...)
+        camera.cx,camera.cy,camera.zoom,camera.ox,camera.oy=cx,cy,zoom,ox,oy
+        return mare_cache_begin(csv,cx,cy,zoom,ox,oy,...)
+    end,
+    camera = function() return camera end,
     cache_end = mare_cache_end,
     scene = mare_scene,
+    depth = mare_depth,
+    actor = mare_actor,
     shadow = mare_shadow,
     ground_light = mare_ground_light,
+    bridge = mare_bridge,
     world = mare_world,
     effects = mare_effects,
     thumb = mare_thumb,

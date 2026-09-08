@@ -1,6 +1,6 @@
 
 
-window.MarePixels=function(canvas,atlas,rects,perf,shapes){
+window.MarePixels=function(canvas,atlas,rects,perf,shapes,depths){
  'use strict';
  var ctx=canvas.getContext('2d',{alpha:false}),W=1280,H=720;
  function layer(w,h){var c=document.createElement('canvas');c.width=w;c.height=h;return c;}
@@ -8,6 +8,7 @@ window.MarePixels=function(canvas,atlas,rects,perf,shapes){
  var sea=layer(640,360),sc=sea.getContext('2d'),ocean=layer(512,512),oc=ocean.getContext('2d'),caching=false,view={},seaKey='',heightKey='',shoreKey='',field,heights,phase=.31;
  var waves=[],bursts=[],clock=0,skins=new Map(),skinBytes=0,skinLimit=6*1024*1024;
  var shadowField=MareShadows(shapes,rects,perf),worldCSV='';
+ var actors=MareActors(canvas,atlas,rects,depths);
  [ctx,lc,ec,sc].forEach(function(c){c.imageSmoothingEnabled=false;});
  perf.waterRebuilds=0;perf.uiBytes=0;perf.renderBufferBytes=(W*H*2+640*360+512*512)*4;
  function sprite(key,x,y,s,alpha,lit){
@@ -85,6 +86,7 @@ window.MarePixels=function(canvas,atlas,rects,perf,shapes){
  }
  function cacheBegin(csv,cx,cy,zoom,ox,oy,revision){
   worldCSV=csv;
+  actors.begin(cx,cy,zoom,ox,oy);
   if(heightKey!==csv){distField(csv);heightKey=csv;}
   view={cx:cx,cy:cy,zoom:zoom,ox:ox,oy:oy};var k=revision+','+cx+','+cy+','+zoom+','+ox+','+oy;
   if(k!==seaKey){seaBuild();seaKey=k;}
@@ -134,6 +136,7 @@ window.MarePixels=function(canvas,atlas,rects,perf,shapes){
   ctx.drawImage(land,0,0);
   var rgb=tone(p);ctx.globalCompositeOperation='multiply';ctx.fillStyle='rgb('+rgb.join(',')+')';ctx.fillRect(0,0,W,H);ctx.globalCompositeOperation='source-over';
   if(night>0){ctx.globalAlpha=night*.94;ctx.drawImage(lights,0,0);ctx.globalAlpha=1;}
+  actors.tone(rgb);
  }
  function burst(x,y,good){bursts.push({x:x,y:y,time:clock,good:good});if(bursts.length>4)bursts.shift();}
  function effects(time,motion){
@@ -157,6 +160,12 @@ window.MarePixels=function(canvas,atlas,rects,perf,shapes){
  function uiBegin(elapsed,motion){ctx.save();if(motion&&elapsed<140)ctx.translate(0,Math.floor((1-elapsed/140)*4)*2);}
  return {sprite:sprite,begin:cacheBegin,end:function(){caching=false;},world:drawWorld,shadow:shadow,skin:skin,burst:burst,effects:effects,minimap:minimap,
   scene:function(scene,phase,detail){shadowField.prepare(worldCSV,scene,phase,detail);},groundLight:groundLight,
+  depth:actors.stamp,actor:actors.actor,
+  bridge:function(wx,wy,sx,sy,zoom,z){
+   lc.save();ec.save();actors.clipPlane(lc,ec,wx,wy,z,sx,sy,zoom);
+   shadowField.paint(lc,wx,wy,sx,sy,zoom,0,'',8,false,z);shadowField.paint(ec,wx,wy,sx,sy,zoom,0,'',8,true,z);
+   lc.restore();ec.restore();
+  },
   uiBegin:uiBegin,uiEnd:function(){ctx.restore();},
   thumb:function(key,x,y,w,h){var r=rects[key],s=Math.min(3,w/r.w,h/r.h);s=s>=1?Math.floor(s):s;sprite(key,x+(r.ox-r.w/2)*s,y+(r.oy-r.h/2)*s,s,1);}};
 };

@@ -27,12 +27,15 @@ function W.access(w,id,x,y,r)
     return false
 end
 local building_info={[1]='Caminhos que acompanham o relevo',[2]='Passeios e rampas para pedestres',[3]='Conecta moradias e servicos',[4]='Uma via larga para sua cidade',[5]='Atravesse canais e margens baixas',[6]='Conecte duas margens com uma via',[7]='Ligue diferentes alturas da ilha',[8]='+2 de felicidade com acesso',[9]='Balsas: receita e felicidade',[10]='Porto: 85 de receita por dia',[25]='35 de energia para a ilha',[26]='60 de energia limpa',[27]='90 de energia limpa',[28]='Agua para 150 moradores',[29]='Reciclagem para 150 moradores',[30]='Saude para 100 moradores',[31]='Educacao para 100 moradores',[32]='Seguranca para 100 moradores',[33]='Seguranca para 100 moradores',[34]='20 de receita por dia',[35]='+4 de felicidade na ilha',[36]='+4 de felicidade na ilha',[38]='Delimite jardins e recintos'}
+building_info[39]='2 animais ao conectar uma via ao lado'
+building_info[40]='4 animais e saude para 100 moradores; requer via ao lado'
 function W.describe(id)
     local d=Catalog[id]
-    if d[7]>0 then return d[7]..' moradores com acesso viario' end
-    if d[8]>0 then return d[8]..' de receita base por dia' end
+    if building_info[id] then return I18n.t(building_info[id]) end
+    if d[7]>0 then return I18n.f('%d moradores com acesso viario',d[7]) end
+    if d[8]>0 then return I18n.f('%d de receita base por dia com acesso viario',d[8]) end
 
-    return building_info[id] or 'Cuidados e vida para sua ilha'
+    return I18n.t('Cuidados e vida para sua ilha')
 end
 function W.rebuild(w)
     local i=1
@@ -118,7 +121,7 @@ function W.rebuild(w)
     w.dirty=true;w.revision=w.revision+1
 end
 function W.new(seed,free)
-    local w={h={},base={},mask={},top={},occ={},road={},bid={},rot={},linked={},deco={},cash=3200,day=1,seed=seed,free=free,revision=0,undo={},reward=0,ticks=0}
+    local w={h={},base={},mask={},top={},occ={},road={},bid={},rot={},linked={},deco={},reserved={},people={},cash=3200,day=1,seed=seed,free=free,revision=0,undo={},reward=0,ticks=0}
     local y=0
     while y<V do local x=0
         while x<V do
@@ -182,31 +185,31 @@ function W.new(seed,free)
 end
 function W.valid(w,id,x,y,r,ignore_cost)
     local nx,ny=footprint(id,r)
-    if x<0 or y<0 or x+nx>N or y+ny>N then return false,'Fora dos limites da ilha' end
-    if not ignore_cost and not w.free and w.cash<W.price(w,id,x,y) then return false,'Faltam moedas. Espere a renda ou use o modo livre.' end
+    if x<0 or y<0 or x+nx>N or y+ny>N then return false,I18n.t('Fora dos limites da ilha') end
+    if not ignore_cost and not w.free and w.cash<W.price(w,id,x,y) then return false,I18n.t('Faltam moedas. Espere a renda ou use o modo livre.') end
     local base=w.base[cell(x,y)];local bridge=id==5 or id==6;local v=0;local coast=false
     while v<ny do local u=0
         while u<nx do
             local k=cell(x+u,y+v);local mask=w.mask[k]
             if w.occ[k]>0 then
                 if id<=3 and w.bid[k]>=1 and w.bid[k]<=3 then
-                    if w.bid[k]==id then return false,'Esta via ja tem esse piso' end
-                else return false,'Este espaco ja esta ocupado' end
+                    if w.bid[k]==id then return false,I18n.t('Esta via ja tem esse piso') end
+                else return false,I18n.t('Este espaco ja esta ocupado') end
             end
             if not bridge then
-                if base<1 or w.base[k]~=base then return false,'Eleve e nivele o terreno primeiro' end
+                if base<1 or w.base[k]~=base then return false,I18n.t('Eleve e nivele o terreno primeiro') end
                 if mask~=0 then
-                    if id>3 and id~=7 then return false,'Esta construcao precisa de terreno plano' end
-                    if mask~=3 and mask~=6 and mask~=9 and mask~=12 then return false,'Use Nivelar para criar uma rampa reta' end
+                    if id>3 and id~=7 then return false,I18n.t('Esta construcao precisa de terreno plano') end
+                    if mask~=3 and mask~=6 and mask~=9 and mask~=12 then return false,I18n.t('Use Nivelar para criar uma rampa reta') end
                 end
-            elseif w.top[k]>1 then return false,'Pontes atravessam agua ou margens baixas' end
+            elseif w.top[k]>1 then return false,I18n.t('Pontes atravessam agua ou margens baixas') end
             if (x+u>0 and w.base[k-1]==0) or (x+u<N-1 and w.base[k+1]==0) or (y+v>0 and w.base[k-N]==0) or (y+v<N-1 and w.base[k+N]==0) then coast=true end
             u=u+1
         end
         v=v+1
     end
-    if (id==9 or id==10 or id==37) and not coast then return false,'Escolha um terreno plano junto da agua' end
-    return true,'Pronto para construir'
+    if (id==9 or id==10 or id==37) and not coast then return false,I18n.t('Escolha um terreno plano junto da agua') end
+    return true,I18n.t('Pronto para construir')
 end
 function W.price(w,id,x,y)
     local price=Catalog[id][5]
@@ -243,7 +246,7 @@ function W.build(w,id,x,y,r)
     if not ok then return false,msg end
     local price=W.price(w,id,x,y);local snapshot=W.snapshot(w);snapshot.refund=w.free and 0 or price;W.record(w,snapshot);local k=cell(x,y);w.bid[k]=id;w.rot[k]=r
     if not w.free then w.cash=w.cash-price end
-    W.rebuild(w);return true,Catalog[id][1]..': pronto!'
+    W.rebuild(w);return true,I18n.f('%s: pronto!',I18n.catalog(id)[1])
 end
 function W.paint(w,id,x,y)
     local k=cell(x,y)
@@ -256,10 +259,10 @@ function W.paint(w,id,x,y)
 end
 function W.remove(w,x,y)
     local k=w.occ[cell(x,y)]
-    if k==0 then return false,'Nada para remover aqui' end
+    if k==0 then return false,I18n.t('Nada para remover aqui') end
     local id=w.bid[k];local snapshot=W.snapshot(w);snapshot.refund=w.free and 0 or -floor(Catalog[id][5]*3/4);W.record(w,snapshot);w.bid[k]=0;w.rot[k]=0
     if not w.free then w.cash=w.cash+floor(Catalog[id][5]*3/4) end
-    W.rebuild(w);return true,'Removido. Reembolso de 75%.'
+    W.rebuild(w);return true,I18n.t('Removido. Reembolso de 75%.')
 end
 
 
@@ -343,7 +346,7 @@ end
 function W.terraform(w,tool,x,y,radius,reference,dx,dy,stroke)
     local g=stroke and stroke.graph or terrain_groups(w,reference)
     if stroke and not g then g=terrain_groups(w,reference) end
-    if stroke then stroke.graph=g;stroke.visited=stroke.visited or {} end
+    if stroke then stroke.graph=g;stroke.visited=stroke.visited or {};stroke.pending_visits=stroke.pending_visits or {} end
     local visits=stroke and stroke.visited;local target=stroke and stroke.target or reference.h[vertex(x,y)]
     local i=1
     while i<=V*V do
@@ -355,7 +358,10 @@ function W.terraform(w,tool,x,y,radius,reference,dx,dy,stroke)
         local yy=max(0,y-radius-1)
         while yy<=min(N,y+radius+1) do local xx=max(0,x-radius-1)
             while xx<=min(N,x+radius+1) do
-                if (xx-x)*(xx-x)+(yy-y)*(yy-y)<=(radius+1)*(radius+1) then visits[vertex(xx,yy)]=true end
+                local k=vertex(xx,yy)
+                if not visits[k] and (xx-x)*(xx-x)+(yy-y)*(yy-y)<=(radius+1)*(radius+1) then
+                    visits[k]=true;stroke.pending_visits[#stroke.pending_visits+1]=k
+                end
                 xx=xx+1
             end;yy=yy+1
         end
@@ -390,7 +396,7 @@ function W.terraform(w,tool,x,y,radius,reference,dx,dy,stroke)
         envelope(g,g.goal,true)
     end
     i=1;while i<=V*V do w.h[i]=g.goal[g.parent[i]];i=i+1 end
-    W.rebuild(w);return true,'Relevo e fundacoes ajustados'
+    W.rebuild(w);return true,I18n.t('Relevo e fundacoes ajustados')
 end
 function W.elevation(w,id,x,y,r)
     local h=w.base[cell(x,y)]
@@ -428,7 +434,7 @@ function W.goal_ready(w)
 end
 function W.tick(w)
     w.day=w.day+1;w.cash=max(0,w.cash+w.balance);w.ticks=w.ticks+1
-    if not w.free and w.cash==0 and w.balance<0 then w.cash=300;return 'Fundo de apoio: +300 moedas para recuperar a ilha.' end
+    if not w.free and w.cash==0 and w.balance<0 then w.cash=300;return I18n.t('Fundo de apoio: +300 moedas para recuperar a ilha.') end
 end
 function W.claim(w)
     if not W.goal_ready(w) then return false end
@@ -450,7 +456,7 @@ function W.decode(text)
         values[i]=n;i=i+1
     end
     if values[3]>1 or values[6]>5 or values[5]<1 then return nil end
-    local w={h={},base={},mask={},top={},occ={},road={},bid={},rot={},linked={},deco={},seed=values[2],free=values[3]==1,cash=values[4],day=values[5],reward=values[6],undo={},revision=0,ticks=0}
+    local w={h={},base={},mask={},top={},occ={},road={},bid={},rot={},linked={},deco={},reserved={},people={},seed=values[2],free=values[3]==1,cash=values[4],day=values[5],reward=values[6],undo={},revision=0,ticks=0}
     i=1;while i<=V*V do if values[6+i]>5 then return nil end;w.h[i]=values[6+i];i=i+1 end
     local used={};i=1
     while i<=N*N do
@@ -473,5 +479,19 @@ function W.decode(text)
         end;y=y+1
     end
     W.rebuild(w);return w
+end
+Life.install(W,Catalog,Paths,Activities,Appearance,InteractionAnchors)
+Traffic.install(W,Catalog,Paths,TrafficPaths)
+TrafficStore.install(W,Traffic,TrafficPaths,Paths)
+local terraform=W.terraform
+W.terraform=function(w,tool,x,y,radius,reference,dx,dy,stroke)
+    local ok,msg=terraform(w,tool,x,y,radius,reference,dx,dy,stroke)
+    if stroke then
+        for i=#stroke.pending_visits,1,-1 do
+            if not ok then stroke.visited[stroke.pending_visits[i]]=nil end
+            stroke.pending_visits[i]=nil
+        end
+    end
+    return ok,msg
 end
 return W

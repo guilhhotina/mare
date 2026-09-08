@@ -7,6 +7,12 @@ const caster=JSON.parse(fs.readFileSync(root+'/assets/casters.json'));
  const lua=await new LuaFactory().createEngine();
  let code='local Catalog=(function() '+fs.readFileSync(root+'/src/catalog.lua')+' end)()\n';
  code+='local Casters={'+Object.entries(caster).map(([k,v])=>'['+JSON.stringify(k)+']='+luaValue(v)).join(',')+'}\n';
+ for (const [name,file] of [['LocaleData', 'locales'], ['I18n', 'i18n'], ['Activities', 'activities'], ['Appearance','appearance'],['InteractionAnchors','interaction_anchors']]) code+='local '+name+'=(function() '+fs.readFileSync(root+'/src/'+file+'.lua')+' end)()\n';
+ code+='local Paths=(function() '+fs.readFileSync(root+'/src/paths.lua')+' end)()\n';
+ code+='local Life=(function() '+fs.readFileSync(root+'/src/life.lua')+' end)()\n';
+ code+='local TrafficPaths=(function() '+fs.readFileSync(root+'/src/traffic_paths.lua')+' end)()\n';
+ code+='local Traffic=(function() '+fs.readFileSync(root+'/src/traffic.lua')+' end)()\n';
+ code+='local TrafficStore=(function() '+fs.readFileSync(root+'/src/traffic_store.lua')+' end)()\n';
  code+='local World=(function() '+fs.readFileSync(root+'/src/world.lua')+' end)()\n';
  code+='local Lighting=(function() '+fs.readFileSync(root+'/src/lighting.lua')+' end)()\n';
  code+=`

@@ -76,7 +76,9 @@ class Art:
   for yy in range(16):
    for xx in range(14):
     co=temp.getpixel((xx,yy))
-    if co[3]:self.paint(x+xx-7,y+yy-10,self.dep((u,v,z+10-yy))+.08,co)
+    if co[3]:
+     depth=self.dep((u,v,z+10-yy))+.08
+     self.paint(x+xx-7,y+yy-10,depth,co)
  def planter(self,u,v,z=0):
   self.block(u-.1,v-.1,u+.1,v+.1,z,z+4,'coral','red','woodD');self.foliage(u,v,z+5)
  def pole(self,u,v,z=0,h=15):

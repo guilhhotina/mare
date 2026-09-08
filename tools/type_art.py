@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageFont
 import json, math
 ROOT=Path(__file__).resolve().parents[1]
 def build():
-    chars=''.join(chr(n) for n in range(32,127))+'ÁÀÂÃÉÊÍÓÔÕÚÜÇáàâãéêíóôõúüç…–—×'
+    chars=''.join(chr(n) for n in range(32,127))+'ÁÀÂÃÄÉÊÍÓÔÕÖÚÜÇáàâãäéêíóôõöúüçß…–—×'
     faces={'body':('PixelifySans.ttf',[11,12,13,14,15,16,17,18,19,20,24]),'display':('Silkscreen.ttf',[8,16,24,32,40,48])}
     glyphs=[];data={};x=y=1;row=0
     for face,(name,sizes) in faces.items():

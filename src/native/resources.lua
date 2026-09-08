@@ -1,14 +1,17 @@
+local Assets = require('lua.native.assets')
+local Binary = require('lua.native.binary')
 local Surface = require('lua.native.surface')
+local Work = require('lua.native.work')
 local Resources = {}
 Resources.__index = Resources
 
 function Resources.new(std)
     return setmetatable({
         std = std,
-        sprites = dofile('assets/sprites.lua'),
-        fonts = dofile('assets/fonts.lua'),
-        file = assert(io.open('assets/pixels.bin', 'rb')),
-        textures = {}, pending = {}, serial = 0, frame = 0, bytes = 0, count = 0,
+        sprites = dofile(Assets.path('sprites.lua')),
+        fonts = dofile(Assets.path('fonts.lua')),
+        file = assert(io.open(Assets.path('pixels.bin'), 'rb')),
+        textures = {}, pending = {}, writing = {}, serial = 0, frame = 0, bytes = 0, count = 0,
         limit = 32 * 1024 * 1024
     }, Resources)
 end
@@ -19,9 +22,10 @@ function Resources:source(meta)
         local data = assert(self.file:read(meta.length))
         local runs, at = {}, 1
         for pos = 1, #data, 10 do
-            local x, y, w, color = string.unpack('>I2I2I2I4', data, pos)
+            local x, y, w, color = Binary.run(data, pos)
             runs[at], runs[at + 1], runs[at + 2], runs[at + 3] = x, y, w, color
             at = at + 4
+            if pos % 2560 == 1 then Work.check() end
         end
         meta.runs = runs
     end
@@ -68,16 +72,18 @@ function Resources:add(key, surface, scale, red, green, blue, light, intensity, 
     local bytes = surface.w * surface.h * scale * scale * 4
     self:trim(bytes)
     self.serial = self.serial + 1
-    local path = 'cache/texture-' .. self.serial .. '.tga'
+    local path = Assets.texture(self.serial)
+    self.bytes, self.count = self.bytes + bytes, self.count + 1
+    self.writing[path] = true
     surface:write(path, scale, red, green, blue, light, intensity)
+    self.writing[path] = nil
     local entry = {
-        key = key, path = path, id = self.std.image.load(path), bytes = bytes,
+        key = key, path = path, id = self.std.image.load(Assets.remote and 'file://' .. path or path), bytes = bytes,
         w = surface.w * scale, h = surface.h * scale,
-        used = self.frame, pinned = pinned, ready = false, waiting = 0
+        used = self.frame, pinned = pinned, ready = false
     }
     self.textures[key] = entry
     self.pending[#self.pending + 1] = entry
-    self.bytes, self.count = self.bytes + bytes, self.count + 1
     return entry
 end
 
@@ -90,7 +96,7 @@ function Resources:poll(dt)
             entry.ready = true
             table.remove(self.pending, i)
         else
-            entry.waiting = entry.waiting + dt
+            entry.waiting = entry.waiting and entry.waiting + dt or 0
             if entry.waiting > 5000 then error('native image did not load: ' .. entry.path) end
         end
     end
@@ -106,6 +112,7 @@ function Resources:close()
         self.std.image.unload(entry.id)
         assert(os.remove(entry.path))
     end
+    for path in pairs(self.writing) do assert(os.remove(path)) end
     assert(self.file:close())
 end
 

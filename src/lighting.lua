@@ -57,7 +57,7 @@ function L.update(w,phase,detail)
     L.bin=bin;L.rebuilds=(L.rebuilds or 0)+1
     local masks=L.masks or {};L.masks=masks
     if not daylight then local i=1;while i<=576 do masks[i]='';i=i+1 end;return true end
-    local sun=(phase-.18)/.61
+    local sun=((bin+.5)/48-.18)/.61
     local angle=-math.pi*.92+sun*math.pi*1.1
     local dx,dy=math.cos(angle),math.sin(angle)
     local altitude=.33+math.sin(sun*math.pi)*1.8

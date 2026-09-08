@@ -8,7 +8,14 @@ var input_queue=new Array(32),input_read=0,input_write=0,pressed=Object.create(n
 var perf={frames:0,rebuilds:0,sprites:0,total:0,max:0,samples:[]};
 var audio_ctx=null, opts='',load_error=false,active=true,display_ready=false;
 function stored(key){try{return localStorage.getItem(key)||'';}catch(e){return '';}}
+window.MareLocale.init(stored('mare.options'));
 function write(key,text){try{localStorage.setItem(key,text);return localStorage.getItem(key)===text;}catch(e){return false;}}
+function save(slot,text,previous){
+ if(slot<1||slot>3||typeof text!=='string'||text.length>100000)return false;
+ var key='mare.island.'+slot;
+ if(previous!==''&&!write(key+'.backup',previous))return false;
+ return write(key,text);
+}
 function unlock_audio(){
  if(!audio_ctx){var A=window.AudioContext||window.webkitAudioContext;if(A)try{audio_ctx=new A();}catch(e){}}
  if(audio_ctx&&audio_ctx.state==='suspended')audio_ctx.resume().catch(function(){});
@@ -27,13 +34,12 @@ var adapter={
    mare_ui_begin:function(){pixels.uiBegin.apply(null,arguments);},mare_ui_end:function(){pixels.uiEnd();},
    mare_text:function(){return type.draw.apply(null,arguments);},mare_text_width:function(){return type.width.apply(null,arguments);},
    mare_scene:function(){pixels.scene.apply(null,arguments);},mare_ground_light:function(){pixels.groundLight.apply(null,arguments);},
+   mare_depth:function(){pixels.depth.apply(null,arguments);},mare_actor:function(){pixels.actor.apply(null,arguments);},
+   mare_bridge:function(){pixels.bridge.apply(null,arguments);},
    mare_thumb:function(){pixels.thumb.apply(null,arguments);},
-   mare_save:function(slot,text){
-    if(slot<1||slot>3||typeof text!=='string'||text.length>20000)return false;
-    var key='mare.island.'+slot,old=stored(key);if(old)write(key+'.backup',old);return write(key,text);
-   },
+   mare_save:save,
    mare_load:function(slot){return stored('mare.island.'+slot);},mare_backup:function(slot){return stored('mare.island.'+slot+'.backup');},mare_sound:sound,
-   mare_options:function(sound_on,motion,detail,zoom,light){opts=(sound_on?'sound':'silent')+','+(motion?'motion':'still')+','+detail+','+zoom+','+light;write('mare.options',opts);},
+   mare_options:function(sound_on,motion,detail,zoom,light,locale){opts=(sound_on?'sound':'silent')+','+(motion?'motion':'still')+','+detail+','+zoom+','+light+','+locale;window.MareLocale.select(locale);write('mare.options',opts);},
    mare_get_options:function(){return stored('mare.options');},mare_register:function(fn){inspector=fn;}
   });
  },install:async function(){},startup:async function(hv){
@@ -58,10 +64,10 @@ var clock={prepare:async function(){},install:async function(){},startup:async f
  }
  window.requestAnimationFrame(tick);
 },destroy:async function(){}};
-function fail(e){load_error=true;document.getElementById('progress').textContent='Nao foi possivel abrir a ilha. Recarregue para tentar novamente.';document.getElementById('loading').classList.remove('hidden');var b=document.getElementById('retry');b.style.display='block';b.focus();console.error(e);}
+function fail(e){load_error=true;document.getElementById('progress').textContent=window.MareLocale.failure();document.getElementById('loading').classList.remove('hidden');var b=document.getElementById('retry');b.style.display='block';b.focus();console.error(e);}
 async function start(){
  try{
-  var results=await Promise.all([fetch('atlas.json').then(function(r){if(!r.ok)throw Error('atlas');return r.json();}),new Promise(function(resolve,reject){atlas=new Image();atlas.onload=resolve;atlas.onerror=reject;atlas.src='atlas.png';}),document.fonts?Promise.all([document.fonts.load('32px MarePixel'),document.fonts.load('32px MareDisplay')]):Promise.resolve(),fetch('shadow-shapes.bin').then(function(r){if(!r.ok)throw Error('shadow shapes');return r.arrayBuffer();}),Promise.all([fetch('typefaces.json').then(function(r){if(!r.ok)throw Error('typefaces');return r.json();}),new Promise(function(resolve,reject){var im=new Image();im.onload=function(){resolve(im);};im.onerror=reject;im.src='typefaces.png';})])]);rects=results[0];pixels=MarePixels(canvas,atlas,rects,perf,results[3]);type=MareType(canvas,perf,results[4][1],results[4][0]);
+  var results=await Promise.all([fetch('atlas.json').then(function(r){if(!r.ok)throw Error('atlas');return r.json();}),new Promise(function(resolve,reject){atlas=new Image();atlas.onload=resolve;atlas.onerror=reject;atlas.src='atlas.png';}),document.fonts?Promise.all([document.fonts.load('32px MarePixel'),document.fonts.load('32px MareDisplay')]):Promise.resolve(),fetch('shadow-shapes.bin').then(function(r){if(!r.ok)throw Error('shadow shapes');return r.arrayBuffer();}),Promise.all([fetch('typefaces.json').then(function(r){if(!r.ok)throw Error('typefaces');return r.json();}),new Promise(function(resolve,reject){var im=new Image();im.onload=function(){resolve(im);};im.onerror=reject;im.src='typefaces.png';})]),fetch('depths.bin').then(function(r){if(!r.ok)throw Error('depths');return r.arrayBuffer();})]);rects=results[0];pixels=MarePixels(canvas,atlas,rects,perf,results[3],results[5]);type=MareType(canvas,perf,results[4][1],results[4][0]);
   var LocalFactory=function(){return new wasmoon.LuaFactory(new URL('vendor/glue.wasm',location.href).href);};
   var keymap=[['Enter','a'],['NumpadEnter','a'],['ArrowUp','up'],['ArrowDown','down'],['ArrowLeft','left'],['ArrowRight','right'],['Escape','menu'],['Backspace','menu'],['ShiftLeft','menu'],[461,'menu'],[10009,'menu'],[13,'a'],[38,'up'],[40,'down'],[37,'left'],[39,'right']];
   document.addEventListener('keydown',function(e){if(keymap.some(function(p){return p[0]===e.code||p[0]===e.keyCode;})){e.preventDefault();unlock_audio();}});
@@ -71,7 +77,7 @@ async function start(){
 
   window.addEventListener('focus',function(){active=true;});
   window.addEventListener('blur',function(){active=false;['a','up','down','left','right','menu'].forEach(function(k){window.gly.frontend.native_callback_keyboard(k,0);});});
-  function checkpoint(){if(!inspector)return;var data=inspector('checkpoint');if(data)write('mare.island.'+inspector('slot'),data);}
+  function checkpoint(){if(!inspector)return;var data=inspector('checkpoint');if(data)save(inspector('slot'),data,inspector('previous-save'));}
   window.addEventListener('pagehide',checkpoint);document.addEventListener('visibilitychange',function(){if(document.hidden)checkpoint();});
 
  }catch(e){fail(e);}

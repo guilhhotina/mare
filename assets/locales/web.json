@@ -1,0 +1,8 @@
+{
+  "title": {"pt": "Maré — um pedacinho de mundo", "en": "Maré — a little world of your own", "de": "Maré — deine kleine Inselwelt"},
+  "canvas": {"pt": "Maré. Use setas, Enter para OK e Escape para Voltar.", "en": "Maré. Use arrow keys, Enter to confirm and Escape to go back.", "de": "Maré. Pfeiltasten zum Bewegen, Enter zum Bestätigen und Escape zum Zurückgehen."},
+  "loading": {"pt": "Preparando a ilha…", "en": "Preparing your island…", "de": "Deine Insel wird vorbereitet…"},
+  "controls": {"pt": "Setas · OK · Voltar", "en": "Arrows · Confirm · Back", "de": "Pfeiltasten · Bestätigen · Zurück"},
+  "retry": {"pt": "Tentar de novo", "en": "Try again", "de": "Erneut versuchen"},
+  "failure": {"pt": "Não foi possível abrir a ilha. Recarregue para tentar novamente.", "en": "The island could not be opened. Reload to try again.", "de": "Die Insel konnte nicht geöffnet werden. Lade die Seite neu und versuche es erneut."}
+}

@@ -5,29 +5,25 @@ import ast, json, math, random, io, struct
 ROOT=Path(__file__).resolve().parents[1]
 KIT=ROOT/'art_source/transport'
 from primitives import Art, windows, shelter, container
-entries={}; images={}; casters={}; shadow_points=[]
-def add(name,im,origin):
+from depth_art import DepthAtlas
+from shadow_art import collect as shadow_caster
+entries={}; images={}; unique_images={}; casters={}; shadow_points=[]
+depth_atlas=DepthAtlas()
+def add(name,im,origin,depth=None):
  bb=im.getbbox();assert bb,name
  assert set(im.getchannel('A').tobytes())<={0,255},name
- images[name]=im.crop(bb);entries[name]={'ox':origin[0]-bb[0],'oy':origin[1]-bb[1]}
+ image=im.crop(bb);signature=(image.size,image.tobytes())
+ images[name]=unique_images.setdefault(signature,image);entries[name]={'ox':origin[0]-bb[0],'oy':origin[1]-bb[1]}
+ if depth is not None:entries[name]['depth']=depth_atlas.add(name,im,depth)
 def save(name,a):
- add(name,a.im,(a.ox,a.oy))
+ add(name,a.im,(a.ox,a.oy),a.depth)
 
 
- if name.startswith(('b','tree','palm','rock','lamp')):
-  res=8;ww=a.nw*res;hh=a.mw*res;heights=[0]*(ww*hh);points=set()
-  for py in range(a.im.height):
-   for px in range(a.im.width):
-    if not a.im.getpixel((px,py))[3]:continue
-    dep=a.depth[py*a.im.width+px];z=max(0,(16*dep-(py-a.oy))/2)
-    sm=dep-z/16;df=(px-a.ox)/32;u=(sm+df)/2;v=(sm-df)/2
-    qx=round(u*64)+64;qy=round(v*64)+64;qz=min(255,round(z))
-    if qz>1 and 0<=qx<1024 and 0<=qy<1024:points.add(qx|(qy<<10)|(qz<<20))
-    xx=math.floor(u*res);yy=math.floor(v*res)
-    if 0<=xx<ww and 0<=yy<hh:heights[yy*ww+xx]=max(heights[yy*ww+xx],min(180,round(z)))
-  casters[name]=[ww,hh,heights]
+ if name.startswith(('b','tree','palm','rock','lamp','site_')):
+  caster,points=shadow_caster(a,name.startswith(('b5_','b6_')))
+  casters[name]=caster
   entries[name]['cast']=[len(shadow_points),len(points)]
-  shadow_points.extend(sorted(points))
+  shadow_points.extend(points)
 
 rows=[
 ('Trilha de terra','Vias',1,1,8,0,0,0,'terra'),('Passeio','Vias',1,1,16,0,0,0,'pedestres'),('Rua','Vias',1,1,25,0,0,0,'rua'),('Avenida','Vias',2,2,70,1,0,0,'avenida'),
@@ -41,6 +37,7 @@ rows=[
 def terrain(mask,sand,variant):
  im=Image.new('RGBA',(65,65));d=ImageDraw.Draw(im);oy=17
  h=[16 if mask&(1<<i) else 0 for i in range(4)]
+ depth=depth_atlas.tile(mask)
  pts=[(32,oy-h[0]),(64,oy+16-h[1]),(32,oy+32-h[2]),(0,oy+16-h[3])]
  base=(216,195,149) if sand else (106,143,88)
  faces=[((0,1,2),(h[1]-h[0]),(h[2]-h[1])),((0,2,3),(h[2]-h[3]),(h[3]-h[0]))]
@@ -111,8 +108,9 @@ def terrain(mask,sand,variant):
 
     d.point((x,y),fill=tuple(round(c*light) for c in (81,119,71)))
     d.line((x,y-1,x,y-height),fill=tuple(round(c*light) for c in (137,165,99)))
+    for py in range(y-height,y+1):depth[py*65+x]=u+du+v+dv+(z+y-py)/16
    if k==variant and variant%3==0:
-    x,y,_=point(u,v);d.point((x,y-3),fill='#ddce91')
+    x,y,z=point(u,v);d.point((x,y-3),fill='#ddce91');depth[(y-3)*65+x]=u+v+(z+3)/16
 
  if mask and not sand:
   for k in range(20):
@@ -123,7 +121,7 @@ def terrain(mask,sand,variant):
    mag=max(abs(du),abs(dv),1);delta=r.choice((-7,6,11))
    for j in range(r.randrange(2,6)):
     mark(u+j*dv/mag/64,v-j*du/mag/64,delta,'soil')
- add(('sand' if sand else 'grass')+str(mask)+'_'+str(variant),im,(32,oy))
+ add(('sand' if sand else 'grass')+str(mask)+'_'+str(variant),im,(32,oy),depth)
 
 for mask in range(16):
  im=Image.new('RGBA',(65,33));d=ImageDraw.Draw(im)
@@ -213,6 +211,19 @@ def sign(a,u,v,z,kind):
  elif kind=='pet':
   a.line([(u-.025,v,z+3),(u+.04,v,z+3)],'light',3)
   for off in (-.075,0,.075):a.dot(u+off,v,z+7,'light')
+ elif kind=='shop':
+  a.poly([(u-.065,v,z+3),(u+.065,v,z+3),(u+.08,v,z+7),(u-.08,v,z+7)],'cream')
+  a.line([(u-.04,v,z+7),(u-.04,v,z+9),(u+.04,v,z+9),(u+.04,v,z+7)],'light')
+  a.line([(u-.065,v,z+3),(u+.065,v,z+3)],'sand')
+ elif kind=='cafe':
+  a.poly([(u-.065,v,z+4),(u+.025,v,z+4),(u+.045,v,z+7),(u-.08,v,z+7)],'cream')
+  a.line([(u+.045,v,z+7),(u+.1,v,z+7),(u+.1,v,z+5),(u+.025,v,z+5)],'light')
+  a.line([(u-.085,v,z+3),(u+.07,v,z+3)],'sand')
+  a.line([(u-.025,v,z+8),(u-.04,v,z+9)],'mint')
+ elif kind=='rest':
+  a.line([(u-.065,v,z+3),(u-.065,v,z+8)],'light')
+  a.line([(u-.105,v,z+9),(u-.105,v,z+7),(u-.025,v,z+7),(u-.025,v,z+9)],'cream')
+  a.line([(u+.065,v,z+3),(u+.065,v,z+9),(u+.105,v,z+7),(u+.065,v,z+6)],'light')
  else:a.line([(u-.07,v,z+4),(u+.07,v,z+4),(u+.07,v,z+8)],'light',2)
 
 def make_building(idx,row,rot):
@@ -464,6 +475,10 @@ save('lamp',a)
 
 from ui_art import generate
 generate(add)
+from life_art import build as build_life
+build_life(add,save)
+from traffic_art import build as build_traffic
+build_traffic(add)
 
 glows={}
 for name,im in images.items():
@@ -478,15 +493,21 @@ for name,im in images.items():
 
 
 ordered=sorted(images,key=lambda k:(-images[k].height,k));x=y=2;rh=0;W=1024
+placements={}
 for key in ordered:
- im=images[key]
- if x+im.width+2>W:x=2;y+=rh+2;rh=0
- entries[key].update(x=x,y=y,w=im.width,h=im.height)
- x+=im.width+2;rh=max(rh,im.height)
+ im=images[key];identity=id(im)
+ if identity not in placements:
+  if x+im.width+2>W:x=2;y+=rh+2;rh=0
+  placements[identity]={'x':x,'y':y,'w':im.width,'h':im.height}
+  x+=im.width+2;rh=max(rh,im.height)
+ entries[key].update(placements[identity])
 H=((y+rh+33)//32)*32
 atlas=Image.new('RGBA',(W,H))
+painted=set()
 for key in images:
- e=entries[key];atlas.paste(images[key],(e['x'],e['y']))
+ e=entries[key];identity=id(images[key])
+ if identity not in painted:
+  atlas.paste(images[key],(e['x'],e['y']));painted.add(identity)
  if key in glows:
 
   runs=[];im=glows[key]
@@ -503,6 +524,7 @@ buf=io.BytesIO();atlas.save(buf,format='PNG',optimize=True);(ROOT/'assets/atlas.
 (ROOT/'assets/glow.png').unlink(missing_ok=True)
 (ROOT/'assets/casters.json').write_text(json.dumps(casters,separators=(',',':')))
 (ROOT/'assets/shadow-shapes.bin').write_bytes(struct.pack('<'+'I'*len(shadow_points),*shadow_points))
+(ROOT/'assets/depths.bin').write_bytes(depth_atlas.data)
 logo=Image.new('RGBA',(160,54));logo.paste(images['ui_logo'],(-entries['ui_logo']['ox'],-entries['ui_logo']['oy']))
 buf=io.BytesIO();logo.save(buf,format='PNG');(ROOT/'assets/logo.png').write_bytes(buf.getvalue())
 
@@ -523,4 +545,4 @@ for idx,row in enumerate(rows,1):
  preview.paste(sprite,(x+(240-sprite.width)//2,y+150-sprite.height),sprite)
  d.text((x+12,y+161),str(idx).zfill(2)+' '+row[0],font=font,fill='#f4e5c7')
 buf=io.BytesIO();preview.save(buf,format='PNG');(ROOT/'docs/catalogo.png').write_bytes(buf.getvalue())
-print(len(images),'sprites;',W,H,'atlas;', (ROOT/'assets/atlas.png').stat().st_size,'bytes')
+print(len(images),'sprites;',len(unique_images),'unique images;',W,H,'atlas;', (ROOT/'assets/atlas.png').stat().st_size,'bytes')

@@ -1,0 +1,432 @@
+{
+  "Caminhos que acompanham o relevo": {
+    "pt": "Caminhos que acompanham o relevo",
+    "en": "Paths that follow the terrain",
+    "de": "Wege, die dem Gelände folgen"
+  },
+  "Passeios e rampas para pedestres": {
+    "pt": "Passeios e rampas para pedestres",
+    "en": "Footpaths and ramps for pedestrians",
+    "de": "Wege und Rampen für Fußgänger"
+  },
+  "Conecta moradias e servicos": {
+    "pt": "Conecta moradias e serviços",
+    "en": "Connects homes and services",
+    "de": "Verbindet Wohnhäuser und Versorgung"
+  },
+  "Uma via larga para sua cidade": {
+    "pt": "Uma via larga para sua cidade",
+    "en": "A wide road for your town",
+    "de": "Eine breite Straße für deine Stadt"
+  },
+  "Atravesse canais e margens baixas": {
+    "pt": "Atravesse canais e margens baixas",
+    "en": "Cross channels and low banks",
+    "de": "Überquere Kanäle und flache Ufer"
+  },
+  "Conecte duas margens com uma via": {
+    "pt": "Conecte duas margens com uma via",
+    "en": "Connect two banks with a road",
+    "de": "Verbinde zwei Ufer mit einer Straße"
+  },
+  "Ligue diferentes alturas da ilha": {
+    "pt": "Ligue diferentes alturas da ilha",
+    "en": "Connect different heights on the island",
+    "de": "Verbinde verschiedene Höhen der Insel"
+  },
+  "+2 de felicidade com acesso": {
+    "pt": "+2 de felicidade com acesso",
+    "en": "+2 happiness with access",
+    "de": "+2 Zufriedenheit mit Anschluss"
+  },
+  "Balsas: receita e felicidade": {
+    "pt": "Balsas: receita e felicidade",
+    "en": "Ferries: income and happiness",
+    "de": "Fähren: Einnahmen und Zufriedenheit"
+  },
+  "Porto: 85 de receita por dia": {
+    "pt": "Porto: 85 de receita por dia",
+    "en": "Port: 85 income per day",
+    "de": "Hafen: 85 Einnahmen pro Tag"
+  },
+  "35 de energia para a ilha": {
+    "pt": "35 de energia para a ilha",
+    "en": "35 power for the island",
+    "de": "35 Energie für die Insel"
+  },
+  "60 de energia limpa": {
+    "pt": "60 de energia limpa",
+    "en": "60 clean power",
+    "de": "60 saubere Energie"
+  },
+  "90 de energia limpa": {
+    "pt": "90 de energia limpa",
+    "en": "90 clean power",
+    "de": "90 saubere Energie"
+  },
+  "Agua para 150 moradores": {
+    "pt": "Água para 150 moradores",
+    "en": "Water for 150 residents",
+    "de": "Wasser für 150 Bewohner"
+  },
+  "Reciclagem para 150 moradores": {
+    "pt": "Reciclagem para 150 moradores",
+    "en": "Recycling for 150 residents",
+    "de": "Recycling für 150 Bewohner"
+  },
+  "Saude para 100 moradores": {
+    "pt": "Saúde para 100 moradores",
+    "en": "Healthcare for 100 residents",
+    "de": "Gesundheitsversorgung für 100 Bewohner"
+  },
+  "Educacao para 100 moradores": {
+    "pt": "Educação para 100 moradores",
+    "en": "Education for 100 residents",
+    "de": "Bildung für 100 Bewohner"
+  },
+  "Seguranca para 100 moradores": {
+    "pt": "Segurança para 100 moradores",
+    "en": "Safety for 100 residents",
+    "de": "Sicherheit für 100 Bewohner"
+  },
+  "20 de receita por dia": {
+    "pt": "20 de receita por dia",
+    "en": "20 income per day",
+    "de": "20 Einnahmen pro Tag"
+  },
+  "+4 de felicidade na ilha": {
+    "pt": "+4 de felicidade na ilha",
+    "en": "+4 happiness on the island",
+    "de": "+4 Zufriedenheit auf der Insel"
+  },
+  "Delimite jardins e recintos": {
+    "pt": "Delimite jardins e recintos",
+    "en": "Mark out gardens and enclosures",
+    "de": "Begrenze Gärten und Gehege"
+  },
+  "2 animais ao conectar uma via ao lado": {
+    "pt": "2 animais ao conectar uma via ao lado",
+    "en": "2 animals with a road connected beside it",
+    "de": "2 Tiere mit einer Straße direkt daneben"
+  },
+  "4 animais e saude para 100 moradores; requer via ao lado": {
+    "pt": "4 animais e saúde para 100 moradores; requer via ao lado",
+    "en": "4 animals and healthcare for 100 residents; needs a road beside it",
+    "de": "4 Tiere; medizinische Versorgung für 100 Bewohner; Straße daneben nötig"
+  },
+  "%d moradores com acesso viario": {
+    "pt": "%d moradores com acesso viário",
+    "en": "%d residents with road access",
+    "de": "%d Bewohner mit Straßenanschluss"
+  },
+  "%d de receita base por dia com acesso viario": {
+    "pt": "%d de receita base por dia com acesso viário",
+    "en": "%d base income per day with road access",
+    "de": "%d Grundeinnahmen pro Tag mit Straßenanschluss"
+  },
+  "Cuidados e vida para sua ilha": {
+    "pt": "Cuidados e vida para sua ilha",
+    "en": "Care and life for your island",
+    "de": "Fürsorge und Leben für deine Insel"
+  },
+  "Fora dos limites da ilha": {
+    "pt": "Fora dos limites da ilha",
+    "en": "Outside the island boundaries",
+    "de": "Außerhalb der Inselgrenzen"
+  },
+  "Faltam moedas. Espere a renda ou use o modo livre.": {
+    "pt": "Faltam moedas. Espere a renda ou use o modo livre.",
+    "en": "Not enough coins. Wait for income or use free mode.",
+    "de": "Zu wenig Münzen. Warte auf Einnahmen oder nutze den freien Modus."
+  },
+  "Esta via ja tem esse piso": {
+    "pt": "Esta via já tem esse piso",
+    "en": "This road already has this surface",
+    "de": "Diese Straße hat schon diesen Belag"
+  },
+  "Este espaco ja esta ocupado": {
+    "pt": "Este espaço já está ocupado",
+    "en": "This space is already occupied",
+    "de": "Dieser Platz ist bereits belegt"
+  },
+  "Eleve e nivele o terreno primeiro": {
+    "pt": "Eleve e nivele o terreno primeiro",
+    "en": "Raise and level the terrain first",
+    "de": "Hebe und ebne zuerst das Gelände"
+  },
+  "Esta construcao precisa de terreno plano": {
+    "pt": "Esta construção precisa de terreno plano",
+    "en": "This building needs flat terrain",
+    "de": "Dieses Gebäude braucht ebenes Gelände"
+  },
+  "Use Nivelar para criar uma rampa reta": {
+    "pt": "Use Nivelar para criar uma rampa reta",
+    "en": "Use Level to make a straight ramp",
+    "de": "Ebne das Gelände für eine gerade Rampe"
+  },
+  "Pontes atravessam agua ou margens baixas": {
+    "pt": "Pontes atravessam água ou margens baixas",
+    "en": "Bridges cross water or low banks",
+    "de": "Brücken führen über Wasser oder flache Ufer"
+  },
+  "Escolha um terreno plano junto da agua": {
+    "pt": "Escolha um terreno plano junto da água",
+    "en": "Choose flat terrain beside the water",
+    "de": "Wähle ebenes Gelände am Wasser"
+  },
+  "Pronto para construir": {
+    "pt": "Pronto para construir",
+    "en": "Ready to build",
+    "de": "Bereit zum Bauen"
+  },
+  "%s: pronto!": {
+    "pt": "%s: pronto!",
+    "en": "%s: ready!",
+    "de": "%s: fertig!"
+  },
+  "Nada para remover aqui": {
+    "pt": "Nada para remover aqui",
+    "en": "Nothing to remove here",
+    "de": "Hier gibt es nichts zu entfernen"
+  },
+  "Removido. Reembolso de 75%.": {
+    "pt": "Removido. Reembolso de 75%.",
+    "en": "Removed. 75% refunded.",
+    "de": "Entfernt. 75% erstattet."
+  },
+  "Relevo e fundacoes ajustados": {
+    "pt": "Relevo e fundações ajustados",
+    "en": "Terrain and foundations adjusted",
+    "de": "Gelände und Fundamente angepasst"
+  },
+  "Fundo de apoio: +300 moedas para recuperar a ilha.": {
+    "pt": "Fundo de apoio: +300 moedas para recuperar a ilha.",
+    "en": "Support fund: +300 coins to help the island recover.",
+    "de": "Hilfsfonds: +300 Münzen, damit sich die Insel erholt."
+  },
+  "Um lugar para chamar de seu": {
+    "pt": "Um lugar para chamar de seu",
+    "en": "A place of your own",
+    "de": "Ein Ort für dich"
+  },
+  "Chegue a 20 moradores": {
+    "pt": "Chegue a 20 moradores",
+    "en": "Reach 20 residents",
+    "de": "Erreiche 20 Bewohner"
+  },
+  "A ilha funciona": {
+    "pt": "A ilha funciona",
+    "en": "The island works",
+    "de": "Die Insel läuft"
+  },
+  "40 moradores, energia suficiente": {
+    "pt": "40 moradores, energia suficiente",
+    "en": "40 residents, enough power",
+    "de": "40 Bewohner, genug Energie"
+  },
+  "A vida la fora": {
+    "pt": "A vida lá fora",
+    "en": "Life outdoors",
+    "de": "Draußen leben"
+  },
+  "3 pracas ou mirantes e 2 comercios": {
+    "pt": "3 praças ou mirantes e 2 comércios",
+    "en": "3 parks or lookouts and 2 shops",
+    "de": "3 Parks oder Aussichtspunkte und 2 Läden"
+  },
+  "Amigos de todas as especies": {
+    "pt": "Amigos de todas as espécies",
+    "en": "Friends of every species",
+    "de": "Freunde aller Arten"
+  },
+  "Tenha 6 animais e uma clinica": {
+    "pt": "Tenha 6 animais e uma clínica",
+    "en": "Have 6 animals and a clinic",
+    "de": "Habe 6 Tiere und eine Klinik"
+  },
+  "Uma pequena grande ilha": {
+    "pt": "Uma pequena grande ilha",
+    "en": "A small but mighty island",
+    "de": "Kleine Insel, ganz groß"
+  },
+  "100 moradores e 80% de felicidade": {
+    "pt": "100 moradores e 80% de felicidade",
+    "en": "100 residents and 80% happiness",
+    "de": "100 Bewohner und 80% Zufriedenheit"
+  },
+  "Lote reservado": {
+    "pt": "Lote reservado",
+    "en": "Lot reserved",
+    "de": "Grundstück reserviert"
+  },
+  "Sem trabalhador: conecte uma moradia": {
+    "pt": "Sem trabalhador: conecte uma moradia",
+    "en": "No worker: connect a home",
+    "de": "Kein Arbeiter: ein Wohnhaus anschließen"
+  },
+  "Sem rota: reconecte o caminho": {
+    "pt": "Sem rota: reconecte o caminho",
+    "en": "No route: reconnect the path",
+    "de": "Keine Route: Weg wieder verbinden"
+  },
+  "Terreno invalido: nivele o lote": {
+    "pt": "Terreno inválido: nivele o lote",
+    "en": "Invalid terrain: level the lot",
+    "de": "Ungültiges Gelände: Grundstück ebnen"
+  },
+  "Sem demanda para este uso": {
+    "pt": "Sem demanda para este uso",
+    "en": "No demand for this use",
+    "de": "Kein Bedarf für diese Nutzung"
+  },
+  "Faltam moedas para reservar a obra": {
+    "pt": "Faltam moedas para reservar a obra",
+    "en": "Not enough coins to reserve construction",
+    "de": "Zu wenig Münzen für die Baureservierung"
+  },
+  "Lote sem acesso viario": {
+    "pt": "Lote sem acesso viário",
+    "en": "Lot has no road access",
+    "de": "Grundstück ohne Straßenanschluss"
+  },
+  "Trabalhador a caminho": {
+    "pt": "Trabalhador a caminho",
+    "en": "Worker on the way",
+    "de": "Arbeiter unterwegs"
+  },
+  "Construcao em andamento": {
+    "pt": "Construção em andamento",
+    "en": "Construction in progress",
+    "de": "Bauarbeiten laufen"
+  },
+  "Aguarde a pessoa atravessar o lote": {
+    "pt": "Aguarde a pessoa atravessar o lote",
+    "en": "Wait for the person to cross the lot",
+    "de": "Warte, bis die Person das Grundstück überquert hat"
+  },
+  "Aguarde uma obra terminar": {
+    "pt": "Aguarde uma obra terminar",
+    "en": "Wait for a construction project to finish",
+    "de": "Warte, bis ein Bauprojekt fertig ist"
+  },
+  "Autorize todo o lote desta construcao": {
+    "pt": "Autorize todo o lote desta construção",
+    "en": "Authorize the entire lot for this building",
+    "de": "Gib das ganze Baugrundstück frei"
+  },
+  "Obra nao encontrada": {
+    "pt": "Obra não encontrada",
+    "en": "Construction project not found",
+    "de": "Bauprojekt nicht gefunden"
+  },
+  "Obra cancelada; saldo nao gasto devolvido": {
+    "pt": "Obra cancelada; saldo não gasto devolvido",
+    "en": "Construction canceled; unspent balance returned",
+    "de": "Bau abgebrochen; ungenutzte Münzen zurückgezahlt"
+  },
+  "Uso de zona invalido": {
+    "pt": "Uso de zona inválido",
+    "en": "Invalid zone use",
+    "de": "Ungültige Zonennutzung"
+  },
+  "Apagar autorizacao sem demolir construcoes": {
+    "pt": "Apagar autorização sem demolir construções",
+    "en": "Remove authorization without demolishing buildings",
+    "de": "Freigabe löschen, ohne Gebäude abzureißen"
+  },
+  "Eleve a terra antes de zonear": {
+    "pt": "Eleve a terra antes de zonear",
+    "en": "Raise the land before zoning",
+    "de": "Hebe das Land vor dem Zonieren an"
+  },
+  "Clinica: autorize um lote de 2 por 1 com acesso": {
+    "pt": "Clínica: autorize um lote de 2 por 1 com acesso",
+    "en": "Clinic: authorize a 2 by 1 lot with access",
+    "de": "Klinik: 2 mal 1 Felder mit Anschluss freigeben"
+  },
+  "Autorizar crescimento com acesso viario": {
+    "pt": "Autorizar crescimento com acesso viário",
+    "en": "Allow growth with road access",
+    "de": "Wachstum mit Straßenanschluss erlauben"
+  },
+  "Esta celula ja tem esse uso": {
+    "pt": "Esta célula já tem esse uso",
+    "en": "This cell already has this use",
+    "de": "Dieses Feld hat bereits diese Nutzung"
+  },
+  "Lote reservado para uma obra": {
+    "pt": "Lote reservado para uma obra",
+    "en": "Lot reserved for construction",
+    "de": "Grundstück für Bauarbeiten reserviert"
+  },
+  "Aguarde a pessoa atravessar antes de construir": {
+    "pt": "Aguarde a pessoa atravessar antes de construir",
+    "en": "Wait for the person to cross before building",
+    "de": "Warte mit dem Bauen, bis die Person den Weg frei macht"
+  },
+  "Ha uma pessoa atravessando esta ponte; aguarde antes de remover": {
+    "pt": "Há uma pessoa atravessando esta ponte; aguarde antes de remover",
+    "en": "Someone is crossing this bridge; wait before removing it",
+    "de": "Jemand überquert die Brücke; warte mit dem Entfernen"
+  },
+  "Ha uma pessoa nesta travessia; mantenha o terreno seguro ate ela passar": {
+    "pt": "Há uma pessoa nesta travessia; mantenha o terreno seguro até ela passar",
+    "en": "Someone is crossing here; keep the terrain safe until they pass",
+    "de": "Jemand überquert diese Stelle; halte das Gelände sicher, bis der Weg frei ist"
+  },
+  "O ajuste afeta uma pessoa ou seu acesso, inclusive alem do pincel. Aguarde o local ficar livre.": {
+    "pt": "O ajuste afeta uma pessoa ou seu acesso, inclusive além do pincel. Aguarde o local ficar livre.",
+    "en": "This edit affects a person or their access, possibly beyond the brush. Wait for the area to clear.",
+    "de": "Die Änderung betrifft eine Person oder ihren Zugang, auch außerhalb des Pinsels. Warte, bis der Bereich frei ist."
+  },
+  "A ilha progrediu; esta transacao nao pode substituir a simulacao": {
+    "pt": "A ilha progrediu; esta transação não pode substituir a simulação",
+    "en": "The island has progressed; this action cannot replace the simulation",
+    "de": "Die Insel ist weitergewachsen; diese Aktion würde den Fortschritt ersetzen"
+  },
+  "Nada para desfazer": {
+    "pt": "Nada para desfazer",
+    "en": "Nothing to undo",
+    "de": "Nichts zum Rückgängigmachen"
+  },
+  "Uma zona posterior ocupa esta transacao": {
+    "pt": "Uma zona posterior ocupa esta transação",
+    "en": "A newer zone overlaps this action",
+    "de": "Eine spätere Zone überlagert diese Aktion"
+  },
+  "Obras progrediram; desfazer terreno antigo apagaria progresso": {
+    "pt": "Obras progrediram; desfazer terreno antigo apagaria progresso",
+    "en": "Construction has progressed; restoring old terrain would erase progress",
+    "de": "Der Bau ist fortgeschritten; altes Gelände würde Fortschritt löschen"
+  },
+  "Faltam moedas para desfazer este reembolso": {
+    "pt": "Faltam moedas para desfazer este reembolso",
+    "en": "Not enough coins to undo this refund",
+    "de": "Zu wenig Münzen, um diese Erstattung rückgängig zu machen"
+  },
+  "Ultima acao desfeita": {
+    "pt": "Última ação desfeita",
+    "en": "Last action undone",
+    "de": "Letzte Aktion rückgängig gemacht"
+  },
+  "Aguarde o transito liberar este espaco": {
+    "pt": "Aguarde o trânsito liberar este espaço",
+    "en": "Wait for traffic to clear this space",
+    "de": "Warte, bis der Verkehr diesen Platz freigibt"
+  },
+  "Aguarde o veiculo sair desta via": {
+    "pt": "Aguarde o veículo sair desta via",
+    "en": "Wait for the vehicle to leave this road",
+    "de": "Warte, bis das Fahrzeug diese Straße verlässt"
+  },
+  "Aguarde a travessia antes de mudar esta costa ou via": {
+    "pt": "Aguarde a travessia antes de mudar esta costa ou via",
+    "en": "Wait for the crossing to finish before changing this coast or road",
+    "de": "Warte, bis der Weg frei ist, bevor du Küste oder Straße änderst"
+  },
+  "Aguarde o transito liberar o terreno antes de desfazer": {
+    "pt": "Aguarde o trânsito liberar o terreno antes de desfazer",
+    "en": "Wait for traffic to clear the terrain before undoing",
+    "de": "Warte vor dem Rückgängigmachen, bis der Verkehr das Gelände freigibt"
+  }
+}

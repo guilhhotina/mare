@@ -1,7 +1,9 @@
+local Bits = require('lua.native.bits')
 local Surface = require('lua.native.surface')
 local floor, min, max = math.floor, math.min, math.max
 local UI = {}
 UI.__index = UI
+local character = '[%z\1-\127\194-\244][\128-\191]*'
 
 function UI.new(resources)
     return setmetatable({resources = resources, offset = 0, specs = {body = {}, display = {}}, widths = {}}, UI)
@@ -25,8 +27,8 @@ function UI:width(value, size, face)
     local w = font.widths[str]
     if w then return w end
     w = 0
-    for _, code in utf8.codes(str) do
-        local glyph = font.glyphs[utf8.char(code)] or font.glyphs['?']
+    for ch in str:gmatch(character) do
+        local glyph = font.glyphs[ch] or font.glyphs['?']
         w = w + glyph.advance * 2
     end
     if font.count == 512 then font.widths = {}; font.count = 0 end
@@ -42,7 +44,7 @@ function UI:text(x, y, value, size, color, max_width, face)
     local entry = self.resources:find(key)
     if not entry then
         local chars = {}
-        for _, code in utf8.codes(str) do chars[#chars + 1] = utf8.char(code) end
+        for ch in str:gmatch(character) do chars[#chars + 1] = ch end
         if max_width > 0 and self:width(str, size, face) > max_width then
             local w = self:width(str, size, face)
             local ellipsis = self:width('…', size, face)
@@ -64,7 +66,7 @@ function UI:text(x, y, value, size, color, max_width, face)
         for _, ch in ipairs(chars) do
             local glyph = self.resources:source(font.glyphs[ch] or font.glyphs['?'])
             local runs = glyph.runs
-            for i = 1, #runs, 4 do image:rect(cursor + glyph.ox + runs[i], glyph.oy - top + runs[i + 1], runs[i + 2], 1, color | 255) end
+            for i = 1, #runs, 4 do image:rect(cursor + glyph.ox + runs[i], glyph.oy - top + runs[i + 1], runs[i + 2], 1, Bits.bor(color, 255)) end
             cursor = cursor + glyph.advance
         end
         entry = self.resources:add(key, image, 2)
@@ -75,7 +77,7 @@ function UI:text(x, y, value, size, color, max_width, face)
 end
 
 function UI:rect(x, y, w, h, color)
-    if color & 255 == 0 then return end
+    if Bits.band(color, 255) == 0 then return end
     local key = 'rect:' .. w .. ':' .. h .. ':' .. color
     local entry = self.resources:find(key)
     if not entry then entry = self.resources:add(key, Surface.solid(w, h, color)) end

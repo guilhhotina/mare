@@ -1,6 +1,10 @@
+local Assets = require('lua.native.assets')
+local Bits = require('lua.native.bits')
 local Surface = require('lua.native.surface')
 local Ocean = require('lua.native.ocean')
 local Shadows = require('lua.native.shadows')
+local Depth = require('lua.native.depth')
+local Actors = require('lua.native.actors')
 local floor, min, max = math.floor, math.min, math.max
 local World = {}
 World.__index = World
@@ -17,27 +21,37 @@ local function tone(phase)
 end
 
 local function tinted(color, r, g, b)
-    return (floor(((color >> 24) & 255) * r / 255 + .5) << 24)
-        | (floor(((color >> 16) & 255) * g / 255 + .5) << 16)
-        | (floor(((color >> 8) & 255) * b / 255 + .5) << 8)
+    return floor(Bits.band(Bits.rshift(color, 24), 255) * r / 255 + .5) * 16777216
+        + floor(Bits.band(Bits.rshift(color, 16), 255) * g / 255 + .5) * 65536
+        + floor(Bits.band(Bits.rshift(color, 8), 255) * b / 255 + .5) * 256
 end
 
 function World.new(resources, ui)
     local ocean = Ocean.new()
-    return setmetatable({resources = resources, ui = ui, ocean = ocean, shadows = Shadows.new(resources, ocean.heights), generation = 0, clock = 0, bursts = {}}, World)
+    local file = assert(io.open(Assets.path('depths.bin'), 'rb'))
+    local depths = assert(file:read('*a'))
+    assert(file:close())
+    return setmetatable({resources = resources, ui = ui, ocean = ocean, shadows = Shadows.new(resources, ocean.heights), actors = Actors.new(resources, depths), depths = depths, generation = 0, clock = 0, bursts = {}}, World)
 end
 
 function World:begin(csv, cx, cy, zoom, ox, oy)
-    self.csv, self.zoom, self.caching = csv, zoom, true
+    self.csv, self.zoom = csv, zoom
     self.ocean:prepare(csv, cx, cy, zoom, ox, oy)
     local factor = zoom >= 2 and 2 or 1
     if self.factor ~= factor then
         self.factor = factor
-        self.land, self.lights = Surface.new(1280 // factor, 720 // factor), Surface.new(1280 // factor, 720 // factor)
+        self.land, self.lights = Surface.new(math.floor(1280 / factor), math.floor(720 / factor)), Surface.new(math.floor(1280 / factor), math.floor(720 / factor))
     else
         self.land:clear()
         self.lights:clear()
     end
+    self.cx, self.cy, self.ox, self.oy = cx, cy, ox, oy
+    if self.depth == (self.current and self.current.depth) or not self.depth or self.depth.w ~= math.floor(1280 / factor) then
+        self.depth = self.spare_depth
+        if not self.depth or self.depth.w ~= math.floor(1280 / factor) then self.depth = Depth.new(math.floor(1280 / factor), math.floor(720 / factor))
+        else self.depth:clear() end
+        self.spare_depth = nil
+    else self.depth:clear() end
 end
 
 function World:scene(scene, phase, detail)
@@ -65,12 +79,27 @@ function World:sprite(key, x, y, scale, alpha, lit)
     end
 end
 
+function World:stamp(key, x, y, scale, wx, wy, z)
+    local meta = assert(self.resources.sprites[key], key)
+    self.depth:stamp(meta, (x - meta.ox * scale) / self.factor, (y - meta.oy * scale) / self.factor, scale / self.factor, wx + wy + z / 16, self.depths)
+end
+
+function World:actor(key, wx, wy, z, appearance, accessory_key)
+    if self.current then self.actors:draw(self.current, key, wx, wy, z, appearance, accessory_key) end
+end
+
 function World:shadow(mask, sx, sy, zoom, corners, res, wx, wy)
     self.shadows:paint(self.land, wx, wy, sx / self.factor, sy / self.factor, zoom / self.factor, corners, mask, res, false)
 end
 
 function World:ground_light(wx, wy, sx, sy, zoom, corners)
     self.shadows:paint(self.lights, wx, wy, sx / self.factor, sy / self.factor, zoom / self.factor, corners, '', 8, true)
+end
+
+function World:bridge(wx, wy, sx, sy, zoom, z)
+    local factor = self.factor
+    self.shadows:paint(self.land, wx, wy, sx / factor, sy / factor, zoom / factor, 0, '', 8, false, self.depth, z)
+    self.shadows:paint(self.lights, wx, wy, sx / factor, sy / factor, zoom / factor, 0, '', 8, true, self.depth, z)
 end
 
 function World:publish(phase)
@@ -81,6 +110,9 @@ function World:publish(phase)
         self.pending.sea.pinned, self.pending.land.pinned = false, false
     end
     self.pending = {
+        generation = self.generation, depth = self.depth, factor = self.factor,
+        cx = self.cx, cy = self.cy, ox = self.ox, oy = self.oy, zoom = self.zoom,
+        tone_red = r, tone_green = g, tone_blue = b,
         sea = self.resources:add('sea:' .. self.generation, self.ocean.sea, 2, r, g, b, nil, nil, true),
         land = self.resources:add('land:' .. self.generation, self.land, self.factor, r, g, b, self.lights, night * .94, true),
         waves = self.ocean.waves,
@@ -90,16 +122,15 @@ function World:publish(phase)
 end
 
 function World:finish()
-    self.caching = false
     self:publish(self.phase)
 end
 
 function World:draw(phase, time, motion)
     self.clock = time
-    if not self.pending and floor(phase * 96) ~= self.tone_bin then self:publish(phase) end
     local pending = self.pending
     if pending and pending.sea.ready and pending.land.ready then
         if self.current then
+            if self.current.depth ~= pending.depth then self.spare_depth = self.current.depth end
             self.resources:remove(self.current.sea)
             self.resources:remove(self.current.land)
         end
@@ -118,7 +149,7 @@ function World:draw(phase, time, motion)
             local wave = current.waves[i]
             local t = (floor(time / 220) + wave[4]) % 12
             local color = phase > .65 and phase < .79 and i % 3 == 1 and current.gold or wave[5] < 1.5 and current.shore or current.blue
-            std.draw.color(color | floor((t < 6 and t or 12 - t) * 25.5 + .5))
+            std.draw.color(Bits.bor(color, floor((t < 6 and t or 12 - t) * 25.5 + .5)))
             local x, y = floor((wave[1] + t * 2) / 2 + .5) * 2, floor(wave[2] / 2 + .5) * 2
             std.draw.rect(0, x, y, wave[3], 2)
             if t > 3 and t < 8 then std.draw.rect(0, x + 4, y + 4, max(2, wave[3] - 8), 2) end
@@ -152,7 +183,7 @@ function World:effects(time, motion)
                 local x = floor((burst[1] + direction[1] * t * 46) / 2 + .5) * 2
                 local y = floor((burst[2] - 18 - direction[2] * t * 24 - t * 25) / 2 + .5) * 2
                 local color = burst[4] and (j % 2 == 1 and 0xfff0bd00 or 0xa8d09800) or 0xe98c7800
-                self.ui:rect(x, y, j % 3 == 0 and 6 or 4, 4, color | alpha)
+                self.ui:rect(x, y, j % 3 == 0 and 6 or 4, 4, Bits.bor(color, alpha))
             end
         end
     end

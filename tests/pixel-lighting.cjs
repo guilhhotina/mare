@@ -27,4 +27,7 @@ backend.prepare(flat,scene('lamp',0),.91,1);ctx.clearRect(0,0,65,65);backend.pai
 
 const slope=Array(625).fill(1);slope[10*25+10]=2;backend.prepare(slope.join(','),scene('tree0'),.72,1);
 assert.equal(backend.ground(10,10),32);assert.equal(backend.ground(11,11),16);assert.equal(backend.ground(10.5,10.5),24);
+backend.prepare(Array(625).fill(3).join(','),scene('lamp',1),.91,1);
+ctx.clearRect(0,0,65,65);backend.paint(ctx,10,10,32,17,1,0,'',8,true);
+assert.equal(litPixels(),0,'Ground above the lantern does not receive downward light');
 console.log('PASS pixel lighting: 144 authored orientations, exact-surface shadows, sun cache, night, economy, receiving slopes, powered lamps across tile borders.');
