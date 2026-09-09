@@ -1,5 +1,7 @@
 local Bits = require('lua.native.bits')
 local Binary = require('lua.native.binary')
+local Pixels = require('lua.native.pixels')
+local Runs = require('lua.native.runs')
 local Work = require('lua.native.work')
 local floor, min, max = math.floor, math.min, math.max
 local char = string.char
@@ -10,7 +12,15 @@ local function over(src, dst)
     local a = Bits.band(src, 255)
     if a == 255 or dst == 0 then return src end
     if a == 0 then return dst end
-    local b = (Bits.band(dst, 255)) * (255 - a) / 255
+    local destination_alpha = Bits.band(dst, 255)
+    local inverse = 255 - a
+    if destination_alpha == 255 then
+        local rb = Bits.band(Bits.rshift(src, 8), 0xff00ff) * a + Bits.band(Bits.rshift(dst, 8), 0xff00ff) * inverse + 0x800080
+        rb = Bits.band(Bits.rshift(rb + Bits.band(Bits.rshift(rb, 8), 0xff00ff), 8), 0xff00ff)
+        local g = floor((Bits.band(Bits.rshift(src, 16), 255) * a + Bits.band(Bits.rshift(dst, 16), 255) * inverse) * (1 / 255) + .5)
+        return rb * 256 + g * 65536 + 255
+    end
+    local b = destination_alpha * inverse / 255
     local alpha = a + b
     local r = floor(((Bits.band((Bits.rshift(src, 24)), 255)) * a + (Bits.band((Bits.rshift(dst, 24)), 255)) * b) / alpha + .5)
     local g = floor(((Bits.band((Bits.rshift(src, 16)), 255)) * a + (Bits.band((Bits.rshift(dst, 16)), 255)) * b) / alpha + .5)
@@ -19,28 +29,32 @@ local function over(src, dst)
 end
 
 function Surface.new(w, h)
-    local pixels = {}
-    for i = 1, w * h do
-        pixels[i] = 0
-        if i % 2048 == 0 then Work.check() end
-    end
-    return setmetatable({w = w, h = h, pixels = pixels}, Surface)
+    return setmetatable({w = w, h = h, left = 0, top = 0, right = w, bottom = h, pixels = Pixels.new(w * h)}, Surface)
 end
 
 function Surface.solid(w, h, color)
     return setmetatable({w = w, h = h, fill = color}, Surface)
 end
 
+function Surface:clip(left, top, right, bottom)
+    self.left, self.top, self.right, self.bottom = left, top, right, bottom
+end
+
 function Surface:clear()
-    for i = 1, self.w * self.h do
-        self.pixels[i] = 0
-        if i % 2048 == 0 then Work.check() end
+    if self.left == 0 and self.top == 0 and self.right == self.w and self.bottom == self.h then
+        Pixels.clear(self.pixels, self.w * self.h)
+    else
+        for y = self.top, self.bottom - 1 do
+            local row = y * self.w
+            for x = self.left + 1, self.right do self.pixels[row + x] = 0 end
+            Work.check()
+        end
     end
 end
 
 function Surface:rect(x, y, w, h, color, erase)
-    local x0, y0 = max(0, floor(x + .5)), max(0, floor(y + .5))
-    local x1, y1 = min(self.w, floor(x + w + .5)), min(self.h, floor(y + h + .5))
+    local x0, y0 = max(self.left, floor(x + .5)), max(self.top, floor(y + .5))
+    local x1, y1 = min(self.right, floor(x + w + .5)), min(self.bottom, floor(y + h + .5))
     local pixels, width = self.pixels, self.w
     local alpha = Bits.band(color, 255)
     if alpha == 0 then return end
@@ -71,24 +85,19 @@ end
 function Surface:blit(source, x, y, scale, alpha, erase)
     scale, alpha = scale or 1, alpha or 1
     if source.runs and scale == 1 then
-        local runs, pixels, width, height = source.runs, self.pixels, self.w, self.h
-        local last_y, rows, row
-        for i = 1, #runs, 4 do
-            local color = runs[i + 3]
+        local runs, pixels, width = source.runs, self.pixels, self.w
+        local x0, y0 = floor(x + .5), floor(y + .5)
+        for i = 0, runs.count - 1 do
+            local sx, sy, span, span_y, color = Runs.get(runs, i)
             if alpha ~= 1 then color = Bits.bor((Bits.band(color, 0xffffff00)), floor((Bits.band(color, 255)) * alpha + .5)) end
             local opacity = Bits.band(color, 255)
             if opacity ~= 0 then
-                local sy = runs[i + 1]
-                if sy ~= last_y then
-                    local ry = y + sy
-                    local y0 = max(0, floor(ry + .5))
-                    rows, row = min(height, floor(ry + 1 + .5)) - y0, y0 * width
-                    last_y = sy
-                end
+                local first_y = max(self.top, y0 + sy)
+                local rows = min(self.bottom, y0 + sy + span_y) - first_y
                 if rows > 0 then
-                    local rx = x + runs[i]
-                    local first = row + max(0, floor(rx + .5)) + 1
-                    local last = row + min(width, floor(rx + runs[i + 2] + .5))
+                    local row = first_y * width
+                    local first = row + max(self.left, x0 + sx) + 1
+                    local last = row + min(self.right, x0 + sx + span)
                     for _ = 1, rows do
                         if opacity == 255 then
                             if erase then color = 0 end
@@ -107,17 +116,17 @@ function Surface:blit(source, x, y, scale, alpha, erase)
                     end
                 end
             end
-            if i % 256 == 1 then Work.check() end
+            if i % 64 == 0 then Work.check() end
         end
         return
     end
     if source.runs and scale % 1 == 0 then
         local runs = source.runs
-        for i = 1, #runs, 4 do
-            local color = runs[i + 3]
+        for i = 0, runs.count - 1 do
+            local sx, sy, width, height, color = Runs.get(runs, i)
             if alpha ~= 1 then color = Bits.bor((Bits.band(color, 0xffffff00)), floor((Bits.band(color, 255)) * alpha + .5)) end
-            self:rect(x + runs[i] * scale, y + runs[i + 1] * scale, runs[i + 2] * scale, scale, color, erase)
-            if i % 256 == 1 then Work.check() end
+            self:rect(x + sx * scale, y + sy * scale, width * scale, height * scale, color, erase)
+            if i % 64 == 0 then Work.check() end
         end
         return
     end
@@ -132,10 +141,10 @@ function Surface:blit(source, x, y, scale, alpha, erase)
     local w, h = floor(source.w * scale + .5), floor(source.h * scale + .5)
     local target, width = self.pixels, self.w
     local inverse = 1 / scale
-    for yy = max(0, -y0), min(h, self.h - y0) - 1 do
+    for yy = max(self.top - y0, 0), min(h, self.bottom - y0) - 1 do
         local sy = min(source.h - 1, floor((yy + .5) * inverse)) * source.w
         local row = (y0 + yy) * width + x0
-        for xx = max(0, -x0), min(w, self.w - x0) - 1 do
+        for xx = max(self.left - x0, 0), min(w, self.right - x0) - 1 do
             local color = pixels[sy + min(source.w - 1, floor((xx + .5) * inverse)) + 1]
             if color ~= 0 then
                 if alpha ~= 1 then color = Bits.bor((Bits.band(color, 0xffffff00)), floor((Bits.band(color, 255)) * alpha + .5)) end
@@ -159,10 +168,10 @@ function Surface:blit_plane(source, x, y, scale, depth, base)
     local x0, y0 = floor(x + .5), floor(y + .5)
     local w, h = floor(source.w * scale + .5), floor(source.h * scale + .5)
     local inverse, target, pixels = 1 / scale, self.pixels, source.pixels
-    for yy = max(0, -y0), min(h, self.h - y0) - 1 do
+    for yy = max(self.top - y0, 0), min(h, self.bottom - y0) - 1 do
         local sy = min(source.h - 1, floor((yy + .5) * inverse))
         local row, value = (y0 + yy) * self.w + x0, base + sy / 16 + .08
-        for xx = max(0, -x0), min(w, self.w - x0) - 1 do
+        for xx = max(self.left - x0, 0), min(w, self.right - x0) - 1 do
             local index = row + xx + 1
             if depth.pixels[index] <= value then
                 local color = pixels[sy * source.w + min(source.w - 1, floor((xx + .5) * inverse)) + 1]
@@ -183,24 +192,23 @@ function Surface:copy(source, sx, sy, w, h, dx, dy)
     end
 end
 
-function Surface:write(path, scale, red, green, blue, light, intensity)
+function Surface:encode(scale, red, green, blue, light, intensity, region)
     scale = scale or 1
     red, green, blue = red or 255, green or 255, blue or 255
     intensity = intensity or 0
-    local file = assert(io.open(path, 'wb'))
-    assert(file:write(Binary.tga_header(self.w * scale, self.h * scale)))
+    local x0, y0, width, height = 0, 0, self.w, self.h
+    if region then x0, y0, width, height = region.x, region.y, region.w, region.h end
+    local chunks = {Binary.tga_header(width * scale, height * scale)}
     local palette, shaded, row = {}, {}, {}
     if self.fill then
-        local color, row, left = self.fill, {}, self.w * scale
+        local color, row, left = self.fill, {}, width * scale
         local pixel = char(Bits.band((Bits.rshift(color, 8)), 255), Bits.band((Bits.rshift(color, 16)), 255), Bits.band((Bits.rshift(color, 24)), 255), Bits.band(color, 255))
         while left > 0 do
             local n = min(128, left)
             row[#row + 1] = char(127 + n) .. pixel
             left = left - n
         end
-        assert(file:write(table.concat(row):rep(self.h * scale)))
-        assert(file:close())
-        return
+        return chunks[1] .. table.concat(row):rep(height * scale)
     end
     local function encode(color)
         local value = palette[color]
@@ -221,7 +229,7 @@ function Surface:write(path, scale, red, green, blue, light, intensity)
         end
         return value
     end
-    for y = 0, self.h - 1 do
+    for y = y0, y0 + height - 1 do
         local count, last, length = 0, -1, 0
         local function flush()
             while length > 0 do
@@ -231,7 +239,7 @@ function Surface:write(path, scale, red, green, blue, light, intensity)
                 length = length - n
             end
         end
-        for x = 1, self.w do
+        for x = x0 + 1, x0 + width do
             local k = y * self.w + x
             local color = tint(self.pixels[k])
             if light and intensity > 0 then
@@ -246,9 +254,15 @@ function Surface:write(path, scale, red, green, blue, light, intensity)
         end
         flush()
         local bytes = table.concat(row, '', 1, count)
-        for _ = 1, scale do assert(file:write(bytes)) end
+        chunks[#chunks + 1] = bytes:rep(scale)
         Work.check()
     end
+    return table.concat(chunks)
+end
+
+function Surface:write(path, scale, red, green, blue, light, intensity, region, content)
+    local file = assert(io.open(path, 'wb'))
+    assert(file:write(content or self:encode(scale, red, green, blue, light, intensity, region)))
     assert(file:close())
 end
 

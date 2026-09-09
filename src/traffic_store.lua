@@ -27,7 +27,7 @@ function S.install(W,Traffic,Nav,P)
             put(e.id,code(Traffic.kinds,e.kind),e.home,e.destination,e.phase,e.cell,e.next_cell,e.progress,e.heading,e.incoming,e.facing,e.x,e.y,e.z,code(states,e.state),e.wait,e.waited_cell,e.age,e.duration,e.animation_time,e.exit_progress,e.retry,e.blocked,e.goal,e.path_generation==n.generation and 1 or 0)
             path(e.path,e.path_index,e.next_cell~=0 and e.next_cell or e.cell)
         end
-        return (old_encode(w):gsub('^MARE5','MARE6'))..'|TRAFFIC1,'..table.concat(out,',')
+        return (old_encode(w):gsub('^MARE5','MARE6'))..'|TRAFFIC2,'..table.concat(out,',')
     end
     function W.decode(text)
         if type(text)~='string' or #text>100000 then return nil end
@@ -36,8 +36,8 @@ function S.install(W,Traffic,Nav,P)
         end
         local version=text:sub(1,6)
         if version~='MARE4,' and version~='MARE6,' or text:find(',,',1,true) or text:sub(-1)==',' then return nil end
-        local split=text:find('|TRAFFIC1,',1,true);if not split then return nil end
-        local body=text:sub(split+10);if body:find('|',1,true) then return nil end
+        local split,last,traffic_version=text:find('|TRAFFIC([12]),');if not split then return nil end
+        local body=text:sub(last+1);if body:find('|',1,true) then return nil end
         local w=old_decode((version=='MARE4,' and 'MARE3' or 'MARE5')..text:sub(6,split-1));if not w then return nil end
         Traffic.init(w)
         local raw={};for token in body:gmatch('[^,]+') do raw[#raw+1]=token end
@@ -89,6 +89,11 @@ function S.install(W,Traffic,Nav,P)
             if kind=='car' or kind=='boat' then
                 if e.home==0 or e.duration~=0 or kind=='car' and (e.destination==0 or e.heading%2~=0 or e.incoming%2~=0) then return nil end
             elseif e.home~=0 or e.destination~=0 or e.duration==0 or e.age>=e.duration or e.phase~=1 or e.wait>0 or e.state=='dock' or e.state=='exit' then return nil end
+            local duration=Traffic.surfacing_ms[kind]
+            if duration then
+                if traffic_version=='1' then e.age=floor(e.age*duration/e.duration);e.duration=duration
+                elseif e.duration~=duration then return nil end
+            end
             if kind~='car' and e.z~=0 then return nil end
             if e.next_cell~=0 then
                 if not Nav.edge(n,kind,e.cell,e.next_cell) then return nil end
@@ -110,7 +115,7 @@ function S.install(W,Traffic,Nav,P)
                 if abs(ax-bx)>1 or abs(ay-by)>1 or ax==bx and ay==by or kind=='car' and abs(ax-bx)+abs(ay-by)~=1 or e.path_generation==n.generation and not Nav.edge(n,kind,previous,k) then return nil end
                 previous=k
             end end
-            Traffic.remember_position(e);Traffic.render(e);w.traffic[i]=e
+            Traffic.prepare(e);w.traffic[i]=e
         end
         if failed or cursor~=#raw+1 then return nil end
         return w

@@ -42,6 +42,7 @@ else
 package.preload["lua.native.actors"]=function(...)
 local Bits = require('lua.native.bits')
 local Binary = require('lua.native.binary')
+local Runs = require('lua.native.runs')
 local floor, min, max = math.floor, math.min, math.max
 local Actors = {}
 Actors.__index = Actors
@@ -112,7 +113,7 @@ local function source(self, key, meta)
     if entry then touch(self.sources, entry); return entry end
     entry = {meta = meta, offset = meta.offset, length = meta.length, runs = meta.runs}
     self.resources:source(entry)
-    return remember(self.sources, key, entry, #entry.runs * 8)
+    return remember(self.sources, key, entry, entry.runs.bytes)
 end
 
 local function palette(self, appearance, scene)
@@ -152,29 +153,31 @@ local function draw_layer(self, scene, key, wx, wy, z, appearance)
     local step_y = sy % factor == 0 and factor or 1
     local runs, depth, std = source(self, key, meta).runs, scene.depth, self.resources.std
     local base, inverse, last_color = wx + wy + z * .0625, 1 / zoom, nil
-    for i = 1, #runs, 4 do
-        local original = runs[i + 3]
+    for i = 0, runs.count - 1 do
+        local rx, ry, width, height, original = Runs.get(runs, i)
         local marker = appearance and markers[original]
         local tint = marker and appearance[marker] or color(self, original, scene)
         if tint ~= last_color then std.draw.color(tint); last_color = tint end
-        local row = sy + runs[i + 1] * zoom
-        local left, right = max(0, sx + runs[i] * zoom), min(1280, sx + (runs[i] + runs[i + 2]) * zoom)
-        local value = base + (meta.oy - runs[i + 1]) * .0625
-        local source_row = meta.depth and meta.depth[1] + runs[i + 1] * meta.w * 2
-        for yy = max(0, row), min(720, row + zoom) - step_y, step_y do
-            local offset, start = floor(yy / factor) * depth.w, nil
-            for xx = left, right - step_x, step_x do
-                if source_row then
-                    value = base + Binary.i16(self.depths, source_row + floor((xx - sx) * inverse) * 2 + 1) * .00390625
+        local left, right = max(0, sx + rx * zoom), min(1280, sx + (rx + width) * zoom)
+        for source_y = ry, ry + height - 1 do
+            local row = sy + source_y * zoom
+            local value = base + (meta.oy - source_y) * .0625
+            local source_row = meta.depth and meta.depth[1] + source_y * meta.w * 2
+            for yy = max(0, row), min(720, row + zoom) - step_y, step_y do
+                local offset, start = floor(yy / factor) * depth.w, nil
+                for xx = left, right - step_x, step_x do
+                    if source_row then
+                        value = base + Binary.i16(self.depths, source_row + floor((xx - sx) * inverse) * 2 + 1) * .00390625
+                    end
+                    if depth.pixels[offset + floor(xx / factor) + 1] <= value + .08 then
+                        if not start then start = xx end
+                    elseif start then
+                        std.draw.rect(0, start, yy, xx - start, step_y)
+                        start = nil
+                    end
                 end
-                if depth.pixels[offset + floor(xx / factor) + 1] <= value + .08 then
-                    if not start then start = xx end
-                elseif start then
-                    std.draw.rect(0, start, yy, xx - start, step_y)
-                    start = nil
-                end
+                if start then std.draw.rect(0, start, yy, right - start, step_y) end
             end
-            if start then std.draw.rect(0, start, yy, right - start, step_y) end
         end
     end
 end
@@ -273,8 +276,8 @@ function Binary.i16(data, offset)
 end
 
 function Binary.run(data, offset)
-    local a, b, c, d, e, f, r, g, blue, alpha = byte(data, offset, offset + 9)
-    return a * 256 + b, c * 256 + d, e * 256 + f, r * 16777216 + g * 65536 + blue * 256 + alpha
+    local x, y, width, height, low, high = byte(data, offset, offset + 5)
+    return x, y, width, height, low + high * 256
 end
 
 function Binary.mask(data, offset)
@@ -336,13 +339,26 @@ function Depth.new(w, h)
         pixels[i] = -math.huge
         if i % 2048 == 0 then Work.check() end
     end
-    return setmetatable({w = w, h = h, pixels = pixels}, Depth)
+    return setmetatable({w = w, h = h, left = 0, top = 0, right = w, bottom = h, pixels = pixels}, Depth)
+end
+
+function Depth:clip(left, top, right, bottom)
+    self.left, self.top, self.right, self.bottom = left, top, right, bottom
+end
+
+function Depth:copy(source, left, top, right, bottom)
+    for y = top, bottom - 1 do
+        local row = y * self.w
+        for x = left + 1, right do self.pixels[row + x] = source.pixels[row + x] end
+        Work.check()
+    end
 end
 
 function Depth:clear()
-    for i = 1, self.w * self.h do
-        self.pixels[i] = -math.huge
-        if i % 2048 == 0 then Work.check() end
+    for y = self.top, self.bottom - 1 do
+        local row = y * self.w
+        for x = self.left + 1, self.right do self.pixels[row + x] = -math.huge end
+        Work.check()
     end
 end
 
@@ -350,9 +366,9 @@ function Depth:stamp(meta, x, y, scale, base, data)
     if not meta.depth then return end
     local x0, y0 = floor(x + .5), floor(y + .5)
     if scale == 1 then
-        local left, right = max(0, -x0), min(meta.w, self.w - x0) - 1
+        local left, right = max(0, self.left - x0), min(meta.w, self.right - x0) - 1
         local pixels = self.pixels
-        for yy = max(0, -y0), min(meta.h, self.h - y0) - 1 do
+        for yy = max(0, self.top - y0), min(meta.h, self.bottom - y0) - 1 do
             local at = meta.depth[1] + (yy * meta.w + left) * 2 + 1
             local target = (y0 + yy) * self.w + x0 + left + 1
             for position = at, at + (right - left) * 2, 2 do
@@ -367,10 +383,10 @@ function Depth:stamp(meta, x, y, scale, base, data)
     end
     local w, h = floor(meta.w * scale + .5), floor(meta.h * scale + .5)
     local inverse, pixels = 1 / scale, self.pixels
-    for yy = max(0, -y0), min(h, self.h - y0) - 1 do
+    for yy = max(0, self.top - y0), min(h, self.bottom - y0) - 1 do
         local source_row = min(meta.h - 1, floor((yy + .5) * inverse)) * meta.w
         local row = (y0 + yy) * self.w + x0
-        for xx = max(0, -x0), min(w, self.w - x0) - 1 do
+        for xx = max(0, self.left - x0), min(w, self.right - x0) - 1 do
             local source = source_row + min(meta.w - 1, floor((xx + .5) * inverse))
             local value = Binary.i16(data, meta.depth[1] + source * 2 + 1)
             if value ~= -32768 then pixels[row + xx + 1] = base + value / 256 end
@@ -380,6 +396,59 @@ function Depth:stamp(meta, x, y, scale, base, data)
 end
 
 return Depth
+
+end
+package.preload["lua.native.layer"]=function(...)
+local min = math.min
+local Layer = {}
+Layer.__index = Layer
+
+function Layer.new(resources, key, surface, scale, red, green, blue, light, intensity, previous, changed)
+    local entries, region = {}, {}
+    local size = 256 / scale
+    for y = 0, surface.h - 1, size do
+        region.y, region.h = y, min(size, surface.h - y)
+        for x = 0, surface.w - 1, size do
+            region.x, region.w = x, min(size, surface.w - x)
+            local index = #entries + 1
+            local entry = previous and previous.entries[index]
+            if not entry or not changed or changed[index] then
+                local content = surface:encode(scale, red, green, blue, light, intensity, region)
+                if not entry or entry.content ~= content then
+                    entry = resources:add(key .. ':' .. index, surface, scale, red, green, blue, light, intensity, true, region, content)
+                    entry.x, entry.y = x * scale, y * scale
+                end
+            end
+            entries[index] = entry
+        end
+    end
+    return setmetatable({resources = resources, entries = entries}, Layer)
+end
+
+function Layer:ready()
+    local entries = self.entries
+    for i = 1, #entries do
+        if not entries[i].ready then return false end
+    end
+    return true
+end
+
+function Layer:draw(x, y)
+    local resources, entries = self.resources, self.entries
+    for i = 1, #entries do
+        local entry = entries[i]
+        resources:draw(entry, x + entry.x, y + entry.y)
+    end
+end
+
+function Layer:remove(replacement)
+    local resources, entries = self.resources, self.entries
+    for i = 1, #entries do
+        if not replacement or replacement.entries[i] ~= entries[i] then resources:remove(entries[i]) end
+    end
+end
+
+return Layer
 
 end
 package.preload["lua.native.ocean"]=function(...)
@@ -434,8 +503,9 @@ function Ocean:terrain(csv)
     local signature = table.concat(shore)
     if signature == self.shore_key then return false end
     self.shore_key = signature
-    local a = self.field or {}
-    self.field = a
+    local previous = self.field
+    local a = self.spare_field or {}
+    self.field, self.spare_field = a, previous
     for y = 0, 127 do
         local wy = floor(y / 4) - 4
         local row = y * 128
@@ -472,47 +542,51 @@ function Ocean:terrain(csv)
         end
         Work.check()
     end
-    local image = self.ocean or Surface.new(512, 512)
-    self.ocean = image
-    local pixels = image.pixels
-    for y = 0, 511 do
-        local row = y * 512
-        if y < 2 or y > 509 then
-            for x = 1, 512 do pixels[row + x] = 0x237590ff end
-        else
-            pixels[row + 1], pixels[row + 2] = 0x237590ff, 0x237590ff
-            pixels[row + 511], pixels[row + 512] = 0x237590ff, 0x237590ff
-            local sy = y * .25 - .375
-            local iy = floor(sy)
-            local v = sy - iy
-            local iv, field_row = 1 - v, iy * 128
-            local hash_y, caustic_row, streak_y = y * 668265263, (y % 64) * 64, y * 3
-            for cell = 0, 126 do
-                local q = field_row + cell + 1
-                local a0, a1, a2, a3 = a[q], a[q + 1], a[q + 128], a[q + 129]
+    local image = self.ocean
+    if not image then
+        image = Surface.new(512, 512)
+        image:rect(0, 0, 512, 512, 0x237590ff)
+        self.ocean = image
+    end
+    local pixels, changed = image.pixels, {}
+    self.changed_blocks = changed
+    for iy = 0, 126 do
+        local field_row = iy * 128
+        for cell = 0, 126 do
+            local q = field_row + cell + 1
+            local a0, a1, a2, a3 = a[q], a[q + 1], a[q + 128], a[q + 129]
+            local shallow = a0 < 9 or a1 < 9 or a2 < 9 or a3 < 9
+            local before = previous and (previous[q] < 9 or previous[q + 1] < 9 or previous[q + 128] < 9 or previous[q + 129] < 9)
+            if (shallow or before) and (not previous or a0 ~= previous[q] or a1 ~= previous[q + 1] or a2 ~= previous[q + 128] or a3 ~= previous[q + 129]) then
                 local first = cell * 4 + 2
-                local k = row + first + 1
-                if a0 >= 9 and a1 >= 9 and a2 >= 9 and a3 >= 9 then
-                    pixels[k], pixels[k + 1], pixels[k + 2], pixels[k + 3] = 0x237590ff, 0x237590ff, 0x237590ff, 0x237590ff
-                else
-                    for offset = 0, 3 do
-                        local u = (offset + .5) * .25
-                        local iu = 1 - u
-                        local d = ((a0 * iu + a1 * u) * iv + (a2 * iu + a3 * u) * v) * .25
-                        local color = 0x237590ff
-                        if d < 2.2 then
-                            local x = first + offset
-                            local f = d * 2.35
-                            local band = min(4, floor(f))
-                            local step = min(4, floor((f - band) * 4 + .5))
-                            local hash = Bits.band((x * 374761393 + hash_y), 0xffffffff)
-                            hash = Bits.bxor(hash, (Bits.rshift(hash, 13)))
-                            local grain = hash % 3 - 1
-                            local caustic = d < 1.4 and caustics[caustic_row + x % 64 + 1] or 0
-                            color = colors[band * 5 + step + 1] + (grain + caustic) * 0x01010100
-                            if d > .09 and d < .17 and (x + streak_y) % 17 < 11 then color = 0xb3dbbfff end
+                changed[#changed + 1] = (iy * 4 + 2) * 512 + first
+                for dy = 0, 3 do
+                    local y = iy * 4 + 2 + dy
+                    local v = (dy + .5) * .25
+                    local iv, k = 1 - v, y * 512 + first + 1
+                    if not shallow then
+                        pixels[k], pixels[k + 1], pixels[k + 2], pixels[k + 3] = 0x237590ff, 0x237590ff, 0x237590ff, 0x237590ff
+                    else
+                        local hash_y, caustic_row, streak_y = y * 668265263, (y % 64) * 64, y * 3
+                        for offset = 0, 3 do
+                            local u = (offset + .5) * .25
+                            local iu = 1 - u
+                            local d = ((a0 * iu + a1 * u) * iv + (a2 * iu + a3 * u) * v) * .25
+                            local color = 0x237590ff
+                            if d < 2.2 then
+                                local x = first + offset
+                                local f = d * 2.35
+                                local band = min(4, floor(f))
+                                local step = min(4, floor((f - band) * 4 + .5))
+                                local hash = Bits.band((x * 374761393 + hash_y), 0xffffffff)
+                                hash = Bits.bxor(hash, (Bits.rshift(hash, 13)))
+                                local grain = hash % 3 - 1
+                                local caustic = d < 1.4 and caustics[caustic_row + x % 64 + 1] or 0
+                                color = colors[band * 5 + step + 1] + (grain + caustic) * 0x01010100
+                                if d > .09 and d < .17 and (x + streak_y) % 17 < 11 then color = 0xb3dbbfff end
+                            end
+                            pixels[k + offset] = color
                         end
-                        pixels[k + offset] = color
                     end
                 end
             end
@@ -526,6 +600,7 @@ function Ocean:prepare(csv, cx, cy, zoom, ox, oy)
     local changed = self:terrain(csv)
     local key = cx .. ',' .. cy .. ',' .. zoom .. ',' .. ox .. ',' .. oy
     if not changed and key == self.sea_key then return false end
+    local moved = key ~= self.sea_key
     self.sea_key = key
     local image = self.sea or Surface.new(640, 360)
     self.sea = image
@@ -534,18 +609,42 @@ function Ocean:prepare(csv, cx, cy, zoom, ox, oy)
     local inverse = 1 / zoom
     local columns = self.columns or {}
     self.columns = columns
-    for x = 0, 639 do columns[x + 1] = (x + .5 - e) * inverse * .5 end
-    local pixels, ocean = image.pixels, self.ocean.pixels
-    for y = 0, 359 do
-        local yy = (y + .5 - f) * inverse
-        local row = y * 640
-        for x = 0, 639 do
-            local xx = columns[x + 1]
-            local sx, sy = yy + xx, yy - xx
-            pixels[row + x + 1] = sx >= 0 and sx < 512 and sy >= 0 and sy < 512
-                and ocean[floor(sy) * 512 + floor(sx) + 1] or 0x237590ff
+    if moved then for x = 0, 639 do columns[x + 1] = (x + .5 - e) * inverse * .5 end end
+    local left, right = {}, {}
+    if not moved then
+        for i = 1, #self.changed_blocks do
+            local block = self.changed_blocks[i]
+            local x, y = block % 512, floor(block / 512)
+            local x0 = max(0, floor(e + (x - y - 4) * zoom - .5))
+            local x1 = min(640, math.ceil(e + (x - y + 4) * zoom + .5))
+            local y0 = max(0, floor(f + (x + y) * zoom * .5 - .5))
+            local y1 = min(360, math.ceil(f + (x + y + 8) * zoom * .5 + .5))
+            if x1 > x0 then
+                for row = y0, y1 - 1 do
+                    left[row] = min(left[row] or 640, x0)
+                    right[row] = max(right[row] or 0, x1)
+                end
+            end
         end
-        Work.check()
+    end
+    local pixels, ocean, changed_tiles = image.pixels, self.ocean.pixels, {}
+    self.sea_changed = changed_tiles
+    for y = 0, 359 do
+        if moved or left[y] then
+            local yy = (y + .5 - f) * inverse
+            local row, tile_row = y * 640, floor(y / 128) * 5
+            for x = moved and 0 or left[y], (moved and 640 or right[y]) - 1 do
+                local xx = columns[x + 1]
+                local sx, sy = yy + xx, yy - xx
+                local color = sx >= 0 and sx < 512 and sy >= 0 and sy < 512
+                    and ocean[floor(sy) * 512 + floor(sx) + 1] or 0x237590ff
+                if pixels[row + x + 1] ~= color then
+                    pixels[row + x + 1] = color
+                    changed_tiles[tile_row + floor(x / 128) + 1] = true
+                end
+            end
+            Work.check()
+        end
     end
     local waves = {}
     for j = 0, 239 do
@@ -563,6 +662,57 @@ function Ocean:prepare(csv, cx, cy, zoom, ox, oy)
 end
 
 return Ocean
+
+end
+package.preload["lua.native.pixels"]=function(...)
+local Work = require('lua.native.work')
+local Pixels = {}
+
+if _VERSION == 'Lua 5.1' then
+    local ffi = require('ffi')
+    local array = ffi.typeof('uint32_t[?]')
+    local clear_block
+    if ffi.arch == 'arm' then
+        clear_block = function(pixels, first, last)
+            local count = last - first + 1
+            local stop = first + count - count % 4
+            for i = first, stop - 1, 4 do
+                pixels[i], pixels[i + 1], pixels[i + 2], pixels[i + 3] = 0, 0, 0, 0
+            end
+            for i = stop, last do pixels[i] = 0 end
+        end
+    else
+        clear_block = function(pixels, first, last)
+            ffi.fill(pixels + first, (last - first + 1) * 4)
+        end
+    end
+
+    function Pixels.new(count)
+        return array(count + 1)
+    end
+
+    function Pixels.clear(pixels, count)
+        for first = 0, count, 16384 do
+            clear_block(pixels, first, math.min(count, first + 16383))
+            Work.check()
+        end
+    end
+else
+    function Pixels.clear(pixels, count)
+        for i = 1, count do
+            pixels[i] = 0
+            if i % 2048 == 0 then Work.check() end
+        end
+    end
+
+    function Pixels.new(count)
+        local pixels = {}
+        Pixels.clear(pixels, count)
+        return pixels
+    end
+end
+
+return Pixels
 
 end
 package.preload["lua.native.platform"]=function(...)
@@ -686,6 +836,109 @@ function Platform.attach(app)
 end
 
 return Platform
+
+end
+package.preload["lua.native.raster"]=function(...)
+local Surface = require('lua.native.surface')
+local Depth = require('lua.native.depth')
+local Work = require('lua.native.work')
+local floor, ceil, min, max = math.floor, math.ceil, math.min, math.max
+local unpack = _VERSION == 'Lua 5.1' and unpack or table.unpack
+local Raster = {}
+Raster.__index = Raster
+
+function Raster.new(width, height, size)
+    local tiles = {}
+    for y = 0, height - 1, size do
+        for x = 0, width - 1, size do
+            tiles[#tiles + 1] = {
+                left = x, top = y, right = min(width, x + size), bottom = min(height, y + size),
+                commands = {count = -1, size = 0}, next = {count = 0, size = 0}
+            }
+        end
+    end
+    return setmetatable({
+        w = width, h = height, size = size, columns = ceil(width / size), tiles = tiles,
+        land = Surface.new(width, height), lights = Surface.new(width, height),
+        depth = Depth.new(width, height), spare_depth = Depth.new(width, height), changed = {}, depth_changes = {}, revision = 0
+    }, Raster)
+end
+
+function Raster:begin()
+    for i = 1, #self.tiles do self.tiles[i].next.count = 0 end
+end
+
+function Raster:add(method, x, y, width, height, ...)
+    local x0, y0 = floor(x + .5), floor(y + .5)
+    local left, top = max(0, x0), max(0, y0)
+    local right = min(self.w, max(x0 + floor(width + .5), floor(x + width + .5)))
+    local bottom = min(self.h, max(y0 + floor(height + .5), floor(y + height + .5)))
+    if right <= left or bottom <= top then return end
+    local n, size, columns = select('#', ...), self.size, self.columns
+    for row = floor(top / size), floor((bottom - 1) / size) do
+        for column = floor(left / size), floor((right - 1) / size) do
+            local commands = self.tiles[row * columns + column + 1].next
+            local count = commands.count
+            commands[count + 1], commands[count + 2] = method, n
+            for i = 1, n do commands[count + 2 + i] = select(i, ...) end
+            commands.count = count + 2 + n
+        end
+    end
+end
+
+local function different(a, b)
+    if a.count ~= b.count then return true end
+    for i = 1, a.count do if a[i] ~= b[i] then return true end end
+    return false
+end
+
+function Raster:render()
+    local changed, any = {}, false
+    for i = 1, #self.tiles do
+        local tile = self.tiles[i]
+        local commands = tile.next
+        for j = commands.count + 1, commands.size do commands[j] = nil end
+        commands.size = commands.count
+        if different(commands, tile.commands) then changed[i], any = true, true end
+    end
+    if any then
+        for i in pairs(self.depth_changes) do
+            local tile = self.tiles[i]
+            self.spare_depth:copy(self.depth, tile.left, tile.top, tile.right, tile.bottom)
+        end
+        self.depth, self.spare_depth = self.spare_depth, self.depth
+        for i = 1, #self.tiles do
+            if changed[i] then
+                local tile = self.tiles[i]
+                local left, top, right, bottom = tile.left, tile.top, tile.right, tile.bottom
+                self.land:clip(left, top, right, bottom)
+                self.lights:clip(left, top, right, bottom)
+                self.depth:clip(left, top, right, bottom)
+                self.land:clear()
+                self.lights:clear()
+                self.depth:clear()
+                local commands, index = tile.next, 1
+                while index <= commands.count do
+                    local method, n = commands[index], commands[index + 1]
+                    method(self, unpack(commands, index + 2, index + 1 + n))
+                    index = index + n + 2
+                    Work.check()
+                end
+                tile.commands, tile.next = tile.next, tile.commands
+                local spare = tile.next
+                for j = 1, spare.count do spare[j] = nil end
+                spare.count, spare.size = 0, 0
+            end
+        end
+        self.land:clip(0, 0, self.w, self.h)
+        self.lights:clip(0, 0, self.w, self.h)
+        self.depth:clip(0, 0, self.w, self.h)
+        self.depth_changes = changed
+    end
+    self.changed, self.revision = changed, self.revision + 1
+end
+
+return Raster
 
 end
 package.preload["lua.native.raycast"]=function(...)
@@ -831,17 +1084,20 @@ return Queue
 end
 package.preload["lua.native.resources"]=function(...)
 local Assets = require('lua.native.assets')
-local Binary = require('lua.native.binary')
+local Runs = require('lua.native.runs')
 local Surface = require('lua.native.surface')
-local Work = require('lua.native.work')
 local Resources = {}
 Resources.__index = Resources
 
 function Resources.new(std)
+    local file = assert(io.open(Assets.path('colors.bin'), 'rb'))
+    local palette = Runs.palette(assert(file:read('*a')))
+    assert(file:close())
     return setmetatable({
         std = std,
         sprites = dofile(Assets.path('sprites.lua')),
         fonts = dofile(Assets.path('fonts.lua')),
+        palette = palette,
         file = assert(io.open(Assets.path('pixels.bin'), 'rb')),
         textures = {}, pending = {}, writing = {}, serial = 0, frame = 0, bytes = 0, count = 0,
         limit = 32 * 1024 * 1024
@@ -851,15 +1107,7 @@ end
 function Resources:source(meta)
     if not meta.runs then
         assert(self.file:seek('set', meta.offset))
-        local data = assert(self.file:read(meta.length))
-        local runs, at = {}, 1
-        for pos = 1, #data, 10 do
-            local x, y, w, color = Binary.run(data, pos)
-            runs[at], runs[at + 1], runs[at + 2], runs[at + 3] = x, y, w, color
-            at = at + 4
-            if pos % 2560 == 1 then Work.check() end
-        end
-        meta.runs = runs
+        meta.runs = Runs.new(assert(self.file:read(meta.length)), self.palette)
     end
     return meta
 end
@@ -899,19 +1147,22 @@ function Resources:trim(needed)
     end
 end
 
-function Resources:add(key, surface, scale, red, green, blue, light, intensity, pinned)
+function Resources:add(key, surface, scale, red, green, blue, light, intensity, pinned, region, content)
     scale = scale or 1
-    local bytes = surface.w * surface.h * scale * scale * 4
+    local width, height = surface.w, surface.h
+    if region then width, height = region.w, region.h end
+    local bytes = width * height * scale * scale * 4
     self:trim(bytes)
     self.serial = self.serial + 1
     local path = Assets.texture(self.serial)
     self.bytes, self.count = self.bytes + bytes, self.count + 1
     self.writing[path] = true
-    surface:write(path, scale, red, green, blue, light, intensity)
+    surface:write(path, scale, red, green, blue, light, intensity, region, content)
     self.writing[path] = nil
     local entry = {
         key = key, path = path, id = self.std.image.load(Assets.remote and 'file://' .. path or path), bytes = bytes,
-        w = surface.w * scale, h = surface.h * scale,
+        w = width * scale, h = height * scale,
+        content = content,
         used = self.frame, pinned = pinned, ready = false
     }
     self.textures[key] = entry
@@ -949,6 +1200,56 @@ function Resources:close()
 end
 
 return Resources
+
+end
+package.preload["lua.native.runs"]=function(...)
+local Runs = {}
+
+if _VERSION == 'Lua 5.1' then
+    local ffi = require('ffi')
+    local record = ffi.typeof('struct { uint8_t x, y, width, height; uint16_t color; }')
+    local pointer = ffi.typeof('const $ *', record)
+
+    function Runs.palette(data)
+        return {data = data, view = ffi.cast('const uint32_t *', data)}
+    end
+
+    function Runs.new(data, palette)
+        return {data = data, view = ffi.cast(pointer, data), palette = palette, count = #data / 6, bytes = #data}
+    end
+
+    function Runs.get(runs, index)
+        local value = runs.view[index]
+        return value.x, value.y, value.width, value.height, runs.palette.view[value.color]
+    end
+else
+    local Binary = require('lua.native.binary')
+    local Work = require('lua.native.work')
+
+    function Runs.palette(data)
+        local values = {}
+        for position = 1, #data, 4 do values[#values + 1] = Binary.u32(data, position) end
+        return values
+    end
+
+    function Runs.new(data, palette)
+        local values, at = {}, 1
+        for position = 1, #data, 6 do
+            local x, y, width, height, color = Binary.run(data, position)
+            values[at], values[at + 1], values[at + 2], values[at + 3], values[at + 4] = x, y, width, height, palette[color + 1]
+            at = at + 5
+            if position % 1536 == 1 then Work.check() end
+        end
+        return {values = values, count = #data / 6, bytes = #values * 8}
+    end
+
+    function Runs.get(runs, index)
+        local values, at = runs.values, index * 5 + 1
+        return values[at], values[at + 1], values[at + 2], values[at + 3], values[at + 4]
+    end
+end
+
+return Runs
 
 end
 package.preload["lua.native.shadow_cache"]=function(...)
@@ -1061,7 +1362,7 @@ function Shadows.new(resources, heights)
     local file = assert(io.open(Assets.path('shadow-shapes.bin'), 'rb'))
     local points = assert(file:read('*a'))
     assert(file:close())
-    return setmetatable({resources = resources, heights = heights, points = points, cache = ShadowCache.new(points), projections = {}, field = {}, tiles = {}, cells = {}, shadow_cells = {}}, Shadows)
+    return setmetatable({resources = resources, heights = heights, points = points, cache = ShadowCache.new(points), projections = {}, field = {}, tiles = {}, previous_tiles = {}, signatures = {}, cells = {}, shadow_cells = {}}, Shadows)
 end
 
 function Shadows:ground(x, y)
@@ -1084,7 +1385,8 @@ function Shadows:prepare(csv, scene, phase, detail)
     local stride = math.floor(n / 32)
     self.n = n
     for i = 1, math.floor(n * n / 32) do field[i] = 0 end
-    self.tiles, self.cells, self.shadow_cells, self.deck_shadow_cells = {}, {}, {}, {}
+    self.previous_tiles, self.tiles, self.signatures = self.tiles, {}, {}
+    self.cells, self.shadow_cells, self.deck_shadow_cells = {}, {}, {}
     self.decks, self.deck_field = {}, self.deck_field or {}
     local objects = {}
     for row in scene:gmatch('[^;]+') do
@@ -1105,7 +1407,8 @@ function Shadows:prepare(csv, scene, phase, detail)
                 for xx = max(0, floor(lx - 1)), min(23, floor(lx + 1)) do
                     local k = yy * 24 + xx + 1
                     local near = self.cells[k]
-                    if not near then near = {}; self.cells[k] = near end
+                    if not near then near = {}
+self.cells[k] = near end
                     near[#near + 1] = lamp
                 end
             end
@@ -1250,59 +1553,107 @@ function Shadows:projection(corners)
     return output
 end
 
-function Shadows:paint(target, wx, wy, sx, sy, zoom, corners, mask, coarse, light, depth, receiver)
+local function signature(self, wx, wy, light, receiver)
+    local key = (wy * 24 + wx) * 3 + (light and 2 or receiver and 1 or 0)
+    local cached = self.signatures[key]
+    if cached then return cached end
+    local parts = {}
+    if light then
+        local near = self.cells[wy * 24 + wx + 1]
+        parts[1] = #near
+        for i = 1, #near do
+            local lamp = near[i]
+            parts[#parts + 1], parts[#parts + 2], parts[#parts + 3] = lamp[1], lamp[2], lamp[3]
+        end
+        for y = max(0, wy - 1), min(24, wy + 2) do
+            for x = max(0, wx - 1), min(24, wx + 2) do parts[#parts + 1] = self.heights[y * 25 + x + 1] end
+        end
+        for y = max(0, wy - 1), min(23, wy + 1) do
+            for x = max(0, wx - 1), min(23, wx + 1) do parts[#parts + 1] = self.decks[y * 24 + x + 1] or -1 end
+        end
+        cached = table.concat(parts, ',')
+    else
+        local res, stride = self.res, self.n / 32
+        local field = receiver and self.deck_field or self.field
+        local origin = wy * res * stride + wx * res / 32 + 1
+        if res == 64 then
+            for row = 0, 63 do
+                local at = origin + row * stride
+                parts[#parts + 1] = Binary.pack_mask(field[at], field[at + 1])
+            end
+        else
+            for row = 0, 31, 2 do
+                local at = origin + row * stride
+                parts[#parts + 1] = Binary.pack_mask(field[at], field[at + stride])
+            end
+        end
+        cached = table.concat(parts)
+    end
+    self.signatures[key] = cached
+    return cached
+end
+
+function Shadows:tile(wx, wy, corners, mask, coarse, light, receiver)
     local cell = wy * 24 + wx + 1
     local near = self.cells[cell]
-    if light and not near then return end
+    if light and not near then return false end
     local shadow_cells = receiver and self.deck_shadow_cells or self.shadow_cells
-    if not light and (not self.sun or (not shadow_cells[cell] and mask == '')) then return end
-    local key = cell .. ':' .. corners .. ':' .. tostring(light) .. ':' .. mask .. ':' .. tostring(receiver)
-    local tile = self.tiles[key]
-    if tile == nil then
-        tile = Surface.new(65, 65)
-        local projection, hits = self:projection(corners), 0
-        local field = receiver and self.deck_field or self.field
-        for i = 1, 65 * 65 do
-            local uv = projection[i]
-            if uv then
-                local u, v, alpha = uv[1], uv[2], 0
-                local color
-                if light then
-                    local x, y = wx + u, wy + v
-                    local z = receiver or self:ground(x, y)
-                    for _, emitter in ipairs(near) do
-                        local du, dv, dz = x - emitter[1], y - emitter[2], emitter[3] - z
-                        if dz > 0 then
-                            local radius = min(.9, max(.2, dz / 30))
-                            local d = (du * du + dv * dv) / (radius * radius)
-                            if d < 1 then
-                                local px, py, pz = raycast(self.heights, self.decks, emitter[1], emitter[2], emitter[3], du / dz, dv / dz)
-                                if px and math.abs(px - x) < .001 and math.abs(py - y) < .001 and math.abs(pz - z) < .001 then
-                                    alpha = max(alpha, d < .12 and 72 or d < .4 and 46 or d < .7 and 26 or 12)
-                                end
+    if not light and (not self.sun or (not shadow_cells[cell] and mask == '')) then return false end
+    local key = cell .. ':' .. corners .. ':' .. tostring(light) .. ':' .. mask .. ':' .. coarse .. ':' .. tostring(receiver)
+    local cached = self.tiles[key]
+    if cached then return cached.surface end
+    local source = signature(self, wx, wy, light, receiver)
+    cached = self.previous_tiles[key]
+    if cached and cached.signature == source then
+        self.tiles[key] = cached
+        return cached.surface
+    end
+    local tile = Surface.new(65, 65)
+    local projection, hits = self:projection(corners), 0
+    local field = receiver and self.deck_field or self.field
+    for i = 1, 65 * 65 do
+        local uv = projection[i]
+        if uv then
+            local u, v, alpha = uv[1], uv[2], 0
+            local color
+            if light then
+                local x, y = wx + u, wy + v
+                local z = receiver or self:ground(x, y)
+                for _, emitter in ipairs(near) do
+                    local du, dv, dz = x - emitter[1], y - emitter[2], emitter[3] - z
+                    if dz > 0 then
+                        local radius = min(0.9, max(0.2, dz / 30))
+                        local d = (du * du + dv * dv) / (radius * radius)
+                        if d < 1 then
+                            local px, py, pz = raycast(self.heights, self.decks, emitter[1], emitter[2], emitter[3], du / dz, dv / dz)
+                            if px and math.abs(px - x) < 0.001 and math.abs(py - y) < 0.001 and math.abs(pz - z) < 0.001 then
+                                alpha = max(alpha, d < 0.12 and 72 or d < 0.4 and 46 or d < 0.7 and 26 or 12)
                             end
                         end
                     end
-                    color = Bits.bor(0xffce7700, alpha)
-                else
-                    local k = (wy * self.res + floor(v * self.res)) * self.n + wx * self.res + floor(u * self.res)
-                    local hit = Bits.band(field[math.floor(k / 32) + 1], (Bits.lshift(1, (k % 32)))) ~= 0
-                    local terrain = mask:byte(floor(v * coarse) * coarse + floor(u * coarse) + 1) == 49
-                    alpha = (hit or terrain) and 80 or 0
-                    color = Bits.bor(0x19273e00, alpha)
                 end
-                if alpha > 0 then tile.pixels[i] = color; hits = hits + 1 end
+                color = Bits.bor(0xffce7700, alpha)
+            else
+                local k = (wy * self.res + floor(v * self.res)) * self.n + wx * self.res + floor(u * self.res)
+                local hit = Bits.band(field[math.floor(k / 32) + 1], (Bits.lshift(1, (k % 32)))) ~= 0
+                local terrain = mask:byte(floor(v * coarse) * coarse + floor(u * coarse) + 1) == 49
+                alpha = (hit or terrain) and 80 or 0
+                color = Bits.bor(0x19273e00, alpha)
             end
-            if i % 65 == 0 then Work.check() end
+            if alpha > 0 then
+                tile.pixels[i] = color
+                hits = hits + 1
+            end
         end
-        if hits == 0 then tile = false end
-        self.tiles[key] = tile
+        if i % 65 == 0 then Work.check() end
     end
-    if tile then
-        local x, y = floor(sx - 32 * zoom + .5), floor(sy - 17 * zoom + .5)
-        if depth then target:blit_plane(tile, x, y, zoom, depth, wx + wy + receiver / 16 - 17 / 16)
-        else target:blit(tile, x, y, zoom) end
-    end
+    if hits == 0 then tile = false end
+    self.tiles[key] = { signature = source, surface = tile }
+    return tile
+end
+
+function Shadows:finish()
+    self.previous_tiles = {}
 end
 
 return Shadows
@@ -1421,6 +1772,8 @@ end
 package.preload["lua.native.surface"]=function(...)
 local Bits = require('lua.native.bits')
 local Binary = require('lua.native.binary')
+local Pixels = require('lua.native.pixels')
+local Runs = require('lua.native.runs')
 local Work = require('lua.native.work')
 local floor, min, max = math.floor, math.min, math.max
 local char = string.char
@@ -1431,7 +1784,15 @@ local function over(src, dst)
     local a = Bits.band(src, 255)
     if a == 255 or dst == 0 then return src end
     if a == 0 then return dst end
-    local b = (Bits.band(dst, 255)) * (255 - a) / 255
+    local destination_alpha = Bits.band(dst, 255)
+    local inverse = 255 - a
+    if destination_alpha == 255 then
+        local rb = Bits.band(Bits.rshift(src, 8), 0xff00ff) * a + Bits.band(Bits.rshift(dst, 8), 0xff00ff) * inverse + 0x800080
+        rb = Bits.band(Bits.rshift(rb + Bits.band(Bits.rshift(rb, 8), 0xff00ff), 8), 0xff00ff)
+        local g = floor((Bits.band(Bits.rshift(src, 16), 255) * a + Bits.band(Bits.rshift(dst, 16), 255) * inverse) * (1 / 255) + .5)
+        return rb * 256 + g * 65536 + 255
+    end
+    local b = destination_alpha * inverse / 255
     local alpha = a + b
     local r = floor(((Bits.band((Bits.rshift(src, 24)), 255)) * a + (Bits.band((Bits.rshift(dst, 24)), 255)) * b) / alpha + .5)
     local g = floor(((Bits.band((Bits.rshift(src, 16)), 255)) * a + (Bits.band((Bits.rshift(dst, 16)), 255)) * b) / alpha + .5)
@@ -1440,28 +1801,32 @@ local function over(src, dst)
 end
 
 function Surface.new(w, h)
-    local pixels = {}
-    for i = 1, w * h do
-        pixels[i] = 0
-        if i % 2048 == 0 then Work.check() end
-    end
-    return setmetatable({w = w, h = h, pixels = pixels}, Surface)
+    return setmetatable({w = w, h = h, left = 0, top = 0, right = w, bottom = h, pixels = Pixels.new(w * h)}, Surface)
 end
 
 function Surface.solid(w, h, color)
     return setmetatable({w = w, h = h, fill = color}, Surface)
 end
 
+function Surface:clip(left, top, right, bottom)
+    self.left, self.top, self.right, self.bottom = left, top, right, bottom
+end
+
 function Surface:clear()
-    for i = 1, self.w * self.h do
-        self.pixels[i] = 0
-        if i % 2048 == 0 then Work.check() end
+    if self.left == 0 and self.top == 0 and self.right == self.w and self.bottom == self.h then
+        Pixels.clear(self.pixels, self.w * self.h)
+    else
+        for y = self.top, self.bottom - 1 do
+            local row = y * self.w
+            for x = self.left + 1, self.right do self.pixels[row + x] = 0 end
+            Work.check()
+        end
     end
 end
 
 function Surface:rect(x, y, w, h, color, erase)
-    local x0, y0 = max(0, floor(x + .5)), max(0, floor(y + .5))
-    local x1, y1 = min(self.w, floor(x + w + .5)), min(self.h, floor(y + h + .5))
+    local x0, y0 = max(self.left, floor(x + .5)), max(self.top, floor(y + .5))
+    local x1, y1 = min(self.right, floor(x + w + .5)), min(self.bottom, floor(y + h + .5))
     local pixels, width = self.pixels, self.w
     local alpha = Bits.band(color, 255)
     if alpha == 0 then return end
@@ -1492,24 +1857,19 @@ end
 function Surface:blit(source, x, y, scale, alpha, erase)
     scale, alpha = scale or 1, alpha or 1
     if source.runs and scale == 1 then
-        local runs, pixels, width, height = source.runs, self.pixels, self.w, self.h
-        local last_y, rows, row
-        for i = 1, #runs, 4 do
-            local color = runs[i + 3]
+        local runs, pixels, width = source.runs, self.pixels, self.w
+        local x0, y0 = floor(x + .5), floor(y + .5)
+        for i = 0, runs.count - 1 do
+            local sx, sy, span, span_y, color = Runs.get(runs, i)
             if alpha ~= 1 then color = Bits.bor((Bits.band(color, 0xffffff00)), floor((Bits.band(color, 255)) * alpha + .5)) end
             local opacity = Bits.band(color, 255)
             if opacity ~= 0 then
-                local sy = runs[i + 1]
-                if sy ~= last_y then
-                    local ry = y + sy
-                    local y0 = max(0, floor(ry + .5))
-                    rows, row = min(height, floor(ry + 1 + .5)) - y0, y0 * width
-                    last_y = sy
-                end
+                local first_y = max(self.top, y0 + sy)
+                local rows = min(self.bottom, y0 + sy + span_y) - first_y
                 if rows > 0 then
-                    local rx = x + runs[i]
-                    local first = row + max(0, floor(rx + .5)) + 1
-                    local last = row + min(width, floor(rx + runs[i + 2] + .5))
+                    local row = first_y * width
+                    local first = row + max(self.left, x0 + sx) + 1
+                    local last = row + min(self.right, x0 + sx + span)
                     for _ = 1, rows do
                         if opacity == 255 then
                             if erase then color = 0 end
@@ -1528,17 +1888,17 @@ function Surface:blit(source, x, y, scale, alpha, erase)
                     end
                 end
             end
-            if i % 256 == 1 then Work.check() end
+            if i % 64 == 0 then Work.check() end
         end
         return
     end
     if source.runs and scale % 1 == 0 then
         local runs = source.runs
-        for i = 1, #runs, 4 do
-            local color = runs[i + 3]
+        for i = 0, runs.count - 1 do
+            local sx, sy, width, height, color = Runs.get(runs, i)
             if alpha ~= 1 then color = Bits.bor((Bits.band(color, 0xffffff00)), floor((Bits.band(color, 255)) * alpha + .5)) end
-            self:rect(x + runs[i] * scale, y + runs[i + 1] * scale, runs[i + 2] * scale, scale, color, erase)
-            if i % 256 == 1 then Work.check() end
+            self:rect(x + sx * scale, y + sy * scale, width * scale, height * scale, color, erase)
+            if i % 64 == 0 then Work.check() end
         end
         return
     end
@@ -1553,10 +1913,10 @@ function Surface:blit(source, x, y, scale, alpha, erase)
     local w, h = floor(source.w * scale + .5), floor(source.h * scale + .5)
     local target, width = self.pixels, self.w
     local inverse = 1 / scale
-    for yy = max(0, -y0), min(h, self.h - y0) - 1 do
+    for yy = max(self.top - y0, 0), min(h, self.bottom - y0) - 1 do
         local sy = min(source.h - 1, floor((yy + .5) * inverse)) * source.w
         local row = (y0 + yy) * width + x0
-        for xx = max(0, -x0), min(w, self.w - x0) - 1 do
+        for xx = max(self.left - x0, 0), min(w, self.right - x0) - 1 do
             local color = pixels[sy + min(source.w - 1, floor((xx + .5) * inverse)) + 1]
             if color ~= 0 then
                 if alpha ~= 1 then color = Bits.bor((Bits.band(color, 0xffffff00)), floor((Bits.band(color, 255)) * alpha + .5)) end
@@ -1580,10 +1940,10 @@ function Surface:blit_plane(source, x, y, scale, depth, base)
     local x0, y0 = floor(x + .5), floor(y + .5)
     local w, h = floor(source.w * scale + .5), floor(source.h * scale + .5)
     local inverse, target, pixels = 1 / scale, self.pixels, source.pixels
-    for yy = max(0, -y0), min(h, self.h - y0) - 1 do
+    for yy = max(self.top - y0, 0), min(h, self.bottom - y0) - 1 do
         local sy = min(source.h - 1, floor((yy + .5) * inverse))
         local row, value = (y0 + yy) * self.w + x0, base + sy / 16 + .08
-        for xx = max(0, -x0), min(w, self.w - x0) - 1 do
+        for xx = max(self.left - x0, 0), min(w, self.right - x0) - 1 do
             local index = row + xx + 1
             if depth.pixels[index] <= value then
                 local color = pixels[sy * source.w + min(source.w - 1, floor((xx + .5) * inverse)) + 1]
@@ -1604,24 +1964,23 @@ function Surface:copy(source, sx, sy, w, h, dx, dy)
     end
 end
 
-function Surface:write(path, scale, red, green, blue, light, intensity)
+function Surface:encode(scale, red, green, blue, light, intensity, region)
     scale = scale or 1
     red, green, blue = red or 255, green or 255, blue or 255
     intensity = intensity or 0
-    local file = assert(io.open(path, 'wb'))
-    assert(file:write(Binary.tga_header(self.w * scale, self.h * scale)))
+    local x0, y0, width, height = 0, 0, self.w, self.h
+    if region then x0, y0, width, height = region.x, region.y, region.w, region.h end
+    local chunks = {Binary.tga_header(width * scale, height * scale)}
     local palette, shaded, row = {}, {}, {}
     if self.fill then
-        local color, row, left = self.fill, {}, self.w * scale
+        local color, row, left = self.fill, {}, width * scale
         local pixel = char(Bits.band((Bits.rshift(color, 8)), 255), Bits.band((Bits.rshift(color, 16)), 255), Bits.band((Bits.rshift(color, 24)), 255), Bits.band(color, 255))
         while left > 0 do
             local n = min(128, left)
             row[#row + 1] = char(127 + n) .. pixel
             left = left - n
         end
-        assert(file:write(table.concat(row):rep(self.h * scale)))
-        assert(file:close())
-        return
+        return chunks[1] .. table.concat(row):rep(height * scale)
     end
     local function encode(color)
         local value = palette[color]
@@ -1642,7 +2001,7 @@ function Surface:write(path, scale, red, green, blue, light, intensity)
         end
         return value
     end
-    for y = 0, self.h - 1 do
+    for y = y0, y0 + height - 1 do
         local count, last, length = 0, -1, 0
         local function flush()
             while length > 0 do
@@ -1652,7 +2011,7 @@ function Surface:write(path, scale, red, green, blue, light, intensity)
                 length = length - n
             end
         end
-        for x = 1, self.w do
+        for x = x0 + 1, x0 + width do
             local k = y * self.w + x
             local color = tint(self.pixels[k])
             if light and intensity > 0 then
@@ -1667,9 +2026,15 @@ function Surface:write(path, scale, red, green, blue, light, intensity)
         end
         flush()
         local bytes = table.concat(row, '', 1, count)
-        for _ = 1, scale do assert(file:write(bytes)) end
+        chunks[#chunks + 1] = bytes:rep(scale)
         Work.check()
     end
+    return table.concat(chunks)
+end
+
+function Surface:write(path, scale, red, green, blue, light, intensity, region, content)
+    local file = assert(io.open(path, 'wb'))
+    assert(file:write(content or self:encode(scale, red, green, blue, light, intensity, region)))
     assert(file:close())
 end
 
@@ -1680,6 +2045,7 @@ end
 package.preload["lua.native.ui"]=function(...)
 local Bits = require('lua.native.bits')
 local Surface = require('lua.native.surface')
+local Runs = require('lua.native.runs')
 local floor, min, max = math.floor, math.min, math.max
 local UI = {}
 UI.__index = UI
@@ -1746,7 +2112,10 @@ function UI:text(x, y, value, size, color, max_width, face)
         for _, ch in ipairs(chars) do
             local glyph = self.resources:source(font.glyphs[ch] or font.glyphs['?'])
             local runs = glyph.runs
-            for i = 1, #runs, 4 do image:rect(cursor + glyph.ox + runs[i], glyph.oy - top + runs[i + 1], runs[i + 2], 1, Bits.bor(color, 255)) end
+            for i = 0, runs.count - 1 do
+                local rx, ry, width, height = Runs.get(runs, i)
+                image:rect(cursor + glyph.ox + rx, glyph.oy - top + ry, width, height, Bits.bor(color, 255))
+            end
             cursor = cursor + glyph.advance
         end
         entry = self.resources:add(key, image, 2)
@@ -1842,10 +2211,10 @@ end
 package.preload["lua.native.world"]=function(...)
 local Assets = require('lua.native.assets')
 local Bits = require('lua.native.bits')
-local Surface = require('lua.native.surface')
+local Raster = require('lua.native.raster')
+local Layer = require('lua.native.layer')
 local Ocean = require('lua.native.ocean')
 local Shadows = require('lua.native.shadows')
-local Depth = require('lua.native.depth')
 local Actors = require('lua.native.actors')
 local floor, min, max = math.floor, math.min, math.max
 local World = {}
@@ -1882,18 +2251,11 @@ function World:begin(csv, cx, cy, zoom, ox, oy)
     local factor = zoom >= 2 and 2 or 1
     if self.factor ~= factor then
         self.factor = factor
-        self.land, self.lights = Surface.new(math.floor(1280 / factor), math.floor(720 / factor)), Surface.new(math.floor(1280 / factor), math.floor(720 / factor))
-    else
-        self.land:clear()
-        self.lights:clear()
+        self.raster = Raster.new(floor(1280 / factor), floor(720 / factor), 256 / factor)
+        self.land, self.lights = self.raster.land, self.raster.lights
     end
+    self.raster:begin()
     self.cx, self.cy, self.ox, self.oy = cx, cy, ox, oy
-    if self.depth == (self.current and self.current.depth) or not self.depth or self.depth.w ~= math.floor(1280 / factor) then
-        self.depth = self.spare_depth
-        if not self.depth or self.depth.w ~= math.floor(1280 / factor) then self.depth = Depth.new(math.floor(1280 / factor), math.floor(720 / factor))
-        else self.depth:clear() end
-        self.spare_depth = nil
-    else self.depth:clear() end
 end
 
 function World:scene(scene, phase, detail)
@@ -1901,9 +2263,7 @@ function World:scene(scene, phase, detail)
     self.shadows:prepare(self.csv, scene, phase, detail)
 end
 
-function World:sprite(key, x, y, scale, alpha, lit)
-    local meta = self.resources:source(assert(self.resources.sprites[key], key))
-    local factor = self.factor
+local function draw_sprite(self, meta, key, x, y, scale, factor, alpha, lit)
     local xx, yy = floor(x - meta.ox * scale + .5) / factor, floor(y - meta.oy * scale + .5) / factor
     local s = scale / factor
     self.land:blit(meta, xx, yy, s, alpha)
@@ -1921,42 +2281,82 @@ function World:sprite(key, x, y, scale, alpha, lit)
     end
 end
 
+function World:sprite(key, x, y, scale, alpha, lit)
+    local meta = self.resources:source(assert(self.resources.sprites[key], key))
+    local factor, s = self.factor, scale / self.factor
+    local left, top = floor(x - meta.ox * scale + .5) / factor, floor(y - meta.oy * scale + .5) / factor
+    local right, bottom = left + meta.w * s, top + meta.h * s
+    if key == 'lamp' and lit ~= false then
+        local px, py = (x + (.71 - .185) * 32 * scale) / factor, (y + ((.71 + .185) * 16 - 23) * scale) / factor
+        left, top, right, bottom = min(left, px - 4 * s), min(top, py - 3 * s), max(right, px + 4 * s), max(bottom, py + 3 * s)
+    end
+    self.raster:add(draw_sprite, left, top, right - left, bottom - top, meta, key, x, y, scale, factor, alpha, lit)
+end
+
+local function draw_depth(self, meta, x, y, scale, base, data)
+    self.depth:stamp(meta, x, y, scale, base, data)
+end
+
 function World:stamp(key, x, y, scale, wx, wy, z)
     local meta = assert(self.resources.sprites[key], key)
-    self.depth:stamp(meta, (x - meta.ox * scale) / self.factor, (y - meta.oy * scale) / self.factor, scale / self.factor, wx + wy + z / 16, self.depths)
+    if not meta.depth then return end
+    local xx, yy, s = (x - meta.ox * scale) / self.factor, (y - meta.oy * scale) / self.factor, scale / self.factor
+    self.raster:add(draw_depth, xx, yy, meta.w * s, meta.h * s, meta, xx, yy, s, wx + wy + z / 16, self.depths)
 end
 
 function World:actor(key, wx, wy, z, appearance, accessory_key)
     if self.current then self.actors:draw(self.current, key, wx, wy, z, appearance, accessory_key) end
 end
 
+local function draw_shadow(self, tile, x, y, scale, light, receiver)
+    local target = light and self.lights or self.land
+    if receiver then target:blit_plane(tile, x, y, scale, self.depth, receiver)
+    else target:blit(tile, x, y, scale) end
+end
+
+local function queue_shadow(self, wx, wy, sx, sy, zoom, corners, mask, coarse, light, receiver)
+    local tile = self.shadows:tile(wx, wy, corners, mask, coarse, light, receiver)
+    if not tile then return end
+    local s = zoom / self.factor
+    local x, y = floor(sx / self.factor - 32 * s + .5), floor(sy / self.factor - 17 * s + .5)
+    self.raster:add(draw_shadow, x, y, tile.w * s, tile.h * s, tile, x, y, s, light, receiver and wx + wy + receiver / 16 - 17 / 16)
+end
+
 function World:shadow(mask, sx, sy, zoom, corners, res, wx, wy)
-    self.shadows:paint(self.land, wx, wy, sx / self.factor, sy / self.factor, zoom / self.factor, corners, mask, res, false)
+    queue_shadow(self, wx, wy, sx, sy, zoom, corners, mask, res, false)
 end
 
 function World:ground_light(wx, wy, sx, sy, zoom, corners)
-    self.shadows:paint(self.lights, wx, wy, sx / self.factor, sy / self.factor, zoom / self.factor, corners, '', 8, true)
+    queue_shadow(self, wx, wy, sx, sy, zoom, corners, '', 8, true)
 end
 
 function World:bridge(wx, wy, sx, sy, zoom, z)
-    local factor = self.factor
-    self.shadows:paint(self.land, wx, wy, sx / factor, sy / factor, zoom / factor, 0, '', 8, false, self.depth, z)
-    self.shadows:paint(self.lights, wx, wy, sx / factor, sy / factor, zoom / factor, 0, '', 8, true, self.depth, z)
+    queue_shadow(self, wx, wy, sx, sy, zoom, 0, '', 8, false, z)
+    queue_shadow(self, wx, wy, sx, sy, zoom, 0, '', 8, true, z)
 end
 
 function World:publish(phase)
     self.generation = self.generation + 1
     local r, g, b = tone(phase)
     local night = max(0, min(1, phase > .73 and (phase - .73) / .13 or phase < .25 and (.25 - phase) / .1 or 0))
-    if self.pending then
-        self.pending.sea.pinned, self.pending.land.pinned = false, false
+    local current, sea = self.current
+    local same_tone = current and current.tone_red == r and current.tone_green == g and current.tone_blue == b
+    if same_tone and current.sea_key == self.ocean.sea_key and current.shore_key == self.ocean.shore_key then
+        sea = current.sea
+    else
+        sea = Layer.new(self.resources, 'sea:' .. self.generation, self.ocean.sea, 2, r, g, b, nil, nil, current and current.sea, same_tone and self.ocean.sea_changed or nil)
+    end
+    local changed
+    if same_tone and current.factor == self.factor and current.night == night then
+        changed = current.raster_revision == self.raster.revision and {} or self.raster.changed
     end
     self.pending = {
         generation = self.generation, depth = self.depth, factor = self.factor,
+        raster_revision = self.raster.revision, night = night,
         cx = self.cx, cy = self.cy, ox = self.ox, oy = self.oy, zoom = self.zoom,
         tone_red = r, tone_green = g, tone_blue = b,
-        sea = self.resources:add('sea:' .. self.generation, self.ocean.sea, 2, r, g, b, nil, nil, true),
-        land = self.resources:add('land:' .. self.generation, self.land, self.factor, r, g, b, self.lights, night * .94, true),
+        sea = sea, sea_key = self.ocean.sea_key, shore_key = self.ocean.shore_key,
+        land = Layer.new(self.resources, 'land:' .. self.generation, self.land, self.factor, r, g, b, self.lights, night * .94, current and current.land, changed),
         waves = self.ocean.waves,
         gold = tinted(0xe2bd8bff, r, g, b), shore = tinted(0x95cfbfff, r, g, b), blue = tinted(0x4d95abff, r, g, b)
     }
@@ -1964,17 +2364,19 @@ function World:publish(phase)
 end
 
 function World:finish()
+    self.raster:render()
+    self.shadows:finish()
+    self.depth = self.raster.depth
     self:publish(self.phase)
 end
 
 function World:draw(phase, time, motion)
     self.clock = time
     local pending = self.pending
-    if pending and pending.sea.ready and pending.land.ready then
+    if pending and pending.sea:ready() and pending.land:ready() then
         if self.current then
-            if self.current.depth ~= pending.depth then self.spare_depth = self.current.depth end
-            self.resources:remove(self.current.sea)
-            self.resources:remove(self.current.land)
+            self.current.sea:remove(pending.sea)
+            self.current.land:remove(pending.land)
         end
         self.current, self.pending = pending, nil
     end
@@ -1985,7 +2387,7 @@ function World:draw(phase, time, motion)
         std.draw.rect(0, 0, 0, 1280, 720)
         return
     end
-    self.resources:draw(current.sea, 0, 0)
+    current.sea:draw(0, 0)
     if motion then
         for i = 1, #current.waves do
             local wave = current.waves[i]
@@ -1997,7 +2399,7 @@ function World:draw(phase, time, motion)
             if t > 3 and t < 8 then std.draw.rect(0, x + 4, y + 4, max(2, wave[3] - 8), 2) end
         end
     end
-    self.resources:draw(current.land, 0, 0)
+    current.land:draw(0, 0)
 end
 
 function World:burst(x, y, good)
@@ -2050,7 +2452,7 @@ return World
 
 end
 local Assets=require('lua.native.assets')
-Assets.configure("https://guilhhotina.github.io/mare/native/9006d4482b404676/",{{"depths.bin",4511092},{"fonts.lua",206779},{"pixels.bin",8702050},{"shadow-shapes.bin",1603248},{"sound-0.wav",2470},{"sound-1.wav",5776},{"sound-2.wav",5776},{"sprites.lua",2930378}})
+Assets.configure("https://guilhhotina.github.io/mare/native/d61183411a9139a4/",{{"colors.bin",1080},{"depths.bin",6695574},{"fonts.lua",204935},{"pixels.bin",4567680},{"shadow-shapes.bin",1603248},{"sound-0.wav",2470},{"sound-1.wav",5776},{"sound-2.wav",5776},{"sprites.lua",3073413}})
 Platform=require('lua.native.platform')
 
 end
@@ -2456,7 +2858,7 @@ local function frames(prefix, action)
     return directions
 end
 
-function ActorRender.new(activities, platform)
+function ActorRender.new(activities, platform, traffic_sprite)
     local actions = {}
     for i = 1, #activities do
         local activity = activities[i]
@@ -2467,7 +2869,7 @@ function ActorRender.new(activities, platform)
         for accessory = 1, 7 do action.accessories[accessory] = frames('actor_accessory_' .. accessory .. '_', activity) end
         actions[activity.id] = action
     end
-    return setmetatable({actions = actions, platform = platform, order = {}}, ActorRender)
+    return setmetatable({actions = actions, platform = platform, traffic_sprite = traffic_sprite, order = {}}, ActorRender)
 end
 
 local function order_actor(order, p, count, x, y, z, key, appearance, accessory)
@@ -2503,14 +2905,15 @@ function ActorRender:draw(w, motion)
             count = order_actor(order, p, count, p.x + .5, p.y + .5, p.z, key, p.appearance, accessory)
         end
     end
-    local alpha = (w.traffic_state.step + w.life_step) * .02
+    local elapsed = w.traffic_state.step + w.life_step
+    local alpha = elapsed * .02
     for i = 1, #w.traffic do
         local p = w.traffic[i]
         if p.visible then
             local x = p.previous_x + (p.x - p.previous_x) * alpha
             local y = p.previous_y + (p.y - p.previous_y) * alpha
             local z = p.previous_z + (p.z - p.previous_z) * alpha
-            count = order_actor(order, p, count, x + .5, y + .5, z, motion and p.sprite or p.still_sprite, nil, nil)
+            count = order_actor(order, p, count, x + .5, y + .5, z, motion and self.traffic_sprite(p, elapsed) or p.still_sprite, nil, nil)
         end
     end
     for i = count + 1, #order do order[i] = nil end
@@ -3656,7 +4059,10 @@ local T={}
 local floor,min,max,abs=math.floor,math.min,math.max,math.abs
 local kinds={'car','boat','fish','dolphin','whale'}
 local caps={car=8,boat=4,fish=6,dolphin=1,whale=1}
-local frames={car=2,boat=4,fish=4,dolphin=8,whale=8}
+local fish_swim_frames,fish_jump_frames=4,32
+local fish_jump_rate=fish_jump_frames/1000
+local frames={car=2,boat=4,fish=fish_swim_frames+fish_jump_frames,dolphin=48,whale=96}
+local surfacing_ms={dolphin=1600,whale=3200}
 local speed={car=.0014,boat=.00065,fish=.00038,dolphin=.0008,whale=.00048}
 local sprites={}
 for i=1,#kinds do local kind=kinds[i];sprites[kind]={}
@@ -3664,7 +4070,7 @@ for i=1,#kinds do local kind=kinds[i];sprites[kind]={}
         for f=0,frames[kind]-1 do row[f]=(i<=2 and 'vehicle_' or 'fauna_')..kind..'_'..d..'_'..f end
     end
 end
-T.kinds=kinds;T.caps=caps
+T.kinds=kinds;T.caps=caps;T.surfacing_ms=surfacing_ms
 local function xy(k) return (k-1)%24,floor((k-1)/24) end
 local function random(s,n) s.rng=(s.rng*48271)%2147483647;return s.rng%n end
 local function count(w,kind) local n=0;for i=1,#w.traffic do if w.traffic[i].kind==kind then n=n+1 end end;return n end
@@ -3676,12 +4082,31 @@ end
 function T.remember_position(e)
     e.previous_x,e.previous_y,e.previous_z=e.x,e.y,e.z
 end
-function T.render(e)
-    local frame
-    if e.kind=='dolphin' or e.kind=='whale' then frame=min(7,floor(e.age*8/e.duration))
-    else frame=floor(e.animation_time/(e.kind=='car' and 130 or 180))%frames[e.kind] end
-    e.sprite=sprites[e.kind][e.facing][frame];e.visible=true
-    e.still_sprite=(e.kind=='dolphin' or e.kind=='whale') and e.sprite or sprites[e.kind][e.facing][0]
+function T.sprite(e,elapsed)
+    if e.kind=='dolphin' or e.kind=='whale' then
+        return sprites[e.kind][e.facing][min(frames[e.kind]-1,floor((e.age+elapsed)*e.frame_rate))]
+    elseif e.kind=='fish' then
+        local time=e.age+elapsed;local cycle=(time+e.animation_phase)%6000
+        local jumping=cycle>=5000 and time<e.last_jump_end
+        local frame=jumping and fish_swim_frames+floor((cycle-5000)*fish_jump_rate) or floor(time*e.frame_rate)%fish_swim_frames
+        return sprites.fish[e.facing][frame]
+    end
+    return e.sprite
+end
+local function render(e)
+    local surfacing=e.kind=='dolphin' or e.kind=='whale'
+    if surfacing or e.kind=='fish' then e.sprite=T.sprite(e,0)
+    else e.sprite=sprites[e.kind][e.facing][floor(e.animation_time*e.frame_rate)%frames[e.kind]] end
+    e.visible=true
+    e.still_sprite=surfacing and e.sprite or sprites[e.kind][e.facing][0]
+end
+function T.prepare(e)
+    e.frame_rate=(e.kind=='dolphin' or e.kind=='whale') and frames[e.kind]/e.duration or e.kind=='car' and 1/130 or 1/180
+    if e.kind=='fish' then
+        e.animation_phase=e.id*911%5000
+        e.last_jump_end=floor((e.duration+e.animation_phase)/6000)*6000-e.animation_phase
+    end
+    T.remember_position(e);render(e)
 end
 function T.init(w)
     local s={rng=w.seed%2147483646+1,time=0,step=0,plan_clock=0,next_id=1,cursor=1,spawn_cursor=1,car_due=3000,boat_due=7000,fish_due=2000}
@@ -3730,7 +4155,7 @@ function T.install(W,Catalog,P,Nav)
         if not clear(w,kind,x,y,heading) then return nil end
         local s=w.traffic_state
         local e={id=s.next_id,kind=kind,home=home,destination=destination,phase=1,cell=start,next_cell=0,progress=0,path=path,path_index=1,path_generation=n.generation,heading=heading,incoming=heading,facing=heading,x=x,y=y,z=kind=='car' and Nav.height(w,n,x,y,start) or 0,state=kind=='boat' and 'dock' or 'travel',wait=kind=='boat' and 1800 or 0,waited_cell=0,age=0,duration=duration or 0,animation_time=0,exit_progress=0,retry=0,blocked=0,goal=path[#path]}
-        s.next_id=s.next_id+1;w.traffic[#w.traffic+1]=e;T.remember_position(e);T.render(e)
+        s.next_id=s.next_id+1;w.traffic[#w.traffic+1]=e;T.prepare(e)
         return e
     end
     function T.position(w,e)
@@ -3828,7 +4253,7 @@ function T.install(W,Catalog,P,Nav)
         local path,origin,finish
         path,origin,finish,budget=Nav.route(n,kind,start,w.traffic_targets,start,destination+4000,budget)
         if path and #path>0 then
-            local duration=kind=='fish' and 16000+random(s,8001) or kind=='dolphin' and 10000 or 18000
+            local duration=kind=='fish' and 16000+random(s,8001) or surfacing_ms[kind]
             if spawn(w,n,kind,0,0,path,start,duration) then
                 s[due]=s.time+(kind=='fish' and 2500 or kind=='dolphin' and 45000+random(s,45001) or 180000+random(s,180001))
             end
@@ -3913,8 +4338,9 @@ function T.install(W,Catalog,P,Nav)
         if s.step<50 then return end
         s.step=s.step-50;s.time=s.time+50;s.plan_clock=s.plan_clock+50
         local n=navigation(w)
+        local total=#w.traffic
         if s.plan_clock>=500 then s.plan_clock=s.plan_clock-500;schedule(w,n) end
-        for i=#w.traffic,1,-1 do
+        for i=total,1,-1 do
             local e=w.traffic[i];local remove=false;e.age=e.age+50
             T.remember_position(e)
             if e.kind~='car' and e.kind~='boat' and e.age>=e.duration then remove=true
@@ -3927,7 +4353,7 @@ function T.install(W,Catalog,P,Nav)
                     else e.phase=2;e.path=nil;e.retry=0;e.state='wait' end
                 end
             else move(w,n,e,50) end
-            if remove then table.remove(w.traffic,i) else T.render(e) end
+            if remove then table.remove(w.traffic,i) else render(e) end
         end
     end
     local old_new=W.new
@@ -4031,7 +4457,7 @@ function S.install(W,Traffic,Nav,P)
             put(e.id,code(Traffic.kinds,e.kind),e.home,e.destination,e.phase,e.cell,e.next_cell,e.progress,e.heading,e.incoming,e.facing,e.x,e.y,e.z,code(states,e.state),e.wait,e.waited_cell,e.age,e.duration,e.animation_time,e.exit_progress,e.retry,e.blocked,e.goal,e.path_generation==n.generation and 1 or 0)
             path(e.path,e.path_index,e.next_cell~=0 and e.next_cell or e.cell)
         end
-        return (old_encode(w):gsub('^MARE5','MARE6'))..'|TRAFFIC1,'..table.concat(out,',')
+        return (old_encode(w):gsub('^MARE5','MARE6'))..'|TRAFFIC2,'..table.concat(out,',')
     end
     function W.decode(text)
         if type(text)~='string' or #text>100000 then return nil end
@@ -4040,8 +4466,8 @@ function S.install(W,Traffic,Nav,P)
         end
         local version=text:sub(1,6)
         if version~='MARE4,' and version~='MARE6,' or text:find(',,',1,true) or text:sub(-1)==',' then return nil end
-        local split=text:find('|TRAFFIC1,',1,true);if not split then return nil end
-        local body=text:sub(split+10);if body:find('|',1,true) then return nil end
+        local split,last,traffic_version=text:find('|TRAFFIC([12]),');if not split then return nil end
+        local body=text:sub(last+1);if body:find('|',1,true) then return nil end
         local w=old_decode((version=='MARE4,' and 'MARE3' or 'MARE5')..text:sub(6,split-1));if not w then return nil end
         Traffic.init(w)
         local raw={};for token in body:gmatch('[^,]+') do raw[#raw+1]=token end
@@ -4093,6 +4519,11 @@ function S.install(W,Traffic,Nav,P)
             if kind=='car' or kind=='boat' then
                 if e.home==0 or e.duration~=0 or kind=='car' and (e.destination==0 or e.heading%2~=0 or e.incoming%2~=0) then return nil end
             elseif e.home~=0 or e.destination~=0 or e.duration==0 or e.age>=e.duration or e.phase~=1 or e.wait>0 or e.state=='dock' or e.state=='exit' then return nil end
+            local duration=Traffic.surfacing_ms[kind]
+            if duration then
+                if traffic_version=='1' then e.age=floor(e.age*duration/e.duration);e.duration=duration
+                elseif e.duration~=duration then return nil end
+            end
             if kind~='car' and e.z~=0 then return nil end
             if e.next_cell~=0 then
                 if not Nav.edge(n,kind,e.cell,e.next_cell) then return nil end
@@ -4114,7 +4545,7 @@ function S.install(W,Traffic,Nav,P)
                 if abs(ax-bx)>1 or abs(ay-by)>1 or ax==bx and ay==by or kind=='car' and abs(ax-bx)+abs(ay-by)~=1 or e.path_generation==n.generation and not Nav.edge(n,kind,previous,k) then return nil end
                 previous=k
             end end
-            Traffic.remember_position(e);Traffic.render(e);w.traffic[i]=e
+            Traffic.prepare(e);w.traffic[i]=e
         end
         if failed or cursor~=#raw+1 then return nil end
         return w
@@ -4521,8 +4952,14 @@ function W.terraform(w,tool,x,y,radius,reference,dx,dy,stroke)
         i=1;while i<=V*V do if g.parent[i]==i then g.goal[i]=max(g.minimum[i],floor((g.low[i]+g.high[i]+1)/2)) end;i=i+1 end
         envelope(g,g.goal,true)
     end
-    i=1;while i<=V*V do w.h[i]=g.goal[g.parent[i]];i=i+1 end
-    W.rebuild(w);return true,I18n.t('Relevo e fundacoes ajustados')
+    local changed=false
+    i=1;while i<=V*V do
+        local height=g.goal[g.parent[i]]
+        if w.h[i]~=height then w.h[i]=height;changed=true end
+        i=i+1
+    end
+    if changed then W.rebuild(w) end
+    return true,I18n.t('Relevo e fundacoes ajustados')
 end
 function W.elevation(w,id,x,y,r)
     local h=w.base[cell(x,y)]
@@ -4868,7 +5305,7 @@ local function world_sprite(key,sx,sy,scale,alpha,lit,x,y,z)
     Platform.sprite(key,sx,sy,scale,alpha,lit)
     Platform.depth(key,sx,sy,scale,x,y,z)
 end
-local actors=ActorRender.new(Activities,Platform)
+local actors=ActorRender.new(Activities,Platform,Traffic.sprite)
 local function render_actors(w)
     actors:draw(w,S.motion)
 end
@@ -5415,7 +5852,7 @@ local function act(key)
     end
     if screen=='view' then
         if key=='a' then S.light=S.light%4+1;Platform.options(S.sound,S.motion,S.detail,S.preferred_zoom or 2,S.light,I18n.locale())
-        elseif key=='menu' then S.zoom=S.view_zoom;home_camera();open('pause',6) end
+        elseif key=='menu' then S.zoom=S.view_return_zoom;S.view_return_zoom=nil;home_camera();open('pause',6) end
         return
     end
     if screen=='play' then
@@ -5537,7 +5974,7 @@ local function act(key)
     elseif screen=='pause' then
         if n==1 then S.tool='inspect';open('play') elseif n==2 then save_game(false) elseif n==3 then open('goals')
         elseif n==4 then S.return_to='pause';S.return_selection=4;open('settings') elseif n==5 then S.return_to='pause';S.return_selection=5;open('help')
-        elseif n==6 then S.view_zoom=S.zoom;S.zoom=1;S.camx=11;S.camy=11;S.world.dirty=true;open('view')
+        elseif n==6 then S.view_return_zoom=S.zoom;S.zoom=1;S.camx=11;S.camy=11;S.world.dirty=true;open('view')
         elseif n==7 and save_game(true) then S.playing=false;S.ox=880;S.oy=350;S.camx=11;S.camy=11;S.zoom=1;S.world.dirty=true;open('title') end
     elseif screen=='settings' then
         if n==1 then S.sound=not S.sound elseif n==2 then S.motion=not S.motion elseif n==3 then S.detail=3-S.detail;S.world.dirty=true

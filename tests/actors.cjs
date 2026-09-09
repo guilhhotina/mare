@@ -44,7 +44,7 @@ function packed(skin,shirt,hair,outfit,accessory){return skin+shirt*8+hair*64+ou
   return{key:`actor_${outfit}_${facing}_${action}_${frame}`,appearance:packed(i,(i+3)%8,(i+5)%8,i,details[i]),accessory:details[i]?`actor_accessory_${details[i]}_${facing}_${action}_${frame}`:undefined};
  });
  for(const detail of [6,7])cases.push({key:'actor_casual_0_wait_0',appearance:packed(5,1,2,0,detail),accessory:`actor_accessory_${detail}_0_wait_0`});
- cases.push({key:'vehicle_car_0_0'},{key:'fauna_whale_1_3'});
+ cases.push({key:'vehicle_car_0_0'},{key:'fauna_whale_1_36'});
  const masks=Array.from({length:4},(_,facing)=>({key:`actor_coat_${facing}_walk_0`,appearance:packed(5,1,3,6,1),accessory:`actor_accessory_1_${facing}_walk_0`}));
  const pressureKeys=[],pressureRegions=new Set();
  for(const key of Object.keys(rects)){
@@ -58,6 +58,7 @@ function packed(skin,shirt,hair,outfit,accessory){return skin+shirt*8+hair*64+ou
  for(const action of ['walk','unlock_door'])for(let frame=0;frame<actions.get(action).frames;frame++)keys.add(`actor_casual_0_${action}_${frame}`);
  for(const key of ['actor_dress_0_walk_0','vehicle_car_0_1'])keys.add(key);
  const sprites={},runData=[],parts=[];
+ const runPalette=[],paletteIndices=new Map();
  let depthLength=0;
  function depthMeta(key,meta){
   if(meta.depth){
@@ -71,9 +72,16 @@ function packed(skin,shirt,hair,outfit,accessory){return skin+shirt*8+hair*64+ou
   const sample=createCanvas(meta.w,meta.h),sampleCtx=sample.getContext('2d');
   sampleCtx.drawImage(atlas,meta.x,meta.y,meta.w,meta.h,0,0,meta.w,meta.h);
   const pixels=sampleCtx.getImageData(0,0,meta.w,meta.h).data,runs=[];
-  for(let y=0;y<meta.h;y++)for(let x=0;x<meta.w;x++){
-   const at=(y*meta.w+x)*4;
-   if(pixels[at+3])runs.push(x,y,1,(pixels[at]*16777216+pixels[at+1]*65536+pixels[at+2]*256+pixels[at+3])>>>0);
+  const colors=new DataView(pixels.buffer,pixels.byteOffset,pixels.byteLength);
+  for(let x=0;x<meta.w;x++)for(let y=0;y<meta.h;){
+   const color=colors.getUint32((y*meta.w+x)*4);let end=y+1;
+   while(end<meta.h&&colors.getUint32((end*meta.w+x)*4)===color)end++;
+   if(color&255){
+    let index=paletteIndices.get(color);
+    if(index===undefined){index=runPalette.length;runPalette.push(color);paletteIndices.set(color,index);}
+    runs.push(x,y,1,end-y,index);
+   }
+   y=end;
   }
   runData.push(runs);sprites[key]={...meta,offset:runData.length};depthMeta(key,meta);
  }
@@ -108,11 +116,14 @@ function packed(skin,shirt,hair,outfit,accessory){return skin+shirt*8+hair*64+ou
   lua.global.set('work_module',fs.readFileSync(root+'/src/native/work.lua','utf8'));
   lua.global.set('bits_module',fs.readFileSync(root+'/src/native/bits.lua','utf8'));
   lua.global.set('binary_module',fs.readFileSync(root+'/src/native/binary.lua','utf8'));
+  lua.global.set('runs_module',fs.readFileSync(root+'/src/native/runs.lua','utf8'));
   lua.global.set('appearance_module',fs.readFileSync(root+'/src/appearance.lua','utf8'));
   lua.global.set('render_module',fs.readFileSync(root+'/src/actor_render.lua','utf8'));
+  lua.global.set('traffic_module',fs.readFileSync(root+'/src/traffic.lua','utf8'));
   lua.global.set('activities',activities);
   lua.global.set('sprites',sprites);
   lua.global.set('actor_runs',runData);
+  lua.global.set('actor_palette',runPalette);
   lua.global.set('depth_bytes',Array.from(Buffer.concat(parts)));
   lua.global.set('draw_color',color=>{native.fillStyle=`rgba(${(color>>>24)&255},${(color>>>16)&255},${(color>>>8)&255},${(color&255)/255})`;});
   lua.global.set('draw_rect',(_mode,x,y,w,h)=>native.fillRect(x,y,w,h));
@@ -120,12 +131,25 @@ function packed(skin,shirt,hair,outfit,accessory){return skin+shirt*8+hair*64+ou
    package.preload['lua.native.bits']=assert(load(bits_module))
    package.preload['lua.native.binary']=assert(load(binary_module))
    package.preload['lua.native.work']=assert(load(work_module))
+   package.preload['lua.native.runs']=assert(load(runs_module))
+   local Runs=require('lua.native.runs')
+   local palette_parts={}
+   for _,color in ipairs(actor_palette) do palette_parts[#palette_parts+1]=string.pack('<I4',color) end
+   local palette=Runs.palette(table.concat(palette_parts))
    local Depth=assert(load(depth_module))()
    local Actors=assert(load(actor_module))()
    local Appearance=assert(load(appearance_module))()
    local ActorRender=assert(load(render_module))()
+   local Traffic=assert(load(traffic_module))()
    local resources={sprites=sprites,std={draw={color=draw_color,rect=draw_rect}}}
-   function resources:source(meta) if not meta.runs then meta.runs=actor_runs[meta.offset] end return meta end
+   function resources:source(meta)
+    if not meta.runs then
+     local source,chunks=actor_runs[meta.offset],{}
+     for i=1,#source,5 do chunks[#chunks+1]=string.pack('<I1I1I1I1I2',source[i],source[i+1],source[i+2],source[i+3],source[i+4]) end
+     meta.runs=Runs.new(table.concat(chunks),palette)
+    end
+    return meta
+   end
    local chunks={}
    for i=1,#depth_bytes,4096 do chunks[#chunks+1]=string.char(table.unpack(depth_bytes,i,math.min(i+4095,#depth_bytes))) end
    local data=table.concat(chunks)
@@ -151,7 +175,7 @@ function packed(skin,shirt,hair,outfit,accessory){return skin+shirt*8+hair*64+ou
     prepare(zoom,phase,obstacle)
     actors:draw(scene,key,wx,wy,z or 16,appearance,accessory)
    end
-   local renderer=ActorRender.new(activities,{actor=function(...) actors:draw(scene,...) end})
+   local renderer=ActorRender.new(activities,{actor=function(...) actors:draw(scene,...) end},Traffic.sprite)
    function render_world(motion)
     prepare(1,1,false)
     local p=fixture_world.people[1]

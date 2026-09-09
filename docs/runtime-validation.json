@@ -4,103 +4,108 @@
   "text_issues": [],
   "text_truncations": [],
   "tasks": [
+    "title settings and help never checkpoint the demonstration island",
     "catalog: direct card focus and direct placement",
     "road: three cells, cancel with exact refund, commit and undo once",
+    "partial road: rejected occupied cell remains explicit at confirmation and one undo restores the accepted section",
     "house: rotate, build, remove, undo removal and construction",
     "terrain: continuous raise, resize, undo, pull cancel/commit and no empty undo",
     "level: capture once, paint, cancel and undo; occupied home rises and descends",
-    "pause, restored focus, diary, lighting, help, all categories, save/load and replacement cancel"
+    "pause, restored focus, diary, lighting, help, all categories, save/load and replacement cancel",
+    "zones: visible preview, frozen transaction, cancel, worker arrival, midwork save/load without double payment and finished house",
+    "zone erasure: clear confirmation, completed house preserved, undo restores authorization",
+    "corrupt primary: recover completed house, preserve valid backup after failed commit, retry successfully"
   ],
-  "state": "play,11,13,3268,12,1,1",
-  "frames": 2160,
-  "rebuilds": 67,
-  "lighting": "4,0.91,57,8",
+  "state": "pause,11,13,3192,16,2,1",
+  "frames": 3835,
+  "rebuilds": 93,
+  "lighting": "4,0.91,77,8",
   "render_metrics": {
-    "waterRebuilds": 5,
-    "waterBuildMaxMs": 28,
-    "uiBytes": 1485828,
-    "textBytes": 2346508,
-    "textRasters": 407,
-    "shadowBuilds": 51,
-    "shadowBytes": 4994828,
+    "waterRebuilds": 16,
+    "waterBuildMaxMs": 13,
+    "uiBytes": 1737980,
+    "textBytes": 3891500,
+    "textRasters": 578,
+    "shadowBuilds": 62,
+    "shadowBytes": 3962544,
     "shadowTileBytes": 43968,
     "shadowPoints": 0,
     "renderBufferBytes": 9342976,
-    "sprites": 30910
+    "sprites": 46969
   },
   "frame_cost_native_harness_ms": {
-    "mean": 2.3159489597222245,
-    "p95": 2.642767,
-    "max": 185.245244
+    "mean": 1.333235546805738,
+    "p95": 1.201351,
+    "max": 104.071749
   },
   "steady_frames_ms": {
-    "mean": 0.9338289837553742,
-    "p95": 2.038942,
-    "max": 10.811
+    "mean": 0.5774985724211664,
+    "p95": 1.066021,
+    "max": 7.848757
   },
   "rebuild_frames_ms": {
-    "mean": 45.49172671641792,
-    "p95": 67.304523,
-    "max": 185.245244
+    "mean": 31.741491010752682,
+    "p95": 43.091776,
+    "max": 104.071749
   },
   "slow_frames": [
     {
-      "ms": 185.245244,
+      "ms": 104.071749,
       "rebuild": true,
       "screen": "title"
     },
     {
-      "ms": 68.811059,
+      "ms": 45.544027,
       "rebuild": true,
       "screen": "play"
     },
     {
-      "ms": 68.576637,
+      "ms": 43.8575,
       "rebuild": true,
       "screen": "play"
     },
     {
-      "ms": 67.304523,
-      "rebuild": true,
-      "screen": "new"
-    },
-    {
-      "ms": 62.159859,
+      "ms": 43.377644,
       "rebuild": true,
       "screen": "play"
     },
     {
-      "ms": 60.05189,
-      "rebuild": true,
-      "screen": "view"
-    },
-    {
-      "ms": 59.201005,
+      "ms": 43.091776,
       "rebuild": true,
       "screen": "play"
     },
     {
-      "ms": 58.638431,
+      "ms": 41.858986,
       "rebuild": true,
       "screen": "play"
     },
     {
-      "ms": 57.856963,
+      "ms": 41.379259,
+      "rebuild": true,
+      "screen": "settings"
+    },
+    {
+      "ms": 41.188881,
       "rebuild": true,
       "screen": "play"
     },
     {
-      "ms": 57.533043,
+      "ms": 41.161052,
       "rebuild": true,
       "screen": "play"
     },
     {
-      "ms": 57.204417,
+      "ms": 41.039913,
       "rebuild": true,
       "screen": "play"
     },
     {
-      "ms": 55.478649,
+      "ms": 40.992092,
+      "rebuild": true,
+      "screen": "play"
+    },
+    {
+      "ms": 40.604426,
       "rebuild": true,
       "screen": "play"
     }

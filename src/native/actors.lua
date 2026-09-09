@@ -1,5 +1,6 @@
 local Bits = require('lua.native.bits')
 local Binary = require('lua.native.binary')
+local Runs = require('lua.native.runs')
 local floor, min, max = math.floor, math.min, math.max
 local Actors = {}
 Actors.__index = Actors
@@ -70,7 +71,7 @@ local function source(self, key, meta)
     if entry then touch(self.sources, entry); return entry end
     entry = {meta = meta, offset = meta.offset, length = meta.length, runs = meta.runs}
     self.resources:source(entry)
-    return remember(self.sources, key, entry, #entry.runs * 8)
+    return remember(self.sources, key, entry, entry.runs.bytes)
 end
 
 local function palette(self, appearance, scene)
@@ -110,29 +111,31 @@ local function draw_layer(self, scene, key, wx, wy, z, appearance)
     local step_y = sy % factor == 0 and factor or 1
     local runs, depth, std = source(self, key, meta).runs, scene.depth, self.resources.std
     local base, inverse, last_color = wx + wy + z * .0625, 1 / zoom, nil
-    for i = 1, #runs, 4 do
-        local original = runs[i + 3]
+    for i = 0, runs.count - 1 do
+        local rx, ry, width, height, original = Runs.get(runs, i)
         local marker = appearance and markers[original]
         local tint = marker and appearance[marker] or color(self, original, scene)
         if tint ~= last_color then std.draw.color(tint); last_color = tint end
-        local row = sy + runs[i + 1] * zoom
-        local left, right = max(0, sx + runs[i] * zoom), min(1280, sx + (runs[i] + runs[i + 2]) * zoom)
-        local value = base + (meta.oy - runs[i + 1]) * .0625
-        local source_row = meta.depth and meta.depth[1] + runs[i + 1] * meta.w * 2
-        for yy = max(0, row), min(720, row + zoom) - step_y, step_y do
-            local offset, start = floor(yy / factor) * depth.w, nil
-            for xx = left, right - step_x, step_x do
-                if source_row then
-                    value = base + Binary.i16(self.depths, source_row + floor((xx - sx) * inverse) * 2 + 1) * .00390625
+        local left, right = max(0, sx + rx * zoom), min(1280, sx + (rx + width) * zoom)
+        for source_y = ry, ry + height - 1 do
+            local row = sy + source_y * zoom
+            local value = base + (meta.oy - source_y) * .0625
+            local source_row = meta.depth and meta.depth[1] + source_y * meta.w * 2
+            for yy = max(0, row), min(720, row + zoom) - step_y, step_y do
+                local offset, start = floor(yy / factor) * depth.w, nil
+                for xx = left, right - step_x, step_x do
+                    if source_row then
+                        value = base + Binary.i16(self.depths, source_row + floor((xx - sx) * inverse) * 2 + 1) * .00390625
+                    end
+                    if depth.pixels[offset + floor(xx / factor) + 1] <= value + .08 then
+                        if not start then start = xx end
+                    elseif start then
+                        std.draw.rect(0, start, yy, xx - start, step_y)
+                        start = nil
+                    end
                 end
-                if depth.pixels[offset + floor(xx / factor) + 1] <= value + .08 then
-                    if not start then start = xx end
-                elseif start then
-                    std.draw.rect(0, start, yy, xx - start, step_y)
-                    start = nil
-                end
+                if start then std.draw.rect(0, start, yy, right - start, step_y) end
             end
-            if start then std.draw.rect(0, start, yy, right - start, step_y) end
         end
     end
 end

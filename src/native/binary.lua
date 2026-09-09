@@ -12,8 +12,8 @@ function Binary.i16(data, offset)
 end
 
 function Binary.run(data, offset)
-    local a, b, c, d, e, f, r, g, blue, alpha = byte(data, offset, offset + 9)
-    return a * 256 + b, c * 256 + d, e * 256 + f, r * 16777216 + g * 65536 + blue * 256 + alpha
+    local x, y, width, height, low, high = byte(data, offset, offset + 5)
+    return x, y, width, height, low + high * 256
 end
 
 function Binary.mask(data, offset)

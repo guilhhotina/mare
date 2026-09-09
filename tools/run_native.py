@@ -18,12 +18,12 @@ parser.add_argument('--build', action='store_true')
 parser.add_argument('--port', type=int, default=8788)
 parser.add_argument('--window', default='1280x720')
 parser.add_argument('--instance', help='nome de uma instância isolada; reutiliza seu snapshot e seus saves')
-parser.add_argument('--bundle', type=Path, default=ROOT / 'dist/native', help='bundle de origem para execução ou criação de snapshot')
+parser.add_argument('--bundle', type=Path, help='bundle pronto para execução ou snapshot; por padrão recompila dist/native')
 args = parser.parse_args()
 if args.instance and not re.fullmatch(r'[A-Za-z0-9_-]+', args.instance):
     parser.error('--instance deve conter apenas letras, números, hífen ou sublinhado')
-output = args.bundle.expanduser().resolve()
-if args.build:
+output = (args.bundle or ROOT / 'dist/native').expanduser().resolve()
+if args.build or (args.bundle is None and args.instance is None):
     subprocess.run([sys.executable, str(ROOT / 'tools/build_native.py'), '--output', str(output)], check=True, cwd=ROOT)
 core = Path(args.core).expanduser().resolve()
 if not core.is_file():

@@ -1,5 +1,6 @@
 local Bits = require('lua.native.bits')
 local Surface = require('lua.native.surface')
+local Runs = require('lua.native.runs')
 local floor, min, max = math.floor, math.min, math.max
 local UI = {}
 UI.__index = UI
@@ -66,7 +67,10 @@ function UI:text(x, y, value, size, color, max_width, face)
         for _, ch in ipairs(chars) do
             local glyph = self.resources:source(font.glyphs[ch] or font.glyphs['?'])
             local runs = glyph.runs
-            for i = 1, #runs, 4 do image:rect(cursor + glyph.ox + runs[i], glyph.oy - top + runs[i + 1], runs[i + 2], 1, Bits.bor(color, 255)) end
+            for i = 0, runs.count - 1 do
+                local rx, ry, width, height = Runs.get(runs, i)
+                image:rect(cursor + glyph.ox + rx, glyph.oy - top + ry, width, height, Bits.bor(color, 255))
+            end
             cursor = cursor + glyph.advance
         end
         entry = self.resources:add(key, image, 2)

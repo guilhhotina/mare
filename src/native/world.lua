@@ -1,9 +1,9 @@
 local Assets = require('lua.native.assets')
 local Bits = require('lua.native.bits')
-local Surface = require('lua.native.surface')
+local Raster = require('lua.native.raster')
+local Layer = require('lua.native.layer')
 local Ocean = require('lua.native.ocean')
 local Shadows = require('lua.native.shadows')
-local Depth = require('lua.native.depth')
 local Actors = require('lua.native.actors')
 local floor, min, max = math.floor, math.min, math.max
 local World = {}
@@ -40,18 +40,11 @@ function World:begin(csv, cx, cy, zoom, ox, oy)
     local factor = zoom >= 2 and 2 or 1
     if self.factor ~= factor then
         self.factor = factor
-        self.land, self.lights = Surface.new(math.floor(1280 / factor), math.floor(720 / factor)), Surface.new(math.floor(1280 / factor), math.floor(720 / factor))
-    else
-        self.land:clear()
-        self.lights:clear()
+        self.raster = Raster.new(floor(1280 / factor), floor(720 / factor), 256 / factor)
+        self.land, self.lights = self.raster.land, self.raster.lights
     end
+    self.raster:begin()
     self.cx, self.cy, self.ox, self.oy = cx, cy, ox, oy
-    if self.depth == (self.current and self.current.depth) or not self.depth or self.depth.w ~= math.floor(1280 / factor) then
-        self.depth = self.spare_depth
-        if not self.depth or self.depth.w ~= math.floor(1280 / factor) then self.depth = Depth.new(math.floor(1280 / factor), math.floor(720 / factor))
-        else self.depth:clear() end
-        self.spare_depth = nil
-    else self.depth:clear() end
 end
 
 function World:scene(scene, phase, detail)
@@ -59,9 +52,7 @@ function World:scene(scene, phase, detail)
     self.shadows:prepare(self.csv, scene, phase, detail)
 end
 
-function World:sprite(key, x, y, scale, alpha, lit)
-    local meta = self.resources:source(assert(self.resources.sprites[key], key))
-    local factor = self.factor
+local function draw_sprite(self, meta, key, x, y, scale, factor, alpha, lit)
     local xx, yy = floor(x - meta.ox * scale + .5) / factor, floor(y - meta.oy * scale + .5) / factor
     local s = scale / factor
     self.land:blit(meta, xx, yy, s, alpha)
@@ -79,42 +70,82 @@ function World:sprite(key, x, y, scale, alpha, lit)
     end
 end
 
+function World:sprite(key, x, y, scale, alpha, lit)
+    local meta = self.resources:source(assert(self.resources.sprites[key], key))
+    local factor, s = self.factor, scale / self.factor
+    local left, top = floor(x - meta.ox * scale + .5) / factor, floor(y - meta.oy * scale + .5) / factor
+    local right, bottom = left + meta.w * s, top + meta.h * s
+    if key == 'lamp' and lit ~= false then
+        local px, py = (x + (.71 - .185) * 32 * scale) / factor, (y + ((.71 + .185) * 16 - 23) * scale) / factor
+        left, top, right, bottom = min(left, px - 4 * s), min(top, py - 3 * s), max(right, px + 4 * s), max(bottom, py + 3 * s)
+    end
+    self.raster:add(draw_sprite, left, top, right - left, bottom - top, meta, key, x, y, scale, factor, alpha, lit)
+end
+
+local function draw_depth(self, meta, x, y, scale, base, data)
+    self.depth:stamp(meta, x, y, scale, base, data)
+end
+
 function World:stamp(key, x, y, scale, wx, wy, z)
     local meta = assert(self.resources.sprites[key], key)
-    self.depth:stamp(meta, (x - meta.ox * scale) / self.factor, (y - meta.oy * scale) / self.factor, scale / self.factor, wx + wy + z / 16, self.depths)
+    if not meta.depth then return end
+    local xx, yy, s = (x - meta.ox * scale) / self.factor, (y - meta.oy * scale) / self.factor, scale / self.factor
+    self.raster:add(draw_depth, xx, yy, meta.w * s, meta.h * s, meta, xx, yy, s, wx + wy + z / 16, self.depths)
 end
 
 function World:actor(key, wx, wy, z, appearance, accessory_key)
     if self.current then self.actors:draw(self.current, key, wx, wy, z, appearance, accessory_key) end
 end
 
+local function draw_shadow(self, tile, x, y, scale, light, receiver)
+    local target = light and self.lights or self.land
+    if receiver then target:blit_plane(tile, x, y, scale, self.depth, receiver)
+    else target:blit(tile, x, y, scale) end
+end
+
+local function queue_shadow(self, wx, wy, sx, sy, zoom, corners, mask, coarse, light, receiver)
+    local tile = self.shadows:tile(wx, wy, corners, mask, coarse, light, receiver)
+    if not tile then return end
+    local s = zoom / self.factor
+    local x, y = floor(sx / self.factor - 32 * s + .5), floor(sy / self.factor - 17 * s + .5)
+    self.raster:add(draw_shadow, x, y, tile.w * s, tile.h * s, tile, x, y, s, light, receiver and wx + wy + receiver / 16 - 17 / 16)
+end
+
 function World:shadow(mask, sx, sy, zoom, corners, res, wx, wy)
-    self.shadows:paint(self.land, wx, wy, sx / self.factor, sy / self.factor, zoom / self.factor, corners, mask, res, false)
+    queue_shadow(self, wx, wy, sx, sy, zoom, corners, mask, res, false)
 end
 
 function World:ground_light(wx, wy, sx, sy, zoom, corners)
-    self.shadows:paint(self.lights, wx, wy, sx / self.factor, sy / self.factor, zoom / self.factor, corners, '', 8, true)
+    queue_shadow(self, wx, wy, sx, sy, zoom, corners, '', 8, true)
 end
 
 function World:bridge(wx, wy, sx, sy, zoom, z)
-    local factor = self.factor
-    self.shadows:paint(self.land, wx, wy, sx / factor, sy / factor, zoom / factor, 0, '', 8, false, self.depth, z)
-    self.shadows:paint(self.lights, wx, wy, sx / factor, sy / factor, zoom / factor, 0, '', 8, true, self.depth, z)
+    queue_shadow(self, wx, wy, sx, sy, zoom, 0, '', 8, false, z)
+    queue_shadow(self, wx, wy, sx, sy, zoom, 0, '', 8, true, z)
 end
 
 function World:publish(phase)
     self.generation = self.generation + 1
     local r, g, b = tone(phase)
     local night = max(0, min(1, phase > .73 and (phase - .73) / .13 or phase < .25 and (.25 - phase) / .1 or 0))
-    if self.pending then
-        self.pending.sea.pinned, self.pending.land.pinned = false, false
+    local current, sea = self.current
+    local same_tone = current and current.tone_red == r and current.tone_green == g and current.tone_blue == b
+    if same_tone and current.sea_key == self.ocean.sea_key and current.shore_key == self.ocean.shore_key then
+        sea = current.sea
+    else
+        sea = Layer.new(self.resources, 'sea:' .. self.generation, self.ocean.sea, 2, r, g, b, nil, nil, current and current.sea, same_tone and self.ocean.sea_changed or nil)
+    end
+    local changed
+    if same_tone and current.factor == self.factor and current.night == night then
+        changed = current.raster_revision == self.raster.revision and {} or self.raster.changed
     end
     self.pending = {
         generation = self.generation, depth = self.depth, factor = self.factor,
+        raster_revision = self.raster.revision, night = night,
         cx = self.cx, cy = self.cy, ox = self.ox, oy = self.oy, zoom = self.zoom,
         tone_red = r, tone_green = g, tone_blue = b,
-        sea = self.resources:add('sea:' .. self.generation, self.ocean.sea, 2, r, g, b, nil, nil, true),
-        land = self.resources:add('land:' .. self.generation, self.land, self.factor, r, g, b, self.lights, night * .94, true),
+        sea = sea, sea_key = self.ocean.sea_key, shore_key = self.ocean.shore_key,
+        land = Layer.new(self.resources, 'land:' .. self.generation, self.land, self.factor, r, g, b, self.lights, night * .94, current and current.land, changed),
         waves = self.ocean.waves,
         gold = tinted(0xe2bd8bff, r, g, b), shore = tinted(0x95cfbfff, r, g, b), blue = tinted(0x4d95abff, r, g, b)
     }
@@ -122,17 +153,19 @@ function World:publish(phase)
 end
 
 function World:finish()
+    self.raster:render()
+    self.shadows:finish()
+    self.depth = self.raster.depth
     self:publish(self.phase)
 end
 
 function World:draw(phase, time, motion)
     self.clock = time
     local pending = self.pending
-    if pending and pending.sea.ready and pending.land.ready then
+    if pending and pending.sea:ready() and pending.land:ready() then
         if self.current then
-            if self.current.depth ~= pending.depth then self.spare_depth = self.current.depth end
-            self.resources:remove(self.current.sea)
-            self.resources:remove(self.current.land)
+            self.current.sea:remove(pending.sea)
+            self.current.land:remove(pending.land)
         end
         self.current, self.pending = pending, nil
     end
@@ -143,7 +176,7 @@ function World:draw(phase, time, motion)
         std.draw.rect(0, 0, 0, 1280, 720)
         return
     end
-    self.resources:draw(current.sea, 0, 0)
+    current.sea:draw(0, 0)
     if motion then
         for i = 1, #current.waves do
             local wave = current.waves[i]
@@ -155,7 +188,7 @@ function World:draw(phase, time, motion)
             if t > 3 and t < 8 then std.draw.rect(0, x + 4, y + 4, max(2, wave[3] - 8), 2) end
         end
     end
-    self.resources:draw(current.land, 0, 0)
+    current.land:draw(0, 0)
 end
 
 function World:burst(x, y, good)

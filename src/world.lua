@@ -395,8 +395,14 @@ function W.terraform(w,tool,x,y,radius,reference,dx,dy,stroke)
         i=1;while i<=V*V do if g.parent[i]==i then g.goal[i]=max(g.minimum[i],floor((g.low[i]+g.high[i]+1)/2)) end;i=i+1 end
         envelope(g,g.goal,true)
     end
-    i=1;while i<=V*V do w.h[i]=g.goal[g.parent[i]];i=i+1 end
-    W.rebuild(w);return true,I18n.t('Relevo e fundacoes ajustados')
+    local changed=false
+    i=1;while i<=V*V do
+        local height=g.goal[g.parent[i]]
+        if w.h[i]~=height then w.h[i]=height;changed=true end
+        i=i+1
+    end
+    if changed then W.rebuild(w) end
+    return true,I18n.t('Relevo e fundacoes ajustados')
 end
 function W.elevation(w,id,x,y,r)
     local h=w.base[cell(x,y)]

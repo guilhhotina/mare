@@ -49,8 +49,9 @@ function Ocean:terrain(csv)
     local signature = table.concat(shore)
     if signature == self.shore_key then return false end
     self.shore_key = signature
-    local a = self.field or {}
-    self.field = a
+    local previous = self.field
+    local a = self.spare_field or {}
+    self.field, self.spare_field = a, previous
     for y = 0, 127 do
         local wy = floor(y / 4) - 4
         local row = y * 128
@@ -87,47 +88,51 @@ function Ocean:terrain(csv)
         end
         Work.check()
     end
-    local image = self.ocean or Surface.new(512, 512)
-    self.ocean = image
-    local pixels = image.pixels
-    for y = 0, 511 do
-        local row = y * 512
-        if y < 2 or y > 509 then
-            for x = 1, 512 do pixels[row + x] = 0x237590ff end
-        else
-            pixels[row + 1], pixels[row + 2] = 0x237590ff, 0x237590ff
-            pixels[row + 511], pixels[row + 512] = 0x237590ff, 0x237590ff
-            local sy = y * .25 - .375
-            local iy = floor(sy)
-            local v = sy - iy
-            local iv, field_row = 1 - v, iy * 128
-            local hash_y, caustic_row, streak_y = y * 668265263, (y % 64) * 64, y * 3
-            for cell = 0, 126 do
-                local q = field_row + cell + 1
-                local a0, a1, a2, a3 = a[q], a[q + 1], a[q + 128], a[q + 129]
+    local image = self.ocean
+    if not image then
+        image = Surface.new(512, 512)
+        image:rect(0, 0, 512, 512, 0x237590ff)
+        self.ocean = image
+    end
+    local pixels, changed = image.pixels, {}
+    self.changed_blocks = changed
+    for iy = 0, 126 do
+        local field_row = iy * 128
+        for cell = 0, 126 do
+            local q = field_row + cell + 1
+            local a0, a1, a2, a3 = a[q], a[q + 1], a[q + 128], a[q + 129]
+            local shallow = a0 < 9 or a1 < 9 or a2 < 9 or a3 < 9
+            local before = previous and (previous[q] < 9 or previous[q + 1] < 9 or previous[q + 128] < 9 or previous[q + 129] < 9)
+            if (shallow or before) and (not previous or a0 ~= previous[q] or a1 ~= previous[q + 1] or a2 ~= previous[q + 128] or a3 ~= previous[q + 129]) then
                 local first = cell * 4 + 2
-                local k = row + first + 1
-                if a0 >= 9 and a1 >= 9 and a2 >= 9 and a3 >= 9 then
-                    pixels[k], pixels[k + 1], pixels[k + 2], pixels[k + 3] = 0x237590ff, 0x237590ff, 0x237590ff, 0x237590ff
-                else
-                    for offset = 0, 3 do
-                        local u = (offset + .5) * .25
-                        local iu = 1 - u
-                        local d = ((a0 * iu + a1 * u) * iv + (a2 * iu + a3 * u) * v) * .25
-                        local color = 0x237590ff
-                        if d < 2.2 then
-                            local x = first + offset
-                            local f = d * 2.35
-                            local band = min(4, floor(f))
-                            local step = min(4, floor((f - band) * 4 + .5))
-                            local hash = Bits.band((x * 374761393 + hash_y), 0xffffffff)
-                            hash = Bits.bxor(hash, (Bits.rshift(hash, 13)))
-                            local grain = hash % 3 - 1
-                            local caustic = d < 1.4 and caustics[caustic_row + x % 64 + 1] or 0
-                            color = colors[band * 5 + step + 1] + (grain + caustic) * 0x01010100
-                            if d > .09 and d < .17 and (x + streak_y) % 17 < 11 then color = 0xb3dbbfff end
+                changed[#changed + 1] = (iy * 4 + 2) * 512 + first
+                for dy = 0, 3 do
+                    local y = iy * 4 + 2 + dy
+                    local v = (dy + .5) * .25
+                    local iv, k = 1 - v, y * 512 + first + 1
+                    if not shallow then
+                        pixels[k], pixels[k + 1], pixels[k + 2], pixels[k + 3] = 0x237590ff, 0x237590ff, 0x237590ff, 0x237590ff
+                    else
+                        local hash_y, caustic_row, streak_y = y * 668265263, (y % 64) * 64, y * 3
+                        for offset = 0, 3 do
+                            local u = (offset + .5) * .25
+                            local iu = 1 - u
+                            local d = ((a0 * iu + a1 * u) * iv + (a2 * iu + a3 * u) * v) * .25
+                            local color = 0x237590ff
+                            if d < 2.2 then
+                                local x = first + offset
+                                local f = d * 2.35
+                                local band = min(4, floor(f))
+                                local step = min(4, floor((f - band) * 4 + .5))
+                                local hash = Bits.band((x * 374761393 + hash_y), 0xffffffff)
+                                hash = Bits.bxor(hash, (Bits.rshift(hash, 13)))
+                                local grain = hash % 3 - 1
+                                local caustic = d < 1.4 and caustics[caustic_row + x % 64 + 1] or 0
+                                color = colors[band * 5 + step + 1] + (grain + caustic) * 0x01010100
+                                if d > .09 and d < .17 and (x + streak_y) % 17 < 11 then color = 0xb3dbbfff end
+                            end
+                            pixels[k + offset] = color
                         end
-                        pixels[k + offset] = color
                     end
                 end
             end
@@ -141,6 +146,7 @@ function Ocean:prepare(csv, cx, cy, zoom, ox, oy)
     local changed = self:terrain(csv)
     local key = cx .. ',' .. cy .. ',' .. zoom .. ',' .. ox .. ',' .. oy
     if not changed and key == self.sea_key then return false end
+    local moved = key ~= self.sea_key
     self.sea_key = key
     local image = self.sea or Surface.new(640, 360)
     self.sea = image
@@ -149,18 +155,42 @@ function Ocean:prepare(csv, cx, cy, zoom, ox, oy)
     local inverse = 1 / zoom
     local columns = self.columns or {}
     self.columns = columns
-    for x = 0, 639 do columns[x + 1] = (x + .5 - e) * inverse * .5 end
-    local pixels, ocean = image.pixels, self.ocean.pixels
-    for y = 0, 359 do
-        local yy = (y + .5 - f) * inverse
-        local row = y * 640
-        for x = 0, 639 do
-            local xx = columns[x + 1]
-            local sx, sy = yy + xx, yy - xx
-            pixels[row + x + 1] = sx >= 0 and sx < 512 and sy >= 0 and sy < 512
-                and ocean[floor(sy) * 512 + floor(sx) + 1] or 0x237590ff
+    if moved then for x = 0, 639 do columns[x + 1] = (x + .5 - e) * inverse * .5 end end
+    local left, right = {}, {}
+    if not moved then
+        for i = 1, #self.changed_blocks do
+            local block = self.changed_blocks[i]
+            local x, y = block % 512, floor(block / 512)
+            local x0 = max(0, floor(e + (x - y - 4) * zoom - .5))
+            local x1 = min(640, math.ceil(e + (x - y + 4) * zoom + .5))
+            local y0 = max(0, floor(f + (x + y) * zoom * .5 - .5))
+            local y1 = min(360, math.ceil(f + (x + y + 8) * zoom * .5 + .5))
+            if x1 > x0 then
+                for row = y0, y1 - 1 do
+                    left[row] = min(left[row] or 640, x0)
+                    right[row] = max(right[row] or 0, x1)
+                end
+            end
         end
-        Work.check()
+    end
+    local pixels, ocean, changed_tiles = image.pixels, self.ocean.pixels, {}
+    self.sea_changed = changed_tiles
+    for y = 0, 359 do
+        if moved or left[y] then
+            local yy = (y + .5 - f) * inverse
+            local row, tile_row = y * 640, floor(y / 128) * 5
+            for x = moved and 0 or left[y], (moved and 640 or right[y]) - 1 do
+                local xx = columns[x + 1]
+                local sx, sy = yy + xx, yy - xx
+                local color = sx >= 0 and sx < 512 and sy >= 0 and sy < 512
+                    and ocean[floor(sy) * 512 + floor(sx) + 1] or 0x237590ff
+                if pixels[row + x + 1] ~= color then
+                    pixels[row + x + 1] = color
+                    changed_tiles[tile_row + floor(x / 128) + 1] = true
+                end
+            end
+            Work.check()
+        end
     end
     local waves = {}
     for j = 0, 239 do

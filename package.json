@@ -9,7 +9,7 @@
     "start": "python tools/serve.py",
     "deploy:pages": "python tools/deploy_pages.py",
     "start:native": "python tools/run_native.py",
-    "test": "node tests/world.cjs && node tests/terraform.cjs && python tests/shadow_art.py && node tests/lighting.cjs && node tests/raycast.cjs && node tests/pixel-lighting.cjs && node tests/actors.cjs && node tests/native-resources.cjs && node tests/native-storage.cjs && python tests/storage_migration.py && node tests/runtime.cjs",
+    "test": "node tests/world.cjs && node tests/terraform.cjs && python tests/shadow_art.py && node tests/lighting.cjs && node tests/raycast.cjs && node tests/pixel-lighting.cjs && node tests/actors.cjs && node tests/native-surface.cjs && node tests/native-raster.cjs && node tests/native-resources.cjs && node tests/native-storage.cjs && python tests/storage_migration.py && node tests/runtime.cjs",
     "art": "python tools/assets.py"
   },
   "devDependencies": {

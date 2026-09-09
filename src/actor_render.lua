@@ -14,7 +14,7 @@ local function frames(prefix, action)
     return directions
 end
 
-function ActorRender.new(activities, platform)
+function ActorRender.new(activities, platform, traffic_sprite)
     local actions = {}
     for i = 1, #activities do
         local activity = activities[i]
@@ -25,7 +25,7 @@ function ActorRender.new(activities, platform)
         for accessory = 1, 7 do action.accessories[accessory] = frames('actor_accessory_' .. accessory .. '_', activity) end
         actions[activity.id] = action
     end
-    return setmetatable({actions = actions, platform = platform, order = {}}, ActorRender)
+    return setmetatable({actions = actions, platform = platform, traffic_sprite = traffic_sprite, order = {}}, ActorRender)
 end
 
 local function order_actor(order, p, count, x, y, z, key, appearance, accessory)
@@ -61,14 +61,15 @@ function ActorRender:draw(w, motion)
             count = order_actor(order, p, count, p.x + .5, p.y + .5, p.z, key, p.appearance, accessory)
         end
     end
-    local alpha = (w.traffic_state.step + w.life_step) * .02
+    local elapsed = w.traffic_state.step + w.life_step
+    local alpha = elapsed * .02
     for i = 1, #w.traffic do
         local p = w.traffic[i]
         if p.visible then
             local x = p.previous_x + (p.x - p.previous_x) * alpha
             local y = p.previous_y + (p.y - p.previous_y) * alpha
             local z = p.previous_z + (p.z - p.previous_z) * alpha
-            count = order_actor(order, p, count, x + .5, y + .5, z, motion and p.sprite or p.still_sprite, nil, nil)
+            count = order_actor(order, p, count, x + .5, y + .5, z, motion and self.traffic_sprite(p, elapsed) or p.still_sprite, nil, nil)
         end
     end
     for i = count + 1, #order do order[i] = nil end

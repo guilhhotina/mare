@@ -20,20 +20,29 @@ def lua(value):
     return str(value)
 
 
-def encode_runs(image):
+def encode_runs(image, palette):
     pixels = image.convert('RGBA').load()
-    out = bytearray()
+    rectangles, previous = [], {}
     for y in range(image.height):
-        x = 0
+        x, current = 0, {}
         while x < image.width:
             color = pixels[x, y]
             end = x + 1
             while end < image.width and pixels[end, y] == color:
                 end += 1
             if color[3]:
-                out.extend(struct.pack('>HHH4B', x, y, end - x, *color))
+                packed = (color[0] << 24) | (color[1] << 16) | (color[2] << 8) | color[3]
+                key = (x, end - x, packed)
+                rectangle = previous.get(key)
+                if rectangle is not None and rectangle[3] < 255:
+                    rectangle[3] += 1
+                else:
+                    rectangle = [x, y, end - x, 1, palette.setdefault(packed, len(palette))]
+                    rectangles.append(rectangle)
+                current[key] = rectangle
             x = end
-    return bytes(out)
+        previous = current
+    return b''.join(struct.pack('<BBBBH', *rectangle) for rectangle in rectangles)
 
 
 def build(destination):
@@ -42,6 +51,7 @@ def build(destination):
     entries = json.loads((ROOT / 'assets/atlas.json').read_text())
     fonts = json.loads((ROOT / 'web/typefaces.json').read_text())
     glyph_atlas = Image.open(ROOT / 'web/typefaces.png').convert('RGBA')
+    palette = {}
     with (destination / 'pixels.bin').open('wb') as binary:
         stored = {}
         def store(source, rectangle):
@@ -49,7 +59,7 @@ def build(destination):
             if key not in stored:
                 image = source.crop(rectangle)
                 offset = binary.tell()
-                encoded = encode_runs(image)
+                encoded = encode_runs(image, palette)
                 binary.write(encoded)
                 stored[key] = {'w': image.width, 'h': image.height, 'offset': offset, 'length': len(encoded)}
             return stored[key].copy()
@@ -66,6 +76,7 @@ def build(destination):
                 glyph = store(glyph_atlas, (x, y, x + w, y + h))
                 glyph.update(advance=advance, ox=ox, oy=oy)
                 font[char] = glyph
+    (destination / 'colors.bin').write_bytes(b''.join(struct.pack('<I', color) for color in palette))
     (destination / 'sprites.lua').write_text('return ' + lua(entries) + '\n')
     (destination / 'fonts.lua').write_text('return ' + lua(fonts) + '\n')
     (destination / 'shadow-shapes.bin').write_bytes((ROOT / 'assets/shadow-shapes.bin').read_bytes())

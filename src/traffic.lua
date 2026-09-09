@@ -2,7 +2,10 @@ local T={}
 local floor,min,max,abs=math.floor,math.min,math.max,math.abs
 local kinds={'car','boat','fish','dolphin','whale'}
 local caps={car=8,boat=4,fish=6,dolphin=1,whale=1}
-local frames={car=2,boat=4,fish=4,dolphin=8,whale=8}
+local fish_swim_frames,fish_jump_frames=4,32
+local fish_jump_rate=fish_jump_frames/1000
+local frames={car=2,boat=4,fish=fish_swim_frames+fish_jump_frames,dolphin=48,whale=96}
+local surfacing_ms={dolphin=1600,whale=3200}
 local speed={car=.0014,boat=.00065,fish=.00038,dolphin=.0008,whale=.00048}
 local sprites={}
 for i=1,#kinds do local kind=kinds[i];sprites[kind]={}
@@ -10,7 +13,7 @@ for i=1,#kinds do local kind=kinds[i];sprites[kind]={}
         for f=0,frames[kind]-1 do row[f]=(i<=2 and 'vehicle_' or 'fauna_')..kind..'_'..d..'_'..f end
     end
 end
-T.kinds=kinds;T.caps=caps
+T.kinds=kinds;T.caps=caps;T.surfacing_ms=surfacing_ms
 local function xy(k) return (k-1)%24,floor((k-1)/24) end
 local function random(s,n) s.rng=(s.rng*48271)%2147483647;return s.rng%n end
 local function count(w,kind) local n=0;for i=1,#w.traffic do if w.traffic[i].kind==kind then n=n+1 end end;return n end
@@ -22,12 +25,31 @@ end
 function T.remember_position(e)
     e.previous_x,e.previous_y,e.previous_z=e.x,e.y,e.z
 end
-function T.render(e)
-    local frame
-    if e.kind=='dolphin' or e.kind=='whale' then frame=min(7,floor(e.age*8/e.duration))
-    else frame=floor(e.animation_time/(e.kind=='car' and 130 or 180))%frames[e.kind] end
-    e.sprite=sprites[e.kind][e.facing][frame];e.visible=true
-    e.still_sprite=(e.kind=='dolphin' or e.kind=='whale') and e.sprite or sprites[e.kind][e.facing][0]
+function T.sprite(e,elapsed)
+    if e.kind=='dolphin' or e.kind=='whale' then
+        return sprites[e.kind][e.facing][min(frames[e.kind]-1,floor((e.age+elapsed)*e.frame_rate))]
+    elseif e.kind=='fish' then
+        local time=e.age+elapsed;local cycle=(time+e.animation_phase)%6000
+        local jumping=cycle>=5000 and time<e.last_jump_end
+        local frame=jumping and fish_swim_frames+floor((cycle-5000)*fish_jump_rate) or floor(time*e.frame_rate)%fish_swim_frames
+        return sprites.fish[e.facing][frame]
+    end
+    return e.sprite
+end
+local function render(e)
+    local surfacing=e.kind=='dolphin' or e.kind=='whale'
+    if surfacing or e.kind=='fish' then e.sprite=T.sprite(e,0)
+    else e.sprite=sprites[e.kind][e.facing][floor(e.animation_time*e.frame_rate)%frames[e.kind]] end
+    e.visible=true
+    e.still_sprite=surfacing and e.sprite or sprites[e.kind][e.facing][0]
+end
+function T.prepare(e)
+    e.frame_rate=(e.kind=='dolphin' or e.kind=='whale') and frames[e.kind]/e.duration or e.kind=='car' and 1/130 or 1/180
+    if e.kind=='fish' then
+        e.animation_phase=e.id*911%5000
+        e.last_jump_end=floor((e.duration+e.animation_phase)/6000)*6000-e.animation_phase
+    end
+    T.remember_position(e);render(e)
 end
 function T.init(w)
     local s={rng=w.seed%2147483646+1,time=0,step=0,plan_clock=0,next_id=1,cursor=1,spawn_cursor=1,car_due=3000,boat_due=7000,fish_due=2000}
@@ -76,7 +98,7 @@ function T.install(W,Catalog,P,Nav)
         if not clear(w,kind,x,y,heading) then return nil end
         local s=w.traffic_state
         local e={id=s.next_id,kind=kind,home=home,destination=destination,phase=1,cell=start,next_cell=0,progress=0,path=path,path_index=1,path_generation=n.generation,heading=heading,incoming=heading,facing=heading,x=x,y=y,z=kind=='car' and Nav.height(w,n,x,y,start) or 0,state=kind=='boat' and 'dock' or 'travel',wait=kind=='boat' and 1800 or 0,waited_cell=0,age=0,duration=duration or 0,animation_time=0,exit_progress=0,retry=0,blocked=0,goal=path[#path]}
-        s.next_id=s.next_id+1;w.traffic[#w.traffic+1]=e;T.remember_position(e);T.render(e)
+        s.next_id=s.next_id+1;w.traffic[#w.traffic+1]=e;T.prepare(e)
         return e
     end
     function T.position(w,e)
@@ -174,7 +196,7 @@ function T.install(W,Catalog,P,Nav)
         local path,origin,finish
         path,origin,finish,budget=Nav.route(n,kind,start,w.traffic_targets,start,destination+4000,budget)
         if path and #path>0 then
-            local duration=kind=='fish' and 16000+random(s,8001) or kind=='dolphin' and 10000 or 18000
+            local duration=kind=='fish' and 16000+random(s,8001) or surfacing_ms[kind]
             if spawn(w,n,kind,0,0,path,start,duration) then
                 s[due]=s.time+(kind=='fish' and 2500 or kind=='dolphin' and 45000+random(s,45001) or 180000+random(s,180001))
             end
@@ -259,8 +281,9 @@ function T.install(W,Catalog,P,Nav)
         if s.step<50 then return end
         s.step=s.step-50;s.time=s.time+50;s.plan_clock=s.plan_clock+50
         local n=navigation(w)
+        local total=#w.traffic
         if s.plan_clock>=500 then s.plan_clock=s.plan_clock-500;schedule(w,n) end
-        for i=#w.traffic,1,-1 do
+        for i=total,1,-1 do
             local e=w.traffic[i];local remove=false;e.age=e.age+50
             T.remember_position(e)
             if e.kind~='car' and e.kind~='boat' and e.age>=e.duration then remove=true
@@ -273,7 +296,7 @@ function T.install(W,Catalog,P,Nav)
                     else e.phase=2;e.path=nil;e.retry=0;e.state='wait' end
                 end
             else move(w,n,e,50) end
-            if remove then table.remove(w.traffic,i) else T.render(e) end
+            if remove then table.remove(w.traffic,i) else render(e) end
         end
     end
     local old_new=W.new

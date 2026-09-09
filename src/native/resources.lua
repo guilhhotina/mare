@@ -1,15 +1,18 @@
 local Assets = require('lua.native.assets')
-local Binary = require('lua.native.binary')
+local Runs = require('lua.native.runs')
 local Surface = require('lua.native.surface')
-local Work = require('lua.native.work')
 local Resources = {}
 Resources.__index = Resources
 
 function Resources.new(std)
+    local file = assert(io.open(Assets.path('colors.bin'), 'rb'))
+    local palette = Runs.palette(assert(file:read('*a')))
+    assert(file:close())
     return setmetatable({
         std = std,
         sprites = dofile(Assets.path('sprites.lua')),
         fonts = dofile(Assets.path('fonts.lua')),
+        palette = palette,
         file = assert(io.open(Assets.path('pixels.bin'), 'rb')),
         textures = {}, pending = {}, writing = {}, serial = 0, frame = 0, bytes = 0, count = 0,
         limit = 32 * 1024 * 1024
@@ -19,15 +22,7 @@ end
 function Resources:source(meta)
     if not meta.runs then
         assert(self.file:seek('set', meta.offset))
-        local data = assert(self.file:read(meta.length))
-        local runs, at = {}, 1
-        for pos = 1, #data, 10 do
-            local x, y, w, color = Binary.run(data, pos)
-            runs[at], runs[at + 1], runs[at + 2], runs[at + 3] = x, y, w, color
-            at = at + 4
-            if pos % 2560 == 1 then Work.check() end
-        end
-        meta.runs = runs
+        meta.runs = Runs.new(assert(self.file:read(meta.length)), self.palette)
     end
     return meta
 end
@@ -67,19 +62,22 @@ function Resources:trim(needed)
     end
 end
 
-function Resources:add(key, surface, scale, red, green, blue, light, intensity, pinned)
+function Resources:add(key, surface, scale, red, green, blue, light, intensity, pinned, region, content)
     scale = scale or 1
-    local bytes = surface.w * surface.h * scale * scale * 4
+    local width, height = surface.w, surface.h
+    if region then width, height = region.w, region.h end
+    local bytes = width * height * scale * scale * 4
     self:trim(bytes)
     self.serial = self.serial + 1
     local path = Assets.texture(self.serial)
     self.bytes, self.count = self.bytes + bytes, self.count + 1
     self.writing[path] = true
-    surface:write(path, scale, red, green, blue, light, intensity)
+    surface:write(path, scale, red, green, blue, light, intensity, region, content)
     self.writing[path] = nil
     local entry = {
         key = key, path = path, id = self.std.image.load(Assets.remote and 'file://' .. path or path), bytes = bytes,
-        w = surface.w * scale, h = surface.h * scale,
+        w = width * scale, h = height * scale,
+        content = content,
         used = self.frame, pinned = pinned, ready = false
     }
     self.textures[key] = entry

@@ -139,7 +139,7 @@ local function world_sprite(key,sx,sy,scale,alpha,lit,x,y,z)
     Platform.sprite(key,sx,sy,scale,alpha,lit)
     Platform.depth(key,sx,sy,scale,x,y,z)
 end
-local actors=ActorRender.new(Activities,Platform)
+local actors=ActorRender.new(Activities,Platform,Traffic.sprite)
 local function render_actors(w)
     actors:draw(w,S.motion)
 end
@@ -686,7 +686,7 @@ local function act(key)
     end
     if screen=='view' then
         if key=='a' then S.light=S.light%4+1;Platform.options(S.sound,S.motion,S.detail,S.preferred_zoom or 2,S.light,I18n.locale())
-        elseif key=='menu' then S.zoom=S.view_zoom;home_camera();open('pause',6) end
+        elseif key=='menu' then S.zoom=S.view_return_zoom;S.view_return_zoom=nil;home_camera();open('pause',6) end
         return
     end
     if screen=='play' then
@@ -808,7 +808,7 @@ local function act(key)
     elseif screen=='pause' then
         if n==1 then S.tool='inspect';open('play') elseif n==2 then save_game(false) elseif n==3 then open('goals')
         elseif n==4 then S.return_to='pause';S.return_selection=4;open('settings') elseif n==5 then S.return_to='pause';S.return_selection=5;open('help')
-        elseif n==6 then S.view_zoom=S.zoom;S.zoom=1;S.camx=11;S.camy=11;S.world.dirty=true;open('view')
+        elseif n==6 then S.view_return_zoom=S.zoom;S.zoom=1;S.camx=11;S.camy=11;S.world.dirty=true;open('view')
         elseif n==7 and save_game(true) then S.playing=false;S.ox=880;S.oy=350;S.camx=11;S.camy=11;S.zoom=1;S.world.dirty=true;open('title') end
     elseif screen=='settings' then
         if n==1 then S.sound=not S.sound elseif n==2 then S.motion=not S.motion elseif n==3 then S.detail=3-S.detail;S.world.dirty=true

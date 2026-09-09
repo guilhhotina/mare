@@ -90,7 +90,7 @@ function reference(heights, origin, direction) {
         }
         await lua.doString('local h={};for i=1,625 do h[i]=1 end;local x,y,z=raycast(h,{[12*24+10+1]=32},10.5,12.5,20,0,0);hit_z=z');
         assert.equal(lua.global.get('hit_z'),16,'Rays starting below a bridge continue toward underlying ground');
-        for(const name of ['assets','bits','binary','work','surface','raycast','shadow_cache','shadows'])await factory.mountFile(`lua/native/${name}.lua`,fs.readFileSync(path.join(root,`src/native/${name}.lua`)));
+        for(const name of ['assets','bits','binary','work','pixels','runs','surface','raycast','shadow_cache','shadows'])await factory.mountFile(`lua/native/${name}.lua`,fs.readFileSync(path.join(root,`src/native/${name}.lua`)));
         await lua.doString("NativeShadows=require('lua.native.shadows');function nativeShadowAt(x,y,deck) local i=y*native_shadow.n+x;local field=deck and native_shadow.deck_field or native_shadow.field;return (field[i//32+1]&(1<<(i%32)))~=0 end");
         const nativeAt=lua.global.get('nativeShadowAt');
         async function nativeColumn(words,x,y,extra=''){

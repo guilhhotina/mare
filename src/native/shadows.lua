@@ -13,7 +13,7 @@ function Shadows.new(resources, heights)
     local file = assert(io.open(Assets.path('shadow-shapes.bin'), 'rb'))
     local points = assert(file:read('*a'))
     assert(file:close())
-    return setmetatable({resources = resources, heights = heights, points = points, cache = ShadowCache.new(points), projections = {}, field = {}, tiles = {}, cells = {}, shadow_cells = {}}, Shadows)
+    return setmetatable({resources = resources, heights = heights, points = points, cache = ShadowCache.new(points), projections = {}, field = {}, tiles = {}, previous_tiles = {}, signatures = {}, cells = {}, shadow_cells = {}}, Shadows)
 end
 
 function Shadows:ground(x, y)
@@ -36,7 +36,8 @@ function Shadows:prepare(csv, scene, phase, detail)
     local stride = math.floor(n / 32)
     self.n = n
     for i = 1, math.floor(n * n / 32) do field[i] = 0 end
-    self.tiles, self.cells, self.shadow_cells, self.deck_shadow_cells = {}, {}, {}, {}
+    self.previous_tiles, self.tiles, self.signatures = self.tiles, {}, {}
+    self.cells, self.shadow_cells, self.deck_shadow_cells = {}, {}, {}
     self.decks, self.deck_field = {}, self.deck_field or {}
     local objects = {}
     for row in scene:gmatch('[^;]+') do
@@ -57,7 +58,8 @@ function Shadows:prepare(csv, scene, phase, detail)
                 for xx = max(0, floor(lx - 1)), min(23, floor(lx + 1)) do
                     local k = yy * 24 + xx + 1
                     local near = self.cells[k]
-                    if not near then near = {}; self.cells[k] = near end
+                    if not near then near = {}
+self.cells[k] = near end
                     near[#near + 1] = lamp
                 end
             end
@@ -202,59 +204,107 @@ function Shadows:projection(corners)
     return output
 end
 
-function Shadows:paint(target, wx, wy, sx, sy, zoom, corners, mask, coarse, light, depth, receiver)
+local function signature(self, wx, wy, light, receiver)
+    local key = (wy * 24 + wx) * 3 + (light and 2 or receiver and 1 or 0)
+    local cached = self.signatures[key]
+    if cached then return cached end
+    local parts = {}
+    if light then
+        local near = self.cells[wy * 24 + wx + 1]
+        parts[1] = #near
+        for i = 1, #near do
+            local lamp = near[i]
+            parts[#parts + 1], parts[#parts + 2], parts[#parts + 3] = lamp[1], lamp[2], lamp[3]
+        end
+        for y = max(0, wy - 1), min(24, wy + 2) do
+            for x = max(0, wx - 1), min(24, wx + 2) do parts[#parts + 1] = self.heights[y * 25 + x + 1] end
+        end
+        for y = max(0, wy - 1), min(23, wy + 1) do
+            for x = max(0, wx - 1), min(23, wx + 1) do parts[#parts + 1] = self.decks[y * 24 + x + 1] or -1 end
+        end
+        cached = table.concat(parts, ',')
+    else
+        local res, stride = self.res, self.n / 32
+        local field = receiver and self.deck_field or self.field
+        local origin = wy * res * stride + wx * res / 32 + 1
+        if res == 64 then
+            for row = 0, 63 do
+                local at = origin + row * stride
+                parts[#parts + 1] = Binary.pack_mask(field[at], field[at + 1])
+            end
+        else
+            for row = 0, 31, 2 do
+                local at = origin + row * stride
+                parts[#parts + 1] = Binary.pack_mask(field[at], field[at + stride])
+            end
+        end
+        cached = table.concat(parts)
+    end
+    self.signatures[key] = cached
+    return cached
+end
+
+function Shadows:tile(wx, wy, corners, mask, coarse, light, receiver)
     local cell = wy * 24 + wx + 1
     local near = self.cells[cell]
-    if light and not near then return end
+    if light and not near then return false end
     local shadow_cells = receiver and self.deck_shadow_cells or self.shadow_cells
-    if not light and (not self.sun or (not shadow_cells[cell] and mask == '')) then return end
-    local key = cell .. ':' .. corners .. ':' .. tostring(light) .. ':' .. mask .. ':' .. tostring(receiver)
-    local tile = self.tiles[key]
-    if tile == nil then
-        tile = Surface.new(65, 65)
-        local projection, hits = self:projection(corners), 0
-        local field = receiver and self.deck_field or self.field
-        for i = 1, 65 * 65 do
-            local uv = projection[i]
-            if uv then
-                local u, v, alpha = uv[1], uv[2], 0
-                local color
-                if light then
-                    local x, y = wx + u, wy + v
-                    local z = receiver or self:ground(x, y)
-                    for _, emitter in ipairs(near) do
-                        local du, dv, dz = x - emitter[1], y - emitter[2], emitter[3] - z
-                        if dz > 0 then
-                            local radius = min(.9, max(.2, dz / 30))
-                            local d = (du * du + dv * dv) / (radius * radius)
-                            if d < 1 then
-                                local px, py, pz = raycast(self.heights, self.decks, emitter[1], emitter[2], emitter[3], du / dz, dv / dz)
-                                if px and math.abs(px - x) < .001 and math.abs(py - y) < .001 and math.abs(pz - z) < .001 then
-                                    alpha = max(alpha, d < .12 and 72 or d < .4 and 46 or d < .7 and 26 or 12)
-                                end
+    if not light and (not self.sun or (not shadow_cells[cell] and mask == '')) then return false end
+    local key = cell .. ':' .. corners .. ':' .. tostring(light) .. ':' .. mask .. ':' .. coarse .. ':' .. tostring(receiver)
+    local cached = self.tiles[key]
+    if cached then return cached.surface end
+    local source = signature(self, wx, wy, light, receiver)
+    cached = self.previous_tiles[key]
+    if cached and cached.signature == source then
+        self.tiles[key] = cached
+        return cached.surface
+    end
+    local tile = Surface.new(65, 65)
+    local projection, hits = self:projection(corners), 0
+    local field = receiver and self.deck_field or self.field
+    for i = 1, 65 * 65 do
+        local uv = projection[i]
+        if uv then
+            local u, v, alpha = uv[1], uv[2], 0
+            local color
+            if light then
+                local x, y = wx + u, wy + v
+                local z = receiver or self:ground(x, y)
+                for _, emitter in ipairs(near) do
+                    local du, dv, dz = x - emitter[1], y - emitter[2], emitter[3] - z
+                    if dz > 0 then
+                        local radius = min(0.9, max(0.2, dz / 30))
+                        local d = (du * du + dv * dv) / (radius * radius)
+                        if d < 1 then
+                            local px, py, pz = raycast(self.heights, self.decks, emitter[1], emitter[2], emitter[3], du / dz, dv / dz)
+                            if px and math.abs(px - x) < 0.001 and math.abs(py - y) < 0.001 and math.abs(pz - z) < 0.001 then
+                                alpha = max(alpha, d < 0.12 and 72 or d < 0.4 and 46 or d < 0.7 and 26 or 12)
                             end
                         end
                     end
-                    color = Bits.bor(0xffce7700, alpha)
-                else
-                    local k = (wy * self.res + floor(v * self.res)) * self.n + wx * self.res + floor(u * self.res)
-                    local hit = Bits.band(field[math.floor(k / 32) + 1], (Bits.lshift(1, (k % 32)))) ~= 0
-                    local terrain = mask:byte(floor(v * coarse) * coarse + floor(u * coarse) + 1) == 49
-                    alpha = (hit or terrain) and 80 or 0
-                    color = Bits.bor(0x19273e00, alpha)
                 end
-                if alpha > 0 then tile.pixels[i] = color; hits = hits + 1 end
+                color = Bits.bor(0xffce7700, alpha)
+            else
+                local k = (wy * self.res + floor(v * self.res)) * self.n + wx * self.res + floor(u * self.res)
+                local hit = Bits.band(field[math.floor(k / 32) + 1], (Bits.lshift(1, (k % 32)))) ~= 0
+                local terrain = mask:byte(floor(v * coarse) * coarse + floor(u * coarse) + 1) == 49
+                alpha = (hit or terrain) and 80 or 0
+                color = Bits.bor(0x19273e00, alpha)
             end
-            if i % 65 == 0 then Work.check() end
+            if alpha > 0 then
+                tile.pixels[i] = color
+                hits = hits + 1
+            end
         end
-        if hits == 0 then tile = false end
-        self.tiles[key] = tile
+        if i % 65 == 0 then Work.check() end
     end
-    if tile then
-        local x, y = floor(sx - 32 * zoom + .5), floor(sy - 17 * zoom + .5)
-        if depth then target:blit_plane(tile, x, y, zoom, depth, wx + wy + receiver / 16 - 17 / 16)
-        else target:blit(tile, x, y, zoom) end
-    end
+    if hits == 0 then tile = false end
+    self.tiles[key] = { signature = source, surface = tile }
+    return tile
+end
+
+function Shadows:finish()
+    self.previous_tiles = {}
 end
 
 return Shadows

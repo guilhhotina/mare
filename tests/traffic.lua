@@ -151,6 +151,34 @@ expect(not path,'marine planning cannot cross a continuous island barrier')
 local bridge_block=empty(107,true);bridge_block.bid[World.cell(10,10)]=6;World.rebuild(bridge_block)
 local bridge_water=World.traffic_navigation(bridge_block)
 expect(not bridge_water.pass.boat[World.cell(10,10)] and not bridge_water.pass.whale[World.cell(9,9)],'bridge deck and body clearance exclude unsupported underwater crossings')
+local function waiting_fish(text)
+    local w=assert(World.decode(text));local e=first(w,'fish');local x,y=e.x,e.y
+    e.path=nil;e.retry=w.traffic_state.time+10000
+    local jumped,landed,saved=false,false,false
+    for step=1,125 do
+        World.update(w,50)
+        local key=Traffic.sprite(e,0);local pose=tonumber(key:match('_(%d+)$'))
+        if pose>=4 then
+            jumped=true
+            if pose>=15 and not saved then
+                local checkpoint=World.encode(w);local reload=World.decode(checkpoint)
+                expect(reload and World.encode(reload)==checkpoint and Traffic.sprite(first(reload,'fish'),0)==key,'reload retains an airborne fish without resetting its jump')
+                saved=true
+            end
+        elseif jumped then landed=true end
+    end
+    expect(jumped and landed and saved and e.x==x and e.y==y,'a fish waiting for a route still completes its jump and returns to the water')
+end
+local function legacy_whale(text)
+    local old=assert(World.decode(text));local original=first(old,'whale')
+    original.age,original.duration=9000,18000
+    local migrated=World.decode((World.encode(old):gsub('|TRAFFIC2,','|TRAFFIC1,',1)))
+    local expected=assert(World.decode(text));first(expected,'whale').age=1600
+    expect(migrated and World.encode(migrated)==World.encode(expected),'a legacy half-completed whale keeps its island, route and animation phase when its old duration is migrated')
+    for step=1,34 do World.update(migrated,50) end
+    expect(not present(migrated,original.id),'a migrated whale finishes its remaining dive instead of retaining the legacy nine-second wait')
+end
+local fish_checked=false
 local wildlife=empty(131,true);local twin=empty(131,true)
 local seen={fish=false,dolphin=false,whale=false};local saved_appearance={};local cycles={};local complete={}
 for step=1,7600 do
@@ -159,20 +187,27 @@ for step=1,7600 do
     for i=1,#wildlife.traffic do local e=wildlife.traffic[i]
         counts[e.kind]=counts[e.kind]+1;seen[e.kind]=true
         expect(TrafficPaths.water(wildlife,e.x,e.y,TrafficPaths.radius[e.kind]),'visible fauna retains species-sized navigable clearance')
+        if e.kind=='fish' and not fish_checked then waiting_fish(World.encode(wildlife));fish_checked=true end
         if e.kind=='dolphin' or e.kind=='whale' then
-            local cycle=cycles[e.id] or {kind=e.kind};cycles[e.id]=cycle
-            cycle[tonumber(e.sprite:match('_([0-7])$'))]=true
+            local cycle=cycles[e.id] or {kind=e.kind,started=wildlife.traffic_state.time-e.age,poses={}};cycles[e.id]=cycle
+            for elapsed=0,48,16 do
+                local pose=tonumber(Traffic.sprite(e,elapsed):match('_(%d+)$'))
+                cycle.poses[pose]=true
+            end
         end
         if (e.kind=='dolphin' or e.kind=='whale') and e.age>e.duration*.45 and not saved_appearance[e.kind] then
             local text=World.encode(wildlife);local reload=World.decode(text)
             expect(reload and World.encode(reload)==text,'reload retains the middle of a rare surfacing cycle')
+            if e.kind=='whale' then legacy_whale(text) end
             saved_appearance[e.kind]=true
             twin=reload
         end
     end
     for kind,n in pairs(counts) do expect(n<=World.traffic_caps[kind],'species cap remains bounded: '..kind) end
     for id,cycle in pairs(cycles) do if not present(wildlife,id) then
-        for frame=0,7 do expect(cycle[frame],'surfacing includes every entry, apex and diving frame before retirement') end
+        if cycle.kind=='dolphin' then expect(wildlife.traffic_state.time-cycle.started<=2000,'a dolphin completes its jump within two seconds instead of hanging above the water') end
+        if cycle.kind=='whale' then expect(wildlife.traffic_state.time-cycle.started<=4000,'a whale surfaces and dives within four seconds instead of holding each pose for seconds') end
+        for pose=0,(cycle.kind=='dolphin' and 48 or 96)-1 do expect(cycle.poses[pose],'draw-time sampling retains every surfacing pose through the complete rare appearance') end
         complete[cycle.kind]=true;cycles[id]=nil
     end end
     if step%100==0 then expect(World.encode(wildlife)==World.encode(twin),'seed and save preserve subsequent wildlife timing and movement') end
@@ -185,6 +220,6 @@ expect(navigation.builds==builds,'stable source topology reuses passability whil
 local saved=World.encode(cached);local duplicate=World.decode(saved)
 duplicate.traffic[2]=duplicate.traffic[1]
 expect(World.decode(World.encode(duplicate))==nil,'persistence rejects duplicate vehicle identities instead of duplicating a trip')
-expect(World.decode(saved..',0')==nil and World.decode(saved:gsub('|TRAFFIC1,','|TRAFFIC2,',1))==nil,'extension version and trailing field corruption remain detectable')
+expect(World.decode(saved..',0')==nil and World.decode(saved:gsub('|TRAFFIC2,','|TRAFFIC3,',1))==nil,'extension version and trailing field corruption remain detectable')
 print('PASS traffic domain: '..checks..' assertions.')
 end
